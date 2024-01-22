@@ -9,7 +9,7 @@
     </el-aside>
 </template>
 
-<script setup>
+<script setup lang="ts">
 import { defineProps, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import SidebarMenuItem from './SidebarMenuItem.vue';

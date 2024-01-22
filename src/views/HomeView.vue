@@ -6,7 +6,7 @@
 	</div>
 </template>
 
-<script setup>
+<script setup lang="ts">
 // 在这里导入需要的脚本或组件
 </script>
 
