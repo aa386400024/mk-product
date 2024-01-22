@@ -32,13 +32,9 @@ const activeRoute = computed(() => route.path);
         overflow-y: auto;
         border-right: none;
 
-        ::v-deep {
-
-            .el-menu-item.is-active,
-            .el-sub-menu__title.is-active {
-                background-color: #1f2d3d; // 激活项的背景颜色
-                color: #ffd04b; // 激活项的文字颜色
-            }
+        ::v-deep(.el-menu-item.is-active, .el-sub-menu__title.is-active) {
+            background-color: #1f2d3d; // 激活项的背景颜色
+            color: #ffd04b; // 激活项的文字颜色
         }
     }
 }
