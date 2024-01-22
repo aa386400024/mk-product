@@ -5,17 +5,25 @@
         </template>
         <sidebar-menu-item v-for="subItem in item.children" :key="subItem.path" :item="subItem" />
     </el-sub-menu>
-    <router-link v-else :to="item.path" tag="li" class="el-menu-item menu-item-link" exact-active-class="menu-item-active">
-        {{ item.title }}
+    <router-link v-else :to="item.path" custom v-slot="{ navigate, href, isActive, isExactActive }">
+        <li class="el-menu-item menu-item-link" :class="{ 'menu-item-active': isExactActive }" @click="navigate">
+            {{ item.title }}
+        </li>
     </router-link>
 </template>
-  
-<script setup>
+
+<script setup lang="ts">
 import { defineProps } from 'vue';
 
-const props = defineProps({
-    item: Object
-});
+interface MenuItem {
+    path: string;
+    title: string;
+    children?: MenuItem[];
+}
+
+const props = defineProps<{
+    item: MenuItem;
+}>();
 </script>
   
 <style scoped lang="scss">
@@ -30,8 +38,8 @@ const props = defineProps({
 }
 
 .menu-item-active {
-  color: #ffd04b; // 激活状态的文本颜色
-  background-color: #1f2d3d; // 激活状态的背景颜色
+    color: #ffd04b; // 激活状态的文本颜色
+    background-color: #1f2d3d; // 激活状态的背景颜色
 }
 
 .menu-item-link {

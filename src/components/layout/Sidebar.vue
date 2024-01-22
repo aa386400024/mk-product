@@ -14,8 +14,14 @@ import { defineProps, ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import SidebarMenuItem from './SidebarMenuItem.vue';
 
+interface MenuItem {
+    path: string;
+    title: string;
+    children?: MenuItem[];
+}
+
 const props = defineProps({
-    menuItems: Array
+    menuItems: Array as () => MenuItem[]
 });
 const isCollapse = ref(false); // 控制菜单是否折叠
 

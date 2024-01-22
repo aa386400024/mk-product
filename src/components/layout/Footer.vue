@@ -1,8 +1,8 @@
 <template>
-    <el-footer class="footer">
+    <div class="footer">
         © 2024 Your Company. All Rights Reserved.
         <!-- 你可以在这里添加更多内容 -->
-    </el-footer>
+    </div>
 </template>
   
 <script setup>
@@ -14,7 +14,7 @@
     text-align: center;
     padding: 10px;
     font-size: 14px;
-    background-color: #f2f2f2;
+    /* background-color: #f2f2f2; */
     /* 根据你的设计调整 */
 }
 </style>

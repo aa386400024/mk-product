@@ -7,14 +7,19 @@
 
         <el-container>
             <!-- 这里可以插入 Navbar 组件，如果你需要的话 -->
-            <Navbar />
+            <el-header>
+                <Navbar />
+            </el-header>
+
 
             <el-main>
                 <router-view></router-view>
             </el-main>
 
             <!-- 插入 Footer 组件 -->
-            <Footer />
+            <el-footer>
+                <Footer />
+            </el-footer>
         </el-container>
     </el-container>
 </template>
@@ -41,17 +46,15 @@ const menuItems = [
             },
             // ...更多子页面
         ]
-    }, 
+    },
     {
         title: '其他页面2',
         path: '/about',
         children: []
-    }, 
+    },
     // ...更多顶级菜单项
 ];
 </script>
   
-<style>
-/* 你可以添加一些自定义样式 */
-</style>
+<style scoped lang="scss">/* 你可以添加一些自定义样式 */</style>
   

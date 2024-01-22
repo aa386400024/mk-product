@@ -1,12 +1,12 @@
 <template>
-    <el-header class="header">
+    <div class="header">
         <img src="@/assets/logo.svg" alt="Logo" class="logo" />
         <div class="nav-items">
             <router-link to="/">首页</router-link>
             <router-link to="/about">关于</router-link>
             <!-- 你可以根据需要添加更多链接 -->
         </div>
-    </el-header>
+    </div>
 </template>
   
 <script setup lang="ts">
