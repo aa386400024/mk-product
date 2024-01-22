@@ -1,0 +1,28 @@
+// main.scss
+
+// 导入变量
+@import 'variables';
+
+// 导入混合
+@import 'mixins';
+
+// 导入基础样式
+@import 'base';
+
+// 导入布局样式
+@import 'layout';
+
+// 导入组件样式
+@import 'components';
+
+// 导入动画样式
+@import 'animations';
+
+// 导入主题样式
+@import 'themes';
+
+// 导入工具类样式
+@import 'utilities';
+
+// 导入响应式样式
+@import 'responsive';

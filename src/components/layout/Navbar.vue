@@ -15,23 +15,5 @@ import { RouterLink } from 'vue-router';
 </script>
   
 <style scoped lang="scss">
-.header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    background-color: #333;
-    /* 根据你的设计调整 */
-    color: white;
-}
-
-.logo {
-    width: 50px;
-    /* 根据需要调整 */
-}
-
-.nav-items a {
-    margin-left: 20px;
-    color: white;
-}
 </style>
   

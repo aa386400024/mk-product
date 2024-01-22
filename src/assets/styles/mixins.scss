@@ -1,1 +1,74 @@
 // 包含可重用的 SCSS 混合 (mixins)。例如，您可以创建混合来处理媒体查询、按钮样式、文本样式等。
+
+// mixins.scss
+
+// 生成响应式字体大小
+@mixin font-size-responsive($size-desktop, $size-mobile) {
+    font-size: $size-mobile;
+
+    @media (min-width: 768px) {
+        font-size: $size-desktop;
+    }
+}
+
+// 生成文本阴影
+@mixin text-shadow($h-shadow, $v-shadow, $blur, $color) {
+    text-shadow: $h-shadow $v-shadow $blur $color;
+}
+
+// 生成盒子阴影
+@mixin box-shadow($h-offset, $v-offset, $blur, $spread, $color) {
+    box-shadow: $h-offset $v-offset $blur $spread $color;
+}
+
+// 生成圆角
+@mixin border-radius($radius) {
+    border-radius: $radius;
+}
+
+// 生成过渡效果
+@mixin transition($properties, $duration, $timing-function: ease) {
+    transition: $properties $duration $timing-function;
+}
+
+// 生成绝对定位
+@mixin position-absolute($top: auto, $right: auto, $bottom: auto, $left: auto) {
+    position: absolute;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+}
+
+// 生成媒体查询
+@mixin media-query($width) {
+    @media (max-width: $width) {
+        @content;
+    }
+}
+
+// 生成灵活的网格布局
+@mixin flex-grid($justify-content: center, $align-items: center, $flex-wrap: wrap) {
+    display: flex;
+    justify-content: $justify-content;
+    align-items: $align-items;
+    flex-wrap: $flex-wrap;
+}
+
+// 生成按钮样式
+@mixin button-style($bg-color, $text-color, $border-color: $bg-color) {
+    background-color: $bg-color;
+    color: $text-color;
+    border: 1px solid $border-color;
+    padding: 0.5em 1em;
+    text-align: center;
+    cursor: pointer;
+    display: inline-block;
+    @include transition(all, 0.3s);
+
+    &:hover {
+        background-color: darken($bg-color, 10%);
+    }
+}
+
+// 在这里添加更多您项目所需的混合

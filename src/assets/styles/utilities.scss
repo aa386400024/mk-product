@@ -1,1 +1,147 @@
 // 用于定义一些实用的帮助类，例如文本对齐、显示/隐藏元素、边距和填充工具类等。
+
+// utilities.scss
+
+// 边距工具类
+@mixin generate-margins($sizes: ()) {
+    @each $size, $value in $sizes {
+        .m-#{$size} {
+            margin: $value !important;
+        }
+
+        .mt-#{$size},
+        .my-#{$size} {
+            margin-top: $value !important;
+        }
+
+        .mr-#{$size},
+        .mx-#{$size} {
+            margin-right: $value !important;
+        }
+
+        .mb-#{$size},
+        .my-#{$size} {
+            margin-bottom: $value !important;
+        }
+
+        .ml-#{$size},
+        .mx-#{$size} {
+            margin-left: $value !important;
+        }
+    }
+}
+
+$margin-sizes: (
+    '0': 0,
+    '1': 0.25rem,
+    '2': 0.5rem,
+    '3': 1rem,
+    '4': 1.5rem,
+    '5': 3rem
+);
+
+@include generate-margins($margin-sizes);
+
+// 填充工具类
+@mixin generate-paddings($sizes: ()) {
+    @each $size, $value in $sizes {
+        .p-#{$size} {
+            padding: $value !important;
+        }
+
+        .pt-#{$size},
+        .py-#{$size} {
+            padding-top: $value !important;
+        }
+
+        .pr-#{$size},
+        .px-#{$size} {
+            padding-right: $value !important;
+        }
+
+        .pb-#{$size},
+        .py-#{$size} {
+            padding-bottom: $value !important;
+        }
+
+        .pl-#{$size},
+        .px-#{$size} {
+            padding-left: $value !important;
+        }
+    }
+}
+
+$padding-sizes: $margin-sizes; // 可以使用相同的尺寸
+
+@include generate-paddings($padding-sizes);
+
+// 文本工具类
+.text-left {
+    text-align: left !important;
+}
+
+.text-center {
+    text-align: center !important;
+}
+
+.text-right {
+    text-align: right !important;
+}
+
+.text-justify {
+    text-align: justify !important;
+}
+
+.font-weight-normal {
+    font-weight: normal !important;
+}
+
+.font-weight-bold {
+    font-weight: bold !important;
+}
+
+// 显示和隐藏工具类
+.d-block {
+    display: block !important;
+}
+
+.d-inline {
+    display: inline !important;
+}
+
+.d-inline-block {
+    display: inline-block !important;
+}
+
+.d-flex {
+    display: flex !important;
+}
+
+.d-none {
+    display: none !important;
+}
+
+// 响应式工具类
+@media (max-width: 768px) {
+    .sm-d-none {
+        display: none !important;
+    }
+
+    // 添加更多小屏幕特定的工具类
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+    .md-d-none {
+        display: none !important;
+    }
+
+    // 添加更多中屏幕特定的工具类
+}
+
+@media (min-width: 1025px) {
+    .lg-d-none {
+        display: none !important;
+    }
+
+    // 添加更多大屏幕特定的工具类
+}

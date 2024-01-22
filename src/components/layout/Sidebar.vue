@@ -1,5 +1,5 @@
 <template>
-    <el-aside width="200px" class="full-height-aside">
+    <el-aside class="full-height-aside">
         <el-menu class="full-height-menu" :collapse="isCollapse" background-color="#304156" text-color="#fff"
             active-text-color="#ffd04b" :default-active="activeRoute">
             <template v-for="item in menuItems" :key="item.path">

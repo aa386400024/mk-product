@@ -27,16 +27,6 @@ const props = defineProps<{
 </script>
   
 <style scoped lang="scss">
-.el-menu-item {
-    color: #fff; // 白色文本
-    text-decoration: none; // 移除下划线
-
-    &:hover {
-        color: #fff; // 悬停时保持白色文本
-        text-decoration: none; // 悬停时移除下划线
-    }
-}
-
 .menu-item-active {
     color: #ffd04b; // 激活状态的文本颜色
     background-color: #1f2d3d; // 激活状态的背景颜色

@@ -1,1 +1,70 @@
 // 专门用于响应式设计的样式，可以在这里定义不同屏幕尺寸下的样式规则。
+
+// responsive.scss
+
+// 定义断点
+$breakpoint-xs: 480px; // 超小屏幕
+$breakpoint-sm: 768px; // 小屏幕
+$breakpoint-md: 992px; // 中屏幕
+$breakpoint-lg: 1200px; // 大屏幕
+$breakpoint-xl: 1400px; // 超大屏幕
+
+// Mixin for media queries
+@mixin media-xs {
+    @media (max-width: $breakpoint-xs) {
+        @content;
+    }
+}
+
+@mixin media-sm {
+    @media (min-width: $breakpoint-xs + 1) and (max-width: $breakpoint-sm) {
+        @content;
+    }
+}
+
+@mixin media-md {
+    @media (min-width: $breakpoint-sm + 1) and (max-width: $breakpoint-md) {
+        @content;
+    }
+}
+
+@mixin media-lg {
+    @media (min-width: $breakpoint-md + 1) and (max-width: $breakpoint-lg) {
+        @content;
+    }
+}
+
+@mixin media-xl {
+    @media (min-width: $breakpoint-lg + 1) and (max-width: $breakpoint-xl) {
+        @content;
+    }
+}
+
+@mixin media-xxl {
+    @media (min-width: $breakpoint-xl + 1) {
+        @content;
+    }
+}
+
+// 示例：对不同屏幕尺寸的文本大小调整
+body {
+    font-size: 14px; // 默认字体大小
+
+    @include media-sm {
+        font-size: 15px; // 小屏幕
+    }
+
+    @include media-md {
+        font-size: 16px; // 中屏幕
+    }
+
+    @include media-lg {
+        font-size: 17px; // 大屏幕
+    }
+
+    @include media-xl {
+        font-size: 18px; // 超大屏幕
+    }
+}
+
+// 在这里添加更多针对不同屏幕尺寸的样式调整

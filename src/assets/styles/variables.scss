@@ -1,1 +1,38 @@
 // 用于定义整个项目中使用的颜色、字体大小、间距等基本样式变量。这有助于保持样式的一致性并方便以后进行更改。
+
+// variables.scss
+
+// 颜色变量
+$color-primary: #5b8ff9;      // 主要颜色
+$color-secondary: #6dd230;    // 次要颜色
+$color-accent: #f46649;       // 强调颜色
+$color-success: #55d187;      // 成功状态颜色
+$color-warning: #faad14;      // 警告状态颜色
+$color-error: #f5222d;        // 错误状态颜色
+$color-info: #1890ff;         // 信息状态颜色
+
+$color-text-primary: #333;    // 主要文字颜色
+$color-text-secondary: #666;  // 次要文字颜色
+$color-text-tertiary: #999;   // 辅助文字颜色
+
+$color-border: #eaeaea;       // 边框颜色
+$color-background: #fff;      // 背景颜色
+$color-background-alt: #f5f5f5; // 备选背景颜色
+
+// 字体和排版
+$font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$font-size-base: 16px;        // 基础字体大小
+$line-height-base: 1.5;       // 基础行高
+
+// 尺寸变量
+$spacing-xs: 4px;             // 超小间距
+$spacing-sm: 8px;             // 小间距
+$spacing-md: 16px;            // 中等间距
+$spacing-lg: 24px;            // 大间距
+$spacing-xl: 32px;            // 超大间距
+
+$border-radius: 4px;          // 边框圆角
+$border-width: 1px;           // 边框宽度
+
+// 项目特定的变量
+// 在这里添加更多您项目需要的变量，例如按钮大小、阴影、动画时长等

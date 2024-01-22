@@ -1,5 +1,5 @@
 <template>
-    <el-container style="height: 100vh;">
+    <el-container>
         <!-- 使用封装的动态菜单组件 -->
         <el-aside width="200px">
             <sidebar :menu-items="menuItems" />
