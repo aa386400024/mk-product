@@ -7,7 +7,7 @@ import HomeView from '../views/HomeView.vue';
 import AboutView from '../views/AboutView.vue';
 
 // 身份验证布局和视图
-import AuthLayout from '../views/auth/AuthLayout.vue';
+import AuthLayout from "../views/auth/AuthLayout.vue";
 import LoginView from "../views/auth/LoginView.vue";
 import RegisterView from "../views/auth/RegisterView.vue";
 import ForgotPasswordView from "../views/auth/ForgotPasswordView.vue";

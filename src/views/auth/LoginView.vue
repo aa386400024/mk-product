@@ -24,7 +24,7 @@
     </div>
 </template>
   
-<script setup>
+<script setup lang="ts">
 import { ref } from 'vue';
 import { UserFilled, Lock } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/userStore';
