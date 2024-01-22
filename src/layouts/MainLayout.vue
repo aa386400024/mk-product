@@ -7,23 +7,21 @@
 
         <el-container>
             <!-- 这里可以插入 Navbar 组件，如果你需要的话 -->
-            <!-- <navbar /> -->
+            <Navbar />
 
             <el-main>
                 <router-view></router-view>
             </el-main>
 
             <!-- 插入 Footer 组件 -->
-            <footer />
+            <Footer />
         </el-container>
     </el-container>
 </template>
   
-<script setup>
+<script setup lang="ts">
 import { RouterView } from 'vue-router';
-import { Sidebar, Footer } from '@/components/layout';
-// 如果你有 Navbar 组件，也可以在这里导入
-// import Navbar from '@/components/layout/Navbar.vue';
+import { Sidebar, Navbar, Footer } from '@/components/layout';
 
 // 假设的菜单项数据，可以根据实际情况调整
 const menuItems = [

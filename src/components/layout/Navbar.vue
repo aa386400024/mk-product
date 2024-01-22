@@ -9,12 +9,12 @@
     </el-header>
 </template>
   
-<script setup>
+<script setup lang="ts">
 import { RouterLink } from 'vue-router';
 // 可以在这里添加一些脚本逻辑
 </script>
   
-<style scoped>
+<style scoped lang="scss">
 .header {
     display: flex;
     align-items: center;
