@@ -1,6 +1,6 @@
 <template>
     <div class="header">
-        <img src="@/assets/logo.svg" alt="Logo" class="logo" />
+        <img src="@/assets/images/logo.svg" alt="Logo" class="logo" />
         <div class="nav-items">
             <router-link to="/">首页</router-link>
             <router-link to="/about">关于</router-link>

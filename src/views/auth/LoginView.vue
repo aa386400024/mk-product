@@ -51,7 +51,7 @@ const handleLogin = () => {
     align-items: center;
     justify-content: center;
     min-height: 100vh;
-    background: url('@/assets/login-bg.jpg') no-repeat center right;
+    background: url('@/assets/images/login-bg.jpg') no-repeat center right;
 }
 
 .login-card {
