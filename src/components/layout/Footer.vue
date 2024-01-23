@@ -5,10 +5,17 @@
     </div>
 </template>
   
-<script setup>
+<script setup lang="ts">
 // 可以在这里添加一些脚本逻辑
 </script>
   
-<style scoped>
+<style scoped lang="scss">
+.footer {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 </style>
   

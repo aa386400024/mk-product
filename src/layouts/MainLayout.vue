@@ -56,5 +56,15 @@ const menuItems = [
 ];
 </script>
   
-<style scoped lang="scss">/* 你可以添加一些自定义样式 */</style>
+<style scoped lang="scss">
+.el-header {
+    height: 50px;
+    padding: 0;
+}
+
+.el-footer {
+    height: 30px;
+    padding: 0;
+}
+</style>
   

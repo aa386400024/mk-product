@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref, computed } from 'vue';
+import { ref, computed } from 'vue';
 import { useRoute } from 'vue-router';
 import SidebarMenuItem from './SidebarMenuItem.vue';
 

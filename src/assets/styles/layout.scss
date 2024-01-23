@@ -28,21 +28,17 @@
 
 // 导航栏样式
 .header {
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
     background-color: #333;
     color: white;
-    width: calc(100% - 200px); // 减去侧边栏的宽度
+    padding: 0 20px;
 }
 
 .logo {
     width: 50px;
-}
-
-.nav-items a {
-    margin-left: 20px;
-    color: white;
 }
 
 // 主内容区域样式
@@ -55,10 +51,9 @@
 
 // 页脚样式
 .el-footer {
-    background-color: #333;
-    color: white;
+    height: 100%;
+    color: #1f2d3d;
     text-align: center;
-    padding: 10px;
     font-size: 14px;
 }
 
