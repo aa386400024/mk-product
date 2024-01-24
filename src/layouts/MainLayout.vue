@@ -1,17 +1,18 @@
 <template>
-    <el-container>
+    <!-- 将 el-header 移到最外层的 el-container 之前 -->
+    <el-header>
+        <Navbar />
+    </el-header>
+
+    <el-container class="outer-container">
         <!-- 使用封装的动态菜单组件 -->
         <el-aside width="200px">
-            <sidebar :menu-items="menuItems" />
+            <el-scrollbar>
+                <sidebar :menu-items="menuItems" />
+            </el-scrollbar>
         </el-aside>
 
         <el-container>
-            <!-- 这里可以插入 Navbar 组件，如果你需要的话 -->
-            <el-header>
-                <Navbar />
-            </el-header>
-
-
             <el-main>
                 <router-view></router-view>
             </el-main>
@@ -36,7 +37,7 @@ const menuItems = [
         children: []
     },
     {
-        title: '其他页面',
+        title: '其他页面1',
         path: '/some-other-page',
         children: [
             {
@@ -58,13 +59,23 @@ const menuItems = [
   
 <style scoped lang="scss">
 .el-header {
+    position: fixed; // 设置为固定定位
+    top: 0; // 定位到屏幕顶部
+    left: 0; // 定位到屏幕左边
+    width: 100%; // 占满整个屏幕宽度
     height: 50px;
+    z-index: 1000; // 确保 header 在其他内容之上
     padding: 0;
+    background: #2f54eb;
 }
 
 .el-footer {
     height: 30px;
     padding: 0;
+}
+
+.outer-container {
+    padding-top: 50px;
 }
 </style>
   

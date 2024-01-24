@@ -6,7 +6,8 @@
             <!-- 直接显示用户名 -->
             <span v-if="userStore.userinfo">{{ userStore.userinfo.username }}</span>
             <span v-if="userStore.userinfo" class="divider">|</span>
-            <el-button type="warning" text @click="logout">退出</el-button>
+            <span @click="logout" class="logout">退 出</span>
+            <!-- <el-button type="warning" text @click="logout">退出</el-button> -->
         </div>
     </div>
 </template>
@@ -30,7 +31,6 @@ function logout() {
 </script>
 
 <style scoped lang="scss">
-@import '@/assets/styles/variables.scss';
 
 .title {
     font-size: $spacing-md;
@@ -44,5 +44,10 @@ function logout() {
     /* 或者使用你需要的间距值 */
     .divider {
         margin: 0 5px; // 可以根据需要调整边距
+    }
+    .logout {
+        color: #FFA500;
+        cursor: pointer;
+        font-weight: bold;
     }
 }</style>

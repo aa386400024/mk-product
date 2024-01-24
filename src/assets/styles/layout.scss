@@ -17,36 +17,23 @@
     width: 200px;
 }
 
-.full-height-aside {
-    height: 100vh; // 确保侧边栏高度撑满整个视口
-}
-
-.full-height-menu {
-    height: 100%;
-    overflow-y: auto;
-}
-
 // 导航栏样式
 .header {
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background-color: #333;
-    color: white;
+    color: $color-text-white;
     padding: 0 20px;
-}
-
-.logo {
-    width: 50px;
+    border-bottom: 1px solid $border-color-light;
 }
 
 // 主内容区域样式
 .el-main {
     flex-grow: 1;
     overflow-y: auto;
-    padding: 20px;
     background-color: #f2f2f2; // 轻灰色背景
+    --el-main-padding: 15px !important;
 }
 
 // 页脚样式
