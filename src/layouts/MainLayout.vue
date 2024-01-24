@@ -16,11 +16,6 @@
             <el-main>
                 <router-view></router-view>
             </el-main>
-
-            <!-- 插入 Footer 组件 -->
-            <el-footer>
-                <Footer />
-            </el-footer>
         </el-container>
     </el-container>
 </template>
@@ -67,11 +62,6 @@ const menuItems = [
     z-index: 1000; // 确保 header 在其他内容之上
     padding: 0;
     background: #2f54eb;
-}
-
-.el-footer {
-    height: 30px;
-    padding: 0;
 }
 
 .outer-container {

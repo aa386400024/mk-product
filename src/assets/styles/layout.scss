@@ -25,23 +25,15 @@
     justify-content: space-between;
     color: $color-text-white;
     padding: 0 20px;
-    border-bottom: 1px solid $border-color-light;
+    border-bottom: 1px solid $border-color-dark;
 }
 
 // 主内容区域样式
 .el-main {
     flex-grow: 1;
     overflow-y: auto;
-    background-color: #f2f2f2; // 轻灰色背景
+    background-color: $gray-200; // 轻灰色背景
     --el-main-padding: 15px !important;
-}
-
-// 页脚样式
-.el-footer {
-    height: 100%;
-    color: #1f2d3d;
-    text-align: center;
-    font-size: 14px;
 }
 
 // 侧边菜单项样式
