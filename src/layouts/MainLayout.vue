@@ -32,12 +32,17 @@ const menuItems = [
         children: []
     },
     {
-        title: '其他页面1',
-        path: '/some-other-page',
+        title: '功能页面',
+        path: '/',
         children: [
             {
-                title: '子页面1',
-                path: '/about',
+                title: '获取数据',
+                path: '/get-data',
+                children: [] // 更多嵌套
+            },
+            {
+                title: '删除数据',
+                path: '/delete-data',
                 children: [] // 更多嵌套
             },
             // ...更多子页面

@@ -11,6 +11,8 @@ import AuthLayout from "../views/auth/AuthLayout.vue";
 import LoginView from "../views/auth/LoginView.vue";
 import RegisterView from "../views/auth/RegisterView.vue";
 import ForgotPasswordView from "../views/auth/ForgotPasswordView.vue";
+import GetData from "../views/onePage/GetData.vue";
+import DeleteData from "../views/onePage/DeleteData.vue";
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
@@ -21,6 +23,8 @@ const router = createRouter({
             children: [
                 { path: '', name: 'home', component: HomeView },
                 { path: 'about', name: 'about', component: AboutView },
+                { path: 'get-data', name: 'getData', component: GetData },
+                { path: 'delete-data', name: 'deleteData', component: DeleteData },
             ],
         },
         {
