@@ -23,8 +23,21 @@ const router = createRouter({
             children: [
                 { path: '', name: 'home', component: HomeView },
                 { path: 'about', name: 'about', component: AboutView },
+            ],
+        },
+        {
+            path: '/data-management',
+            component: MainLayout, // 使用主布局
+            children: [
                 { path: 'get-data', name: 'getData', component: GetData },
                 { path: 'delete-data', name: 'deleteData', component: DeleteData },
+            ],
+        },
+        {
+            path: '/attendance',
+            component: MainLayout, // 使用主布局
+            children: [
+                { path: 'edit', name: 'AttendanceEdit', component: GetData },
             ],
         },
         {

@@ -33,16 +33,28 @@ const menuItems = [
     },
     {
         title: '功能页面',
-        path: '/',
+        path: '/data-management',
         children: [
             {
                 title: '获取数据',
-                path: '/get-data',
+                path: '/data-management/get-data',
                 children: [] // 更多嵌套
             },
             {
                 title: '删除数据',
-                path: '/delete-data',
+                path: '/data-management/delete-data',
+                children: [] // 更多嵌套
+            },
+            // ...更多子页面
+        ]
+    },
+    {
+        title: '考勤管理',
+        path: '/attendance',
+        children: [
+            {
+                title: '编辑考勤',
+                path: '/attendance/edit',
                 children: [] // 更多嵌套
             },
             // ...更多子页面
