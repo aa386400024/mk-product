@@ -31,8 +31,8 @@ import { useUserStore } from '@/stores/userStore';
 
 // Component state
 const loginForm = ref({
-    username: '',
-    password: ''
+    username: 'admin',
+    password: 'admin'
 });
 
 const userStore = useUserStore();
