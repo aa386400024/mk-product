@@ -1,5 +1,5 @@
 // src/api/func.ts
-import { post } from '@/http/requests';
+import { post, get } from '@/http/requests';
 
 // 定义 params 的结构，如果有更多的属性，您可以在这里添加
 interface Params {
@@ -11,5 +11,5 @@ interface Params {
 export const generateData = (params: Params): Promise<any> => post('/webapi/GenerateData/', params);
 export const addMoreData = (params: Params): Promise<any> => post('/webapi/AddMoreData/', params);
 export const delMoreData = (params: Params): Promise<any> => post('/webapi/DelMoreData/', params);
-export const GetStationInfo = (params: Params): Promise<any> => post('/webapi/GetStationInfo/', params);
+export const GetStationInfo = (params: Params): Promise<any> => get('/webapi/GetStationInfo/', params);
 // 其他认证相关的 API

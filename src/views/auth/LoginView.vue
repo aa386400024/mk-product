@@ -1,7 +1,7 @@
 <template>
     <div class="login-container">
         <el-card class="login-card">
-            <h1 class="title">项目名称 <span class="version"></span></h1>
+            <h1 class="title">煤矿智能管理系统 <span class="version"></span></h1>
 
             <el-form size="large">
                 <el-form-item>
@@ -28,17 +28,24 @@
 import { ref } from 'vue';
 import { UserFilled, Lock } from '@element-plus/icons-vue'
 import { useUserStore } from '@/stores/userStore';
+import { ElMessage } from 'element-plus'
 
 // Component state
 const loginForm = ref({
-    username: 'admin',
-    password: 'admin'
+    username: '',
+    password: ''
 });
 
 const userStore = useUserStore();
 
 // Method to handle login
 const handleLogin = () => {
+    // 检查用户名和密码是否已输入
+    if (!loginForm.value.username || !loginForm.value.password) {
+        ElMessage.error('请输入账号和密码');
+        return;
+    }
+
     console.log('Login:', loginForm.value);
     userStore.login();
 };

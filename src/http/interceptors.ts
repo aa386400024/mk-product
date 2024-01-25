@@ -23,6 +23,9 @@ export function setupInterceptors(http: AxiosInstance): void {
     http.interceptors.response.use(
         (response: AxiosResponse): AxiosResponse => {
             // 处理正常响应
+            if (response.data) {
+                transformResponseData(response.data);
+            }
             return response;
         },
         (error: AxiosError): Promise<AxiosError> => {
@@ -51,4 +54,20 @@ export function setupInterceptors(http: AxiosInstance): void {
             return Promise.reject(error);
         }
     );
+}
+
+// 添加一个用于转换响应数据的函数
+function transformResponseData(data: any) {
+    if (Array.isArray(data)) {
+        data.forEach(item => transformResponseData(item));
+    } else if (data !== null && typeof data === 'object') {
+        Object.keys(data).forEach(key => {
+            if (data[key] === 'None') {
+                data[key] = null;  // 将非标准值转换为 null
+            } else {
+                transformResponseData(data[key]);  // 递归处理
+            }
+        });
+    }
+    // 对于基本数据类型（非对象或数组），无需进一步处理
 }

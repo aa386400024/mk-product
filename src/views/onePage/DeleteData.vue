@@ -11,7 +11,7 @@
                 <el-date-picker v-model="form.end_time" type="datetime" placeholder="选择日期和时间" />
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">确认删除</el-button>
+                <el-button type="primary" @click="onSubmit">轨迹删除</el-button>
                 <el-button @click="onReset">清空表单</el-button>
             </el-form-item>
         </el-form>
@@ -20,7 +20,7 @@
   
 <script lang="ts" setup>
 import { reactive, ref, Ref } from 'vue'
-import { ElMessage } from 'element-plus'
+import { ElMessage, ElMessageBox } from 'element-plus'
 import { delMoreData } from '@/api/func';
 
 interface FormData {
@@ -93,12 +93,24 @@ const delMoreDataAPI = async (params: FormData) => {
 
 const onSubmit = () => {
     if (formRef.value) {
-        formRef.value.validate((valid: boolean) => {
+        formRef.value.validate(async (valid: boolean) => {
             if (!valid) {
                 ElMessage.error('请检查表单字段');
                 return false;
             }
-            delMoreDataAPI(form);
+            try {
+                // 显示确认对话框
+                await ElMessageBox.confirm('确定要删除这些数据吗?', '警告', {
+                    confirmButtonText: '确认',
+                    cancelButtonText: '取消',
+                    type: 'warning',
+                });
+                // 如果用户确认，执行删除操作
+                delMoreDataAPI(form);
+            } catch (error) {
+                // 如果用户取消，捕获异常并停止执行
+                ElMessage.info('已取消删除');
+            }
         });
     }
 };

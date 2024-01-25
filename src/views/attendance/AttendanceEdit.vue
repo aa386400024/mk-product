@@ -59,7 +59,7 @@
         </el-form>
     </div>
 
-    <el-table :data="tableData" stripe max-height="250" style="width: 100%">
+    <el-table :data="tableData" stripe max-height="500" style="width: 100%">
         <el-table-column prop="id" label="工号" />
         <el-table-column prop="userInfoCode" label="员工编号" />
         <el-table-column prop="cardCode" label="员工卡号" />
@@ -68,8 +68,8 @@
         <el-table-column prop="dutyName" label="工种名称" />
         <el-table-column prop="userState" label="员工状态" />
         <el-table-column prop="userType" label="员工类型" />
-        <el-table-column prop="inWellTime" label="入井时间" width="160" />
-        <el-table-column prop="outWellTime" label="出井时间" width="160" />
+        <el-table-column prop="inWellTime" label="入井时间" width="160" sortable />
+        <el-table-column prop="outWellTime" label="出井时间" width="160" sortable />
         <el-table-column prop="downStopTime" label="井下停留时长" width="120" />
         <el-table-column prop="className" label="班次名称" />
         <el-table-column fixed="right" label="操作" width="120">
@@ -127,39 +127,9 @@ const form: FormData = reactive({
     endDate: '',
 })
 
-const tableData = ref<TableDataItem[]>([
-    {
-        id: 15,
-        userInfoCode: '68483',
-        cardCode: '56482',
-        userName: '耿磊',
-        positionName: '耿磊',
-        dutyName: '管理人员',
-        userState: '员工',
-        userType: '普通员工',
-        inWellTime: '2023-08-30 14:50:21',
-        outWellTime: '2023-08-30 16:56:17',
-        downStopTime: '2小时6分钟',
-        className: '三班早班',
-    }
-]);
+const tableData = ref<TableDataItem[]>();
 
-const reviewTableData = ref<TableDataItem[]>([
-    {
-        id: 15,
-        userInfoCode: '68483',
-        cardCode: '56482',
-        userName: '耿磊',
-        positionName: '耿磊',
-        dutyName: '管理人员',
-        userState: '员工',
-        userType: '普通员工',
-        inWellTime: '2023-08-30 14:50:21',
-        outWellTime: '2023-08-30 16:56:17',
-        downStopTime: '2小时6分钟',
-        className: '三班早班',
-    }
-]);
+const reviewTableData = ref<TableDataItem[]>();
 const rules = {
     userInfoCode: [
         { required: true, message: '请输入工号', trigger: 'blur' }
@@ -212,13 +182,14 @@ const HistoryInwellRecordAPI = async (params: FormData) => {
 const HistoryInwellRecordPreviewAPI = async (params: offsetFormData) => {
     try {
         // 调用删除数据接口
-        const response = await HistoryInwellRecordConfim(params);
+        const response = await HistoryInwellRecordPreview(params);
         const { code, data } = response.data || {}
         if (code == 1) {
             ElMessage.success('获取数据成功');
-            reviewTableData.value = data;
+            reviewTableData.value = [data];
         } else {
             ElMessage.error('获取数据失败');
+            reviewTableData.value = [];
         }
     } catch (error) {
         // 处理请求失败的逻辑
@@ -231,11 +202,12 @@ const HistoryInwellRecordPreviewAPI = async (params: offsetFormData) => {
 const confirmHistoryInwellRecordAPI = async (params: offsetFormData) => {
     try {
         // 调用删除数据接口
-        const response = await HistoryInwellRecordPreview(params);
+        const response = await HistoryInwellRecordConfim(params);
         const { code, data } = response.data || {}
         if (code == 1) {
             ElMessage.success('提交数据成功');
             dialogVisible.value = false
+            HistoryInwellRecordAPI(form);
         } else {
             ElMessage.error('提交数据失败');
         }

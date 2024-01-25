@@ -27,7 +27,7 @@ export const useUserStore = defineStore('user', {
             localStorage.setItem('accessToken', token); // 存储token
             // 假设这是从后端获取的用户信息
             const userInfoFromApi = {
-                username: '用户名',
+                username: 'admin',
                 // 其他字段...
             };
             localStorage.setItem('userinfo', JSON.stringify(userInfoFromApi)); // 存储用户信息

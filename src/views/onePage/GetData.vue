@@ -5,7 +5,7 @@
                 <el-input v-model="form.user_code" />
             </el-form-item>
             <el-form-item label="基站编号" prop="station_id">
-                <el-select v-model="form.station_id" placeholder="请选择基站编号">
+                <el-select v-model="form.station_id" filterable placeholder="请选择基站编号">
                     <el-option v-for="(item, index) in stationOptions" :key="index" :label="item.label" :value="item.value">
                     </el-option>
                 </el-select>
@@ -23,10 +23,10 @@
                 <el-input-number v-model="form.right_count_ratio" :min="1" :max="100" />
             </el-form-item>
             <el-form-item label="进入该基站时间" prop="in_station_time">
-                <el-date-picker v-model="form.in_station_time" type="datetime" placeholder="选择日期和时间" />
+                <el-date-picker v-model="form.in_station_time" type="datetime" placeholder="选择日期和时间" :disabled-date="disabledFutureDate"/>
             </el-form-item>
             <el-form-item label="离开该基站时间" prop="out_station_time">
-                <el-date-picker v-model="form.out_station_time" type="datetime" placeholder="选择日期和时间" />
+                <el-date-picker v-model="form.out_station_time" type="datetime" placeholder="选择日期和时间" :disabled-date="disabledFutureDate"/>
             </el-form-item>
             <el-form-item label="方向" prop="left_or_right">
                 <el-select v-model="form.left_or_right" placeholder="请选择">
@@ -35,8 +35,8 @@
                 </el-select>
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="handleSearch">查询数据</el-button>
-                <el-button type="danger" @click="onSubmit">提交查询数据到数据库</el-button>
+                <el-button type="primary" @click="handleSearch">生成轨迹</el-button>
+                <el-button type="danger" @click="onSubmit">保存数据</el-button>
                 <el-button @click="onReset">清空表单</el-button>
             </el-form-item>
         </el-form>
@@ -102,6 +102,12 @@ const form: FormData = reactive({
     out_station_time: '',
     left_or_right: 0
 })
+
+const disabledFutureDate = (date: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // 将今天的时间设置为午夜（00:00:00），忽略时分秒
+    return date.getTime() > today.getTime(); // 禁用今天之后的日期
+};
 
 // 工具函数，将后端数据转换为表格数据
 const transformData = (data: BackendDataItem[]): TableDataItem[] => {
@@ -231,7 +237,7 @@ const GetStationInfoAPI = async () => {
         const { code, data } = response.data || {}
         if (code == 1) {
             stationOptions.value = data.map((item: [string, string]) => ({
-                label: item[0],  // 显示的文本
+                label: `${item[1]}(${item[0]})`,  // 显示的文本
                 value: item[1]   // 实际的值
             }));
         } else {
@@ -260,13 +266,20 @@ const handleSearch = () => {
 
 const onSubmit = async () => {
     if (storedRawData.value && storedRawData.value?.length > 0) {
+        const data = storedRawData.value.map(item => {
+            // 只修改数组中索引为2的元素
+            if (item[2] === 0 || item[2] === 1) {
+                item[2] += 1;
+            }
+            return item;
+        });
         const params = {
-            accuracy_data: storedRawData.value // 使用存储的原始数据
+            accuracy_data: data // 使用存储的原始数据
         };
         await addMoreDataAPI(params);
     } else {
         console.error('没有可用的原始数据');
-        ElMessage.error('没有可用的数据，请先查询数据');
+        ElMessage.error('没有可用的数据，请先生成轨迹');
     }
 }
 

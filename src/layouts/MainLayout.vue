@@ -32,16 +32,16 @@ const menuItems = [
         children: []
     },
     {
-        title: '功能页面',
+        title: '轨迹管理',
         path: '/data-management',
         children: [
             {
-                title: '获取数据',
+                title: '添加轨迹',
                 path: '/data-management/get-data',
                 children: [] // 更多嵌套
             },
             {
-                title: '删除数据',
+                title: '删除轨迹',
                 path: '/data-management/delete-data',
                 children: [] // 更多嵌套
             },
@@ -53,7 +53,7 @@ const menuItems = [
         path: '/attendance',
         children: [
             {
-                title: '编辑考勤',
+                title: '考勤偏移',
                 path: '/attendance/edit',
                 children: [] // 更多嵌套
             },
