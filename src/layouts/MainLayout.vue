@@ -60,11 +60,11 @@ const menuItems = [
             // ...更多子页面
         ]
     },
-    {
-        title: '其他页面2',
-        path: '/about',
-        children: []
-    },
+    // {
+    //     title: '其他页面2',
+    //     path: '/about',
+    //     children: []
+    // },
     // ...更多顶级菜单项
 ];
 </script>

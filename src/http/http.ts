@@ -13,7 +13,7 @@ interface HttpConfig {
 
 // 创建配置对象
 const config: HttpConfig = {
-    baseURL: "", // 您的 API 基础 URL
+    baseURL: "http://172.30.11.102:10233", // 您的 API 基础 URL
     timeout: 1000 * 60,
     headers: {
         'Content-Type': 'application/json'

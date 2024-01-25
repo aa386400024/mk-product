@@ -11,7 +11,7 @@
                 <el-date-picker v-model="form.end_time" type="datetime" placeholder="选择日期和时间" />
             </el-form-item>
             <el-form-item>
-                <el-button type="primary" @click="onSubmit">提交</el-button>
+                <el-button type="primary" @click="onSubmit">确认删除</el-button>
                 <el-button @click="onReset">清空表单</el-button>
             </el-form-item>
         </el-form>

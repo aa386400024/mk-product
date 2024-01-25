@@ -14,6 +14,8 @@ import ForgotPasswordView from "../views/auth/ForgotPasswordView.vue";
 import GetData from "../views/onePage/GetData.vue";
 import DeleteData from "../views/onePage/DeleteData.vue";
 
+import AttendanceEdit from "../views/attendance/AttendanceEdit.vue";
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
@@ -37,7 +39,7 @@ const router = createRouter({
             path: '/attendance',
             component: MainLayout, // 使用主布局
             children: [
-                { path: 'edit', name: 'AttendanceEdit', component: GetData },
+                { path: 'edit', name: 'AttendanceEdit', component: AttendanceEdit },
             ],
         },
         {

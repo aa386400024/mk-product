@@ -5,7 +5,10 @@
                 <el-input v-model="form.user_code" />
             </el-form-item>
             <el-form-item label="基站编号" prop="station_id">
-                <el-input v-model="form.station_id" />
+                <el-select v-model="form.station_id" placeholder="请选择基站编号">
+                    <el-option v-for="(item, index) in stationOptions" :key="index" :label="item.label" :value="item.value">
+                    </el-option>
+                </el-select>
             </el-form-item>
             <el-form-item label="左天线读卡距离" prop="left_read_distance">
                 <el-input-number v-model="form.left_read_distance" :min="0" :max="500" />
@@ -33,13 +36,13 @@
             </el-form-item>
             <el-form-item>
                 <el-button type="primary" @click="handleSearch">查询数据</el-button>
-                <el-button type="success" @click="onSubmit">提交查询数据到数据库</el-button>
+                <el-button type="danger" @click="onSubmit">提交查询数据到数据库</el-button>
                 <el-button @click="onReset">清空表单</el-button>
             </el-form-item>
         </el-form>
     </div>
 
-    <el-table :data="tableData" stripe max-height="250" style="width: 100%">
+    <el-table :data="tableData" stripe max-height="250" style="width: 100%; 'margin-bottom': '20px'">
         <el-table-column prop="user_code" label="工号" />
         <el-table-column prop="station_id" label="基站编号" />
         <el-table-column prop="left_or_right" label="方向" />
@@ -79,11 +82,18 @@ interface TableDataItem {
     time: string;
 }
 
+interface StationInfo {
+    label: string;
+    value: string;
+}
+
+const stationOptions = ref([]);
+
 const formRef: Ref = ref(null);
 
 const form: FormData = reactive({
     user_code: 'test1',
-    station_id: '001',
+    station_id: '',
     left_read_distance: 50,
     right_read_distance: 100,
     left_count_ratio: 2,
@@ -220,7 +230,10 @@ const GetStationInfoAPI = async () => {
         const response = await GetStationInfo({});
         const { code, data } = response.data || {}
         if (code == 1) {
-            stationInfoSelectList.value = data || []
+            stationOptions.value = data.map((item: [string, string]) => ({
+                label: item[0],  // 显示的文本
+                value: item[1]   // 实际的值
+            }));
         } else {
             stationInfoSelectList.value = []
         }
@@ -246,13 +259,14 @@ const handleSearch = () => {
 };
 
 const onSubmit = async () => {
-    if (storedRawData.value) {
+    if (storedRawData.value && storedRawData.value?.length > 0) {
         const params = {
             accuracy_data: storedRawData.value // 使用存储的原始数据
         };
         await addMoreDataAPI(params);
     } else {
         console.error('没有可用的原始数据');
+        ElMessage.error('没有可用的数据，请先查询数据');
     }
 }
 
