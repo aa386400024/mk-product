@@ -17,7 +17,6 @@ const config: HttpConfig = {
     timeout: 1000 * 60,
     headers: {
         'Content-Type': 'application/json'
-        // 'Content-Type': 'application/x-www-form-urlencoded'
     }
 };
 
