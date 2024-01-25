@@ -1,41 +1,43 @@
 <template>
-    <el-form ref="formRef" :model="form" :rules="rules" label-width="150px">
-        <el-form-item label="工号" prop="user_code">
-            <el-input v-model="form.user_code" />
-        </el-form-item>
-        <el-form-item label="基站编号" prop="station_id">
-            <el-input v-model="form.station_id" />
-        </el-form-item>
-        <el-form-item label="左天线读卡距离" prop="left_read_distance">
-            <el-input-number v-model="form.left_read_distance" :min="0" :max="500" />
-        </el-form-item>
-        <el-form-item label="右天线读卡距离" prop="right_read_distance">
-            <el-input-number v-model="form.right_read_distance" :min="0" :max="500" />
-        </el-form-item>
-        <el-form-item label="左天线所占轨迹比例" prop="left_count_ratio">
-            <el-input-number v-model="form.left_count_ratio" :min="1" :max="100" />
-        </el-form-item>
-        <el-form-item label="右天线所占轨迹比例" prop="right_count_ratio">
-            <el-input-number v-model="form.right_count_ratio" :min="1" :max="100" />
-        </el-form-item>
-        <el-form-item label="进入该基站时间" prop="in_station_time">
-            <el-date-picker v-model="form.in_station_time" type="datetime" placeholder="选择日期和时间" />
-        </el-form-item>
-        <el-form-item label="离开该基站时间" prop="out_station_time">
-            <el-date-picker v-model="form.out_station_time" type="datetime" placeholder="选择日期和时间" />
-        </el-form-item>
-        <el-form-item label="方向" prop="left_or_right">
-            <el-select v-model="form.left_or_right" placeholder="请选择">
-                <el-option label="左" :value="0"></el-option>
-                <el-option label="右" :value="1"></el-option>
-            </el-select>
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="handleSearch">查询</el-button>
-            <el-button @click="onReset">清空表单</el-button>
-            <el-button type="success" @click="onSubmit">提交查询数据到数据库</el-button>
-        </el-form-item>
-    </el-form>
+    <div class="form-container">
+        <el-form ref="formRef" :model="form" :rules="rules" size="large" label-width="150px" class="custom-form">
+            <el-form-item label="工号" prop="user_code">
+                <el-input v-model="form.user_code" />
+            </el-form-item>
+            <el-form-item label="基站编号" prop="station_id">
+                <el-input v-model="form.station_id" />
+            </el-form-item>
+            <el-form-item label="左天线读卡距离" prop="left_read_distance">
+                <el-input-number v-model="form.left_read_distance" :min="0" :max="500" />
+            </el-form-item>
+            <el-form-item label="右天线读卡距离" prop="right_read_distance">
+                <el-input-number v-model="form.right_read_distance" :min="0" :max="500" />
+            </el-form-item>
+            <el-form-item label="左天线所占轨迹比例" prop="left_count_ratio">
+                <el-input-number v-model="form.left_count_ratio" :min="1" :max="100" />
+            </el-form-item>
+            <el-form-item label="右天线所占轨迹比例" prop="right_count_ratio">
+                <el-input-number v-model="form.right_count_ratio" :min="1" :max="100" />
+            </el-form-item>
+            <el-form-item label="进入该基站时间" prop="in_station_time">
+                <el-date-picker v-model="form.in_station_time" type="datetime" placeholder="选择日期和时间" />
+            </el-form-item>
+            <el-form-item label="离开该基站时间" prop="out_station_time">
+                <el-date-picker v-model="form.out_station_time" type="datetime" placeholder="选择日期和时间" />
+            </el-form-item>
+            <el-form-item label="方向" prop="left_or_right">
+                <el-select v-model="form.left_or_right" placeholder="请选择">
+                    <el-option label="左" :value="0"></el-option>
+                    <el-option label="右" :value="1"></el-option>
+                </el-select>
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="handleSearch">查询数据</el-button>
+                <el-button type="success" @click="onSubmit">提交查询数据到数据库</el-button>
+                <el-button @click="onReset">清空表单</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
 
     <el-table :data="tableData" stripe max-height="250" style="width: 100%">
         <el-table-column prop="user_code" label="工号" />
@@ -47,72 +49,39 @@
 </template>
   
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
-import { ElMessage } from 'element-plus'
+import { reactive, ref, onMounted, Ref } from 'vue';
+import { ElMessage } from 'element-plus';
 import { generateData, addMoreData, GetStationInfo } from '@/api/func';
 
-const formRef = ref(null)
+// 定义后端返回数据的类型
+interface BackendDataItem {
+    [key: string]: any; // 替换为具体的类型定义
+}
 
-// const tableData = [
-//     {
-//         user_code: 'test1',
-//         station_id: '001',
-//         left_or_right: '左',
-//         distance: '500',
-//         time: '2023-10-01 09:00:00'
-//     },
-//     {
-//         user_code: 'test1',
-//         station_id: '001',
-//         left_or_right: '左',
-//         distance: '500',
-//         time: '2023-10-01 09:00:00'
-//     },
-//     {
-//         user_code: 'test1',
-//         station_id: '001',
-//         left_or_right: '左',
-//         distance: '500',
-//         time: '2023-10-01 09:00:00'
-//     },
-//     {
-//         user_code: 'test1',
-//         station_id: '001',
-//         left_or_right: '左',
-//         distance: '500',
-//         time: '2023-10-01 09:00:00'
-//     },
-//     {
-//         user_code: 'test1',
-//         station_id: '001',
-//         left_or_right: '左',
-//         distance: '500',
-//         time: '2023-10-01 09:00:00'
-//     },
-//     {
-//         user_code: 'test1',
-//         station_id: '001',
-//         left_or_right: '左',
-//         distance: '500',
-//         time: '2023-10-01 09:00:00'
-//     },
-//     {
-//         user_code: 'test1',
-//         station_id: '001',
-//         left_or_right: '左',
-//         distance: '500',
-//         time: '2023-10-01 09:00:00'
-//     },
-//     {
-//         user_code: 'test1',
-//         station_id: '001',
-//         left_or_right: '左',
-//         distance: '500',
-//         time: '2023-10-01 09:00:00'
-//     },
-// ]
+interface FormData {
+    user_code: string;
+    station_id: string;
+    left_read_distance: number;
+    right_read_distance: number;
+    left_count_ratio: number;
+    right_count_ratio: number;
+    in_station_time: string;
+    out_station_time: string;
+    left_or_right: number;
+}
 
-const form = reactive({
+// 定义表格数据的类型
+interface TableDataItem {
+    user_code: string;
+    station_id: string;
+    left_or_right: string;
+    distance: number;
+    time: string;
+}
+
+const formRef: Ref = ref(null);
+
+const form: FormData = reactive({
     user_code: 'test1',
     station_id: '001',
     left_read_distance: 50,
@@ -125,18 +94,18 @@ const form = reactive({
 })
 
 // 工具函数，将后端数据转换为表格数据
-const transformData = (data) => {
+const transformData = (data: BackendDataItem[]): TableDataItem[] => {
     return data.map(item => ({
         user_code: item[0],
         station_id: item[1],
-        left_or_right: item[2] === 0 ? '左' : '右', // 假设 0 代表 '左', 1 代表 '右'
+        left_or_right: item[2] === 0 ? '左' : '右',
         distance: item[3],
         time: item[4]
     }));
 }
 
-const tableData = ref([]);
-const storedRawData = ref(null); // 用于存储从 generateDataAPI 获取的原始数据
+const tableData = ref<TableDataItem[]>([]);
+const storedRawData = ref<BackendDataItem[] | null>(null);
 const stationInfoSelectList = ref([]);
 
 onMounted(async () => {
@@ -177,7 +146,7 @@ const rules = {
     ]
 };
 
-const formatDate = (date) => {
+const formatDate = (date: Date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -188,7 +157,8 @@ const formatDate = (date) => {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-const generateDataAPI = async (params) => {
+// 获取数据接口
+const generateDataAPI = async (params: FormData) => {
     try {
         const inStationTime = new Date(params.in_station_time); // 将ISO格式的日期字符串转换为Date对象
         const outStationTime = new Date(params.out_station_time);
@@ -226,7 +196,7 @@ const generateDataAPI = async (params) => {
     }
 }
 
-const addMoreDataAPI = async (params) => {
+const addMoreDataAPI = async (params: any) => {
     try {
         // 调用删除数据接口
         const response = await addMoreData(params);
@@ -243,10 +213,11 @@ const addMoreDataAPI = async (params) => {
     }
 }
 
-const GetStationInfoAPI = async (params) => {
+// 基站编号下拉菜单数据
+const GetStationInfoAPI = async () => {
     try {
-        // 调用删除数据接口
-        const response = await GetStationInfo(params);
+        // 调用基站编号的数据接口
+        const response = await GetStationInfo({});
         const { code, data } = response.data || {}
         if (code == 1) {
             stationInfoSelectList.value = data || []
@@ -260,15 +231,19 @@ const GetStationInfoAPI = async (params) => {
 }
 
 const handleSearch = () => {
-    formRef.value.validate((valid) => {
-        if (valid) {
-            generateDataAPI(form);
-        } else {
-            console.error('校验失败');
-            return false;
-        }
-    });
-}
+    if (formRef.value) {
+        formRef.value.validate((valid: boolean) => {
+            if (valid) {
+                generateDataAPI(form);
+            } else {
+                console.error('校验失败');
+                return false;
+            }
+        });
+    } else {
+        console.error('表单引用未找到');
+    }
+};
 
 const onSubmit = async () => {
     if (storedRawData.value) {
@@ -282,7 +257,65 @@ const onSubmit = async () => {
 }
 
 const onReset = () => {
-    formRef.value.resetFields()
+    if (formRef.value) {
+        formRef.value.resetFields();
+    } else {
+        console.error('表单引用未找到');
+    }
 }
 </script>
-  
+
+<style scoped lang="scss">
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f5f5f5; // 背景颜色
+    margin-bottom: 20px;
+
+    :deep(.el-date-editor.el-input),
+    :deep(.el-date-editor.el-input__wrapper) {
+        --el-date-editor-width: 100%; // 设置日期编辑器的宽度为 100%
+    }
+
+    .custom-form {
+        width: 100%;
+        margin: auto;
+        padding: 40px 20px;
+        background-color: #ffffff; // 表单背景颜色
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr); // 一行三列的布局
+        grid-gap: 30px; // 格子间距
+
+        .el-form-item {
+            display: flex;
+            align-items: center;
+
+            &:last-child {
+                grid-column: span 3; // 让按钮占据整行
+                text-align: center;
+            }
+
+            .el-input,
+            .el-input-number,
+            .el-select,
+            .el-date-picker {
+                width: 100%; // 确保所有输入控件宽度一致
+            }
+
+
+        }
+    }
+}
+
+.el-button {
+    margin-right: 10px;
+    flex: 1; // 按钮撑满宽度
+
+    &:last-child {
+        margin-right: 0;
+    }
+}
+</style>

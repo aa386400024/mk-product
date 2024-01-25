@@ -1,29 +1,37 @@
 <template>
-    <el-form ref="formRef" :model="form" :rules="rules" label-width="120px">
-        <el-form-item label="用户" prop="user_code">
-            <el-input v-model="form.user_code" />
-        </el-form-item>
-        <el-form-item label="开始时间" prop="start_time">
-            <el-date-picker v-model="form.start_time" type="datetime" placeholder="选择日期和时间" />
-        </el-form-item>
-        <el-form-item label="结束时间" prop="end_time">
-            <el-date-picker v-model="form.end_time" type="datetime" placeholder="选择日期和时间" />
-        </el-form-item>
-        <el-form-item>
-            <el-button type="primary" @click="onSubmit">提交</el-button>
-            <el-button @click="onReset">清空表单</el-button>
-        </el-form-item>
-    </el-form>
+    <div class="form-container">
+        <el-form ref="formRef" :model="form" :rules="rules" size="large" label-width="120px">
+            <el-form-item label="工号" prop="user_code">
+                <el-input v-model="form.user_code" placeholder="请输入工号"/>
+            </el-form-item>
+            <el-form-item label="开始时间" prop="start_time">
+                <el-date-picker v-model="form.start_time" type="datetime" placeholder="选择日期和时间" />
+            </el-form-item>
+            <el-form-item label="结束时间" prop="end_time">
+                <el-date-picker v-model="form.end_time" type="datetime" placeholder="选择日期和时间" />
+            </el-form-item>
+            <el-form-item>
+                <el-button type="primary" @click="onSubmit">提交</el-button>
+                <el-button @click="onReset">清空表单</el-button>
+            </el-form-item>
+        </el-form>
+    </div>
 </template>
   
 <script lang="ts" setup>
-import { reactive, ref } from 'vue'
+import { reactive, ref, Ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { delMoreData } from '@/api/func';
 
-const formRef = ref(null)
+interface FormData {
+    user_code: string;
+    start_time: string;
+    end_time: string;
+}
 
-const form = reactive({
+const formRef: Ref = ref(null);
+
+const form: FormData = reactive({
     user_code: '',
     start_time: '',
     end_time: '',
@@ -42,7 +50,7 @@ const rules = {
     // 这里可以添加其他字段的校验规则
 }
 
-const formatDate = (date) => {
+const formatDate = (date: Date) => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0');
     const day = String(date.getDate()).padStart(2, '0');
@@ -53,7 +61,7 @@ const formatDate = (date) => {
     return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 }
 
-const delMoreDataAPI = async (params) => {
+const delMoreDataAPI = async (params: FormData) => {
     try {
         const startDate = new Date(params.start_time); // 将ISO格式的日期字符串转换为Date对象
         const endDate = new Date(params.end_time);
@@ -84,28 +92,63 @@ const delMoreDataAPI = async (params) => {
 }
 
 const onSubmit = () => {
-    formRef.value.validate((valid) => {
-        if (!valid) {
-            // 这里是整体表单校验失败的情况
-            ElMessage.error('请检查表单字段');
-            return false;
-        }
-        delMoreDataAPI(form);
-    });
-}
+    if (formRef.value) {
+        formRef.value.validate((valid: boolean) => {
+            if (!valid) {
+                ElMessage.error('请检查表单字段');
+                return false;
+            }
+            delMoreDataAPI(form);
+        });
+    }
+};
 
 const onReset = () => {
-    formRef.value.resetFields()
-}
+    if (formRef.value) {
+        formRef.value.resetFields();
+    }
+};
 </script>
   
-<style>
-.text-center {
-    text-align: center;
+<style scoped lang="scss">
+/* 确保整体页面居中 */
+.form-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // min-height: 100vh;
 }
 
-.text-gray-500 {
-    color: #a0a0a0;
+.el-form {
+    max-width: 600px;
+    /* 控制表单的最大宽度 */
+    margin: 100px;
+    /* 确保在较大屏幕上居中 */
+    padding: 30px 60px 30px 10px;
+    /* 添加一些内边距 */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    /* 轻微的阴影效果 */
+    border-radius: 8px;
+    /* 圆角边框 */
+}
+
+/* 调整表单项中按钮的布局 */
+.el-form-item:last-child {
+    display: flex;
+    /* 使用 flex 布局 */
+    justify-content: space-between;
+    /* 两个按钮之间平均分配空间 */
+}
+
+.el-button {
+    flex: 1;
+    /* 每个按钮占据等量的空间 */
+    margin-right: 10px;
+    /* 按钮之间的间距 */
+}
+
+.el-button:last-child {
+    margin-right: 0;
+    /* 最后一个按钮不需要右边距 */
 }
 </style>
-  

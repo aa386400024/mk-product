@@ -1,0 +1,54 @@
+// src/http/interceptors.ts
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+
+export function setupInterceptors(http: AxiosInstance): void {
+    // 请求拦截器
+    http.interceptors.request.use(
+        (config: AxiosRequestConfig<any>): AxiosRequestConfig<any> => {
+            // 确保 headers 对象存在且不为 undefined
+            config.headers = config.headers ?? {};
+            const token = localStorage.getItem('token');
+            if (token) {
+                // 添加 Authorization 头部
+                config.headers['Authorization'] = `Bearer ${token}`;
+            }
+            return config;
+        },
+        (error: AxiosError): Promise<AxiosError> => {
+            return Promise.reject(error);
+        }
+    );
+
+    // 响应拦截器
+    http.interceptors.response.use(
+        (response: AxiosResponse): AxiosResponse => {
+            // 处理正常响应
+            return response;
+        },
+        (error: AxiosError): Promise<AxiosError> => {
+            // 处理错误响应
+            if (error.response) {
+                switch (error.response.status) {
+                    case 401:
+                        alert("Session expired or user not authenticated.");
+                        // 重定向到登录页面等逻辑
+                        break;
+                    case 403:
+                        alert("You do not have permission to access this resource.");
+                        break;
+                    case 500:
+                        alert("Internal Server Error.");
+                        break;
+                    default:
+                        alert(`An error occurred: ${error.response.status}`);
+                }
+            } else if (error.request) {
+                console.log('No response received for the request.');
+            } else {
+                console.log('Error setting up the request.');
+            }
+
+            return Promise.reject(error);
+        }
+    );
+}
