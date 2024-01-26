@@ -145,7 +145,6 @@ my-product
     │      authService.ts     # 认证服务
     │      
     ├─stores                  # 状态管理
-    │      counter.ts         # 计数器状态
     │      userStore.ts       # 用户状态
     │      
     └─views                   # 视图组件
