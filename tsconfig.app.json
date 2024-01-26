@@ -10,6 +10,6 @@
       "@/*": ["./src/*"]
     },
     "module": "ESNext",
-    "typeRoots": ["./node_modules/@types", "./types"]
+    "typeRoots": ["./node_modules/@types", "./src/types"]
   }
 }
