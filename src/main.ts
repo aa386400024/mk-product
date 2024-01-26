@@ -2,6 +2,7 @@ import './assets/styles/main.scss'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import piniaPluginPersist from 'pinia-plugin-persist';
 import ElementPlus from 'element-plus'
 import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
 import 'element-plus/dist/index.css'
@@ -12,7 +13,9 @@ import { setupRouterGuard } from './permission'
 
 const app = createApp(App)
 
-app.use(createPinia())
+const pinia = createPinia();
+
+pinia.use(piniaPluginPersist);
 app.use(router)
 app.use(ElementPlus, {
   locale: zhCn

@@ -5,6 +5,7 @@
     "composite": true,
     "lib": [],
     "types": ["node", "jsdom"],
-    "module": "ESNext"
+    "module": "ESNext",
+    "typeRoots": ["./node_modules/@types", "./types"]
   }
 }
