@@ -41,7 +41,7 @@ const menuItems = [
                 children: [] // 更多嵌套
             },
             {
-                title: '批量添加轨迹',
+                title: '模板导入',
                 path: '/data-management/upload-tracks',
                 children: [] // 更多嵌套
             },

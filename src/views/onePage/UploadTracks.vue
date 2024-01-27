@@ -5,7 +5,11 @@
                 <div class="row-info">
                     <h1 class="title">员工信息</h1>
                     <div class="info">
-                        <div class="info-row"><span class="label">工号：</span><span class="value">000001</span></div>
+                        <div class="info-row">
+                            <span class="label">工号：</span>
+                            <span class="value">{{ currentUserCode }}</span>
+                        </div>
+
                         <div class="info-row"><span class="label">进站时间：</span><span class="value">{{
                             selectedRow?.in_station_time }}</span></div>
                         <div class="info-row"><span class="label">出站时间：</span><span class="value">{{
@@ -44,7 +48,7 @@
     </div>
     <div class="table-view" v-if="groupedData.length > 0">
         <el-button class="custom-submit-button" type="primary" @click="handleSubmitData">提交数据</el-button>
-        <el-tabs v-model="activeTab.value" lazy>
+        <el-tabs v-model="activeTab.value" @tab-click="handleTabChange" lazy>
             <el-tab-pane v-for="(group, index) in groupedData" :key="index" :label="`${index + 1}`">
                 <div class="time-view">
                     <span class="time-span"><span class="label">考勤开始时间：</span><span class="value">{{ group.start_time
@@ -80,7 +84,7 @@
   
   
 <script setup lang="ts">
-import { ref, Ref, nextTick, watch } from 'vue';
+import { ref, Ref, nextTick, watchEffect } from 'vue';
 import * as XLSX from 'xlsx';
 import { UploadFilled } from '@element-plus/icons-vue'
 import { ElUpload, UploadFile, ElMessage, ElMessageBox } from 'element-plus';
@@ -104,6 +108,7 @@ interface SelectedRow {
     end_time: string;
     station_name: string;
     left_or_right: number;
+    user_code: string;
 }
 
 
@@ -139,6 +144,7 @@ interface Group {
     end_time: string;
     data: RowData[];
     columns: { prop: string, label: string }[];
+    user_code: string;
 }
 
 // 定义 groups 和 groupChanges 的类型
@@ -160,6 +166,21 @@ const reviewTableData = ref([]);
 const selectedRow = ref<SelectedRow | null>(null);
 
 const dialogVisible = ref(false)
+
+const currentUserCode = ref('');
+
+watchEffect(() => {
+    if (groupedData.value.length > 0) {
+        currentUserCode.value = groupedData.value[0].user_code;
+    }
+});
+
+const handleTabChange = (tab, event) => {
+    // 假设 groupedData 是一个包含所有分组的数组
+    if (groupedData.value.length > tab.index) {
+        currentUserCode.value = groupedData.value[tab.index].user_code;
+    }
+};
 
 
 const handleBeforeUpload = (file: File) => {
@@ -303,12 +324,11 @@ const handleFileChange = (uploadFile: UploadFile) => {
 // 点击表格某行的查看轨迹
 const handleClickReviewTracks = (rowData: any) => {
     selectedRow.value = rowData;
-    rowData.station_id = '121212'
     GenerateDataByStationAPI(rowData)
 }
 
 // 提交表格数据
-const handleSubmitData = async() => {
+const handleSubmitData = async () => {
     try {
         // 显示确认对话框
         await ElMessageBox.confirm('确定提交数据吗?', '警告', {
@@ -342,7 +362,7 @@ const GenerateDataByMoreStationAPI = async () => {
 
 const GenerateDataByStationAPI = async (params: reviewTracksData) => {
     try {
-        // 调用删除数据接口
+        // 调用轨迹数据接口
         const response = await GenerateDataByStation(params);
         dialogVisible.value = true;
         const { code, data } = response.data || {}
