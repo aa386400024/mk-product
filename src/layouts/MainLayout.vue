@@ -41,6 +41,11 @@ const menuItems = [
                 children: [] // 更多嵌套
             },
             {
+                title: '批量添加轨迹',
+                path: '/data-management/upload-tracks',
+                children: [] // 更多嵌套
+            },
+            {
                 title: '删除轨迹',
                 path: '/data-management/delete-data',
                 children: [] // 更多嵌套

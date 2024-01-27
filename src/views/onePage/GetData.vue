@@ -42,7 +42,7 @@
         </el-form>
     </div>
 
-    <el-table :data="tableData" stripe max-height="250" style="width: 100%; 'margin-bottom': '20px'">
+    <el-table :data="tableData" stripe max-height="250" style="width: 100%; 'margin-bottom': '20px'" :header-cell-style="{ background: '#304156', color: '#fff' }">
         <el-table-column prop="user_code" label="工号" />
         <el-table-column prop="station_id" label="基站编号" />
         <el-table-column prop="left_or_right" label="方向" />

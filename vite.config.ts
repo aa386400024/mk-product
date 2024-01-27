@@ -37,7 +37,7 @@ export default defineConfig({
         open: true,
         proxy: {
           '/webapi': {
-            target: 'https://4638-183-202-73-43.ngrok-free.app/',	//接口地址
+            target: 'https://896a-223-160-141-68.ngrok-free.app/',	//接口地址
             changeOrigin: true,
             rewrite: (path) => path.replace(/^\/webapi/, 'webapi')
           },

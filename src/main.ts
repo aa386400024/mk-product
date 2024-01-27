@@ -16,6 +16,7 @@ const app = createApp(App)
 const pinia = createPinia();
 
 pinia.use(piniaPluginPersist);
+app.use(pinia);
 app.use(router)
 app.use(ElementPlus, {
   locale: zhCn

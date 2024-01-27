@@ -3,7 +3,7 @@
   "exclude": [],
   "compilerOptions": {
     "composite": true,
-    "lib": [],
+    "lib": ["dom", "es2015", "esnext"],
     "types": ["node", "jsdom"],
     "module": "ESNext",
     "typeRoots": ["./node_modules/@types", "./src/types"]

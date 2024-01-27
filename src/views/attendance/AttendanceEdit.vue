@@ -17,7 +17,7 @@
             </el-form>
         </div>
         <div>
-            <el-table :data="reviewTableData" stripe border default-expand-all row-key="id" style="width: 100%">
+            <el-table :data="reviewTableData" stripe border default-expand-all row-key="id" style="width: 100%" :header-cell-style="{ background: '#304156', color: '#fff' }">
                 <el-table-column prop="id" label="工号" />
                 <el-table-column prop="userInfoCode" label="员工编号" width="90" />
                 <el-table-column prop="cardCode" label="员工卡号" width="90" />
@@ -59,7 +59,7 @@
         </el-form>
     </div>
 
-    <el-table :data="tableData" stripe max-height="500" style="width: 100%">
+    <el-table :data="tableData" stripe max-height="500" style="width: 100%" :header-cell-style="{ background: '#304156', color: '#fff' }">
         <el-table-column prop="id" label="工号" />
         <el-table-column prop="userInfoCode" label="员工编号" />
         <el-table-column prop="cardCode" label="员工卡号" />
