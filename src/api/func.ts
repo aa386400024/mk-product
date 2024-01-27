@@ -13,4 +13,6 @@ export const addMoreData = (params: Params): Promise<any> => post('/webapi/AddMo
 export const delMoreData = (params: Params): Promise<any> => post('/webapi/DelMoreData/', params);
 export const GetStationInfo = (params: Params): Promise<any> => get('/webapi/GetStationInfo/', params);
 export const GenerateDataByStation = (params: Params): Promise<any> => post('/webapi/GenerateDataByStation/', params);
+export const GenerateDataByMoreStation = (params: Params): Promise<any> => post('/webapi/GenerateDataByMoreStation/', params);
+
 // 其他认证相关的 API

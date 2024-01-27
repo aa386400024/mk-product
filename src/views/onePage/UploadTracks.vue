@@ -84,7 +84,7 @@ import { ref, Ref, nextTick, watch } from 'vue';
 import * as XLSX from 'xlsx';
 import { UploadFilled } from '@element-plus/icons-vue'
 import { ElUpload, UploadFile, ElMessage, ElMessageBox } from 'element-plus';
-import { GenerateDataByStation } from '@/api/func';
+import { GenerateDataByStation, GenerateDataByMoreStation } from '@/api/func';
 
 interface reviewTracksData {
     station_name: string;
@@ -120,7 +120,9 @@ const columnMappings: ColumnMappings = {
     '考勤结束时间': 'end_time',
     '途径基站': 'station_name',
     '方向': 'left_or_right',
-    '是否结束': 'is_finished'
+    '是否结束': 'is_finished',
+    '班次': 'shift_time_quantum_id',
+    '工号': 'user_code'
 };
 
 // 首先定义 row 对象的类型
@@ -170,51 +172,58 @@ const handleBeforeUpload = (file: File) => {
     return isExcel && false; // 在这里返回 false 来阻止上传
 };
 
+const shiftMapping = {
+    '零点班': 1,
+    '八点班': 2,
+    '四点班': 3
+};
+
+
 // 组装数据，以 start_time 和 end_time 为分组依据
 const groupData = (data: RowData[]) => {
-    const groups: Groups = {}; // 以考勤时间为键的分组对象
-    const groupChanges: GroupChanges = {}; // 记录每个组是否结束状态从0变到1
+    const groups: Groups = {};
 
     data.forEach((row: RowData) => {
-        // 跳过空行
-        const isEmptyRow = Object.values(row).every(value => value === null || value === '');
-        if (isEmptyRow) return;
+        // 判断行是否有效的逻辑，例如检查关键字段是否为空
+        const isValidRow = row.start_time && row.end_time && row.shift_time_quantum_id && row.user_code;
+
+        if (!isValidRow) return; // 跳过无效行
 
         const key = `${row.start_time}-${row.end_time}`;
         if (!groups[key]) {
             groups[key] = {
                 start_time: row.start_time,
                 end_time: row.end_time,
+                shift_time_quantum_id: row.shift_time_quantum_id,
+                user_code: row.user_code,
                 data: [],
                 columns: []
             };
-            // 初始化该时间组的结束状态变化为未变化（false）
-            groupChanges[key] = false;
-        }
-
-        // 如果当前行标记为结束（is_finished 为1）且该组未记录结束状态变化，则记录之
-        if (row.is_finished === 1 && !groupChanges[key]) {
-            groupChanges[key] = true;
         }
 
         groups[key].data.push(row);
     });
 
-    // 过滤掉没有结束状态从0变到1的分组
-    const filteredGroups = Object.keys(groups)
-        .filter(key => groupChanges[key]) // 只保留记录了结束状态变化的分组
-        .map(key => {
-            // 设置每个分组的列信息
-            const group = groups[key];
-            group.columns = Object.keys(columnMappings).map((label) => ({
-                prop: columnMappings[label],
-                label,
-            })).filter(column => column.prop !== 'start_time' && column.prop !== 'end_time' && column.prop !== 'is_finished' && column.prop !== 'left_or_right'); // 过滤掉 'start_time', 'end_time' 和 'is_finished'
-            return group;
-        });
+    const filteredGroups = Object.keys(groups).map(key => {
+        const group = groups[key];
+        group.columns = Object.keys(columnMappings).map((label) => ({
+            prop: columnMappings[label],
+            label,
+        })).filter(column => !['start_time', 'end_time', 'is_finished', 'left_or_right', 'shift_time_quantum_id', 'user_code'].includes(column.prop));
+
+        if (group.data.length > 0) {
+            group.in_station = group.data[0].station_name;
+            group.out_station = group.data[group.data.length - 1].station_name;
+        }
+
+        return group;
+    });
 
     return filteredGroups;
 };
+
+
+
 
 const padZero = (num: number) => {
     return num < 10 ? '0' + num : num;
@@ -266,7 +275,13 @@ const handleFileChange = (uploadFile: UploadFile) => {
                 headers.forEach((header: string, index: number) => {
                     if (requiredHeaders.includes(header)) {
                         const englishHeader = columnMappings[header];
-                        processedRow[englishHeader] = row[index];
+                        let cellValue = row[index];
+
+                        // 如果是班次字段，则进行映射转换
+                        if (header === '班次' && cellValue in shiftMapping) {
+                            cellValue = shiftMapping[cellValue];
+                        }
+                        processedRow[englishHeader] = cellValue;
                     }
                 });
                 // 设置“方向”列的默认值为0，即使它在Excel文件中不存在
@@ -277,6 +292,7 @@ const handleFileChange = (uploadFile: UploadFile) => {
 
             // 根据开始时间和结束时间分组数据
             groupedData.value = groupData(processedData);
+            console.log(groupedData.value, 'groupedData.value')
             activeTab.value = 0;
         }
     };
@@ -292,25 +308,25 @@ const handleClickReviewTracks = (rowData: any) => {
 }
 
 // 提交表格数据
-const handleSubmitData = () => {
+const handleSubmitData = async() => {
     try {
         // 显示确认对话框
-        ElMessageBox.confirm('确定提交数据吗?', '警告', {
+        await ElMessageBox.confirm('确定提交数据吗?', '警告', {
             confirmButtonText: '确认',
             cancelButtonText: '取消',
             type: 'warning',
         });
+        GenerateDataByMoreStationAPI()
     } catch (error) {
         // 如果用户取消，捕获异常并停止执行
         ElMessage.info('已取消删除');
     }
 }
 
-const dataAPI = async () => {
+const GenerateDataByMoreStationAPI = async () => {
     try {
         // 调用表格数据接口
-        const response = await GenerateDataByStation(groupedData);
-        dialogVisible.value = true;
+        const response = await GenerateDataByMoreStation(groupedData.value);
         const { code, data } = response.data || {}
         if (code == 1) {
             ElMessage.success('数据提交成功');

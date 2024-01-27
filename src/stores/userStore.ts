@@ -14,6 +14,9 @@ interface UserState {
     userinfo: UserInfo | null // userinfo现在是一个对象或者null
 }
 
+// 定义模拟账号列表
+const mockAccounts = ['user1', 'user2', 'user3'];
+
 export const useUserStore = defineStore('user', {
     state: (): UserState => ({
         isLoggedIn: false,
