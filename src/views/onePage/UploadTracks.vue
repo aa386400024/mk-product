@@ -1,5 +1,5 @@
 <template>
-    <el-dialog v-model="dialogVisible" title="轨迹预览" width="70%" :close-on-click-modal="false">
+    <el-dialog v-model="dialogVisible" title="基站轨迹预览" width="70%" :close-on-click-modal="false">
         <el-row :gutter="20">
             <el-col :span="12">
                 <div class="row-info">
@@ -7,20 +7,20 @@
                     <div class="info">
                         <div class="info-row"><span class="label">工号：</span><span class="value">000001</span></div>
                         <div class="info-row"><span class="label">进站时间：</span><span class="value">{{
-                            selectedRow.in_station_time }}</span></div>
+                            selectedRow?.in_station_time }}</span></div>
                         <div class="info-row"><span class="label">出站时间：</span><span class="value">{{
-                            selectedRow.out_station_time }}</span></div>
+                            selectedRow?.out_station_time }}</span></div>
                         <div class="info-row"><span class="label">考勤开始时间：</span><span class="value">{{
-                            selectedRow.start_time }}</span></div>
-                        <div class="info-row"><span class="label">考勤结束时间：</span><span class="value">{{ selectedRow.end_time
+                            selectedRow?.start_time }}</span></div>
+                        <div class="info-row"><span class="label">考勤结束时间：</span><span class="value">{{ selectedRow?.end_time
                         }}</span></div>
                         <div class="info-row"><span class="label">站点名称：</span><span class="value">{{
-                            selectedRow.station_name }}</span></div>
+                            selectedRow?.station_name }}</span></div>
                     </div>
                 </div>
             </el-col>
             <el-col :span="12">
-                <el-table :data="reviewTableData" stripe border max-height="400" style="width: 100%; margin-bottom: 20px;"
+                <el-table :data="reviewTableData" stripe border max-height="320" style="width: 100%; margin-bottom: 20px;"
                     :header-cell-style="{ background: '#304156', color: '#fff' }">
                     <el-table-column type="index" label="序号" width="80" />
                     <el-table-column prop="position" label="轨迹位置" />
@@ -43,8 +43,8 @@
 
     </div>
     <div class="table-view" v-if="groupedData.length > 0">
-        <el-button class="custom-submit-button" type="primary" @click="">提交数据</el-button>
-        <el-tabs v-model="activeTab">
+        <el-button class="custom-submit-button" type="primary" @click="handleSubmitData">提交数据</el-button>
+        <el-tabs v-model="activeTab.value" lazy>
             <el-tab-pane v-for="(group, index) in groupedData" :key="index" :label="`${index + 1}`">
                 <div class="time-view">
                     <span class="time-span"><span class="label">考勤开始时间：</span><span class="value">{{ group.start_time
@@ -52,7 +52,8 @@
                     <span class="time-span"><span class="label">考勤结束时间：</span><span class="value">{{ group.end_time
                     }}</span></span>
                 </div>
-                <el-table :data="group.data" stripe border style="width: 100%; margin-bottom: 60px;" max-height="400" :header-cell-style="{ background: '#304156', color: '#fff' }">
+                <el-table :data="group.data" stripe border style="width: 100%; margin-bottom: 60px;" max-height="400"
+                    :header-cell-style="{ background: '#304156', color: '#fff' }">
                     <el-table-column type="index" label="序号" width="80" />
                     <el-table-column v-for="column in group.columns" :key="column.prop" :prop="column.prop"
                         :label="column.label" />
@@ -65,10 +66,10 @@
                             </el-radio-group>
                         </template>
                     </el-table-column>
-                    <el-table-column fixed="right" label="操作" width="120">
+                    <el-table-column fixed="right" label="操作" width="140">
                         <template #default="{ row }">
                             <el-button plain type="primary" size="small"
-                                @click="handleClickReviewTracks(row)">查询轨迹</el-button>
+                                @click="handleClickReviewTracks(row)">该基站轨迹预览</el-button>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -79,10 +80,10 @@
   
   
 <script setup lang="ts">
-import { ref, Ref, nextTick } from 'vue';
+import { ref, Ref, nextTick, watch } from 'vue';
 import * as XLSX from 'xlsx';
 import { UploadFilled } from '@element-plus/icons-vue'
-import { ElUpload, UploadFile, ElMessage } from 'element-plus';
+import { ElUpload, UploadFile, ElMessage, ElMessageBox } from 'element-plus';
 import { GenerateDataByStation } from '@/api/func';
 
 interface reviewTracksData {
@@ -92,26 +93,72 @@ interface reviewTracksData {
     left_or_right: number;
 }
 
-const upload: Ref<typeof ElUpload | null> = ref(null);
-// 用于绑定到el-tabs的活动选项卡名称
-const activeTab = ref(0);
-// 分组后的数据，用于渲染标签页和表格
-const groupedData = ref([]);
-const reviewTableData = ref([]);
+interface DataRow {
+    [key: string]: any; // 如果您知道具体的属性，可以在这里更详细地定义
+}
 
-const selectedRow = ref<null>(null);
-const dialogVisible = ref(false)
+interface SelectedRow {
+    in_station_time: string;
+    out_station_time: string;
+    start_time: string;
+    end_time: string;
+    station_name: string;
+    left_or_right: number;
+}
+
+
 
 // 列映射关系
-const columnMappings = {
+interface ColumnMappings {
+    [key: string]: string;
+}
+
+const columnMappings: ColumnMappings = {
     '进站时间': 'in_station_time',
     '出站时间': 'out_station_time',
-    '考勤开始时间': "start_time",
+    '考勤开始时间': 'start_time',
     '考勤结束时间': 'end_time',
     '途径基站': 'station_name',
     '方向': 'left_or_right',
     '是否结束': 'is_finished'
 };
+
+// 首先定义 row 对象的类型
+interface RowData {
+    start_time: string;
+    end_time: string;
+    is_finished: number;
+    // 可以根据需要添加其他属性
+}
+
+// 定义 Group 对象的类型
+interface Group {
+    start_time: string;
+    end_time: string;
+    data: RowData[];
+    columns: { prop: string, label: string }[];
+}
+
+// 定义 groups 和 groupChanges 的类型
+interface Groups {
+    [key: string]: Group;
+}
+
+interface GroupChanges {
+    [key: string]: boolean;
+}
+
+const upload: Ref<typeof ElUpload | null> = ref(null);
+// 用于绑定到el-tabs的活动选项卡名称
+const activeTab = ref(0);
+// 分组后的数据，用于渲染标签页和表格
+const groupedData: Ref<Group[]> = ref([]);
+const reviewTableData = ref([]);
+
+const selectedRow = ref<SelectedRow | null>(null);
+
+const dialogVisible = ref(false)
+
 
 const handleBeforeUpload = (file: File) => {
     const fileTypes = ['.xlsx', '.xls'];
@@ -124,11 +171,11 @@ const handleBeforeUpload = (file: File) => {
 };
 
 // 组装数据，以 start_time 和 end_time 为分组依据
-const groupData = (data) => {
-    const groups = {}; // 以考勤时间为键的分组对象
-    const groupChanges = {}; // 记录每个组是否结束状态从0变到1
+const groupData = (data: RowData[]) => {
+    const groups: Groups = {}; // 以考勤时间为键的分组对象
+    const groupChanges: GroupChanges = {}; // 记录每个组是否结束状态从0变到1
 
-    data.forEach((row) => {
+    data.forEach((row: RowData) => {
         // 跳过空行
         const isEmptyRow = Object.values(row).every(value => value === null || value === '');
         if (isEmptyRow) return;
@@ -214,9 +261,9 @@ const handleFileChange = (uploadFile: UploadFile) => {
             }
 
             // 提取并映射必要的列，为每一行添加“方向”列
-            const processedData = dataRows.map(row => {
-                const processedRow = {};
-                headers.forEach((header, index) => {
+            const processedData = dataRows.map((row: DataRow) => {
+                const processedRow: { [key: string]: any } = {}; // 使用键值对类型来定义processedRow
+                headers.forEach((header: string, index: number) => {
                     if (requiredHeaders.includes(header)) {
                         const englishHeader = columnMappings[header];
                         processedRow[englishHeader] = row[index];
@@ -225,20 +272,12 @@ const handleFileChange = (uploadFile: UploadFile) => {
                 // 设置“方向”列的默认值为0，即使它在Excel文件中不存在
                 processedRow['left_or_right'] = 1;
 
-
                 return processedRow;
             });
 
             // 根据开始时间和结束时间分组数据
             groupedData.value = groupData(processedData);
-            console.log(groupedData.value, 'aaaaaaaa')
-            // 将活动标签页设置为第一个分组的键
-            if (groupedData.value.length > 0) {
-                nextTick(() => {
-                    // 默认显示第一个标签页
-                    activeTab.value = 0;
-                });
-            }
+            activeTab.value = 0;
         }
     };
 
@@ -250,6 +289,39 @@ const handleClickReviewTracks = (rowData: any) => {
     selectedRow.value = rowData;
     rowData.station_id = '121212'
     GenerateDataByStationAPI(rowData)
+}
+
+// 提交表格数据
+const handleSubmitData = () => {
+    try {
+        // 显示确认对话框
+        ElMessageBox.confirm('确定提交数据吗?', '警告', {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+        });
+    } catch (error) {
+        // 如果用户取消，捕获异常并停止执行
+        ElMessage.info('已取消删除');
+    }
+}
+
+const dataAPI = async () => {
+    try {
+        // 调用表格数据接口
+        const response = await GenerateDataByStation(groupedData);
+        dialogVisible.value = true;
+        const { code, data } = response.data || {}
+        if (code == 1) {
+            ElMessage.success('数据提交成功');
+        } else {
+            ElMessage.error('数据提交失败，请重试');
+        }
+    } catch (error) {
+        // 处理请求失败的逻辑
+        console.error('数据提交失败：', error);
+        ElMessage.error('数据提交失败，请重试');
+    }
 }
 
 const GenerateDataByStationAPI = async (params: reviewTracksData) => {
@@ -284,7 +356,7 @@ const GenerateDataByStationAPI = async (params: reviewTracksData) => {
     border: 1px solid $border-color-light;
 
     .title {
-        background-color: #3c4049; // 标题背景颜色
+        background-color: #304156; // 标题背景颜色
         color: #fff; // 标题文字颜色
         padding: 5px; // 标题内边距
         text-align: center;
@@ -323,7 +395,7 @@ const GenerateDataByStationAPI = async (params: reviewTracksData) => {
         position: absolute;
         right: 0;
         top: 0;
-        z-index: 10000;
+        z-index: 100;
     }
 }
 

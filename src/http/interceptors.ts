@@ -1,10 +1,12 @@
 // src/http/interceptors.ts
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
+import { startLoading, endLoading } from '../services/loadingService';
 
 export function setupInterceptors(http: AxiosInstance): void {
     // 请求拦截器
     http.interceptors.request.use(
         (config: AxiosRequestConfig<any>): AxiosRequestConfig<any> => {
+            startLoading();
             // 确保 headers 对象存在且不为 undefined
             config.headers = config.headers ?? {};
             const token = localStorage.getItem('token');
@@ -15,6 +17,7 @@ export function setupInterceptors(http: AxiosInstance): void {
             return config;
         },
         (error: AxiosError): Promise<AxiosError> => {
+            endLoading();
             return Promise.reject(error);
         }
     );
@@ -22,6 +25,7 @@ export function setupInterceptors(http: AxiosInstance): void {
     // 响应拦截器
     http.interceptors.response.use(
         (response: AxiosResponse): AxiosResponse => {
+            endLoading();
             // 处理正常响应
             if (response.data) {
                 transformResponseData(response.data);
@@ -29,6 +33,7 @@ export function setupInterceptors(http: AxiosInstance): void {
             return response;
         },
         (error: AxiosError): Promise<AxiosError> => {
+            endLoading();
             // 处理错误响应
             if (error.response) {
                 switch (error.response.status) {
