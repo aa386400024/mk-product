@@ -14,7 +14,7 @@ import ForgotPasswordView from "../views/auth/ForgotPasswordView.vue";
 import GetData from "../views/onePage/GetData.vue";
 import DeleteData from "../views/onePage/DeleteData.vue";
 import UploadTracks from "../views/onePage/UploadTracks.vue";
-
+import RealTimeUploadTracks from "../views/onePage/RealTimeUploadTracks.vue";
 
 import AttendanceEdit from "../views/attendance/AttendanceEdit.vue";
 
@@ -36,6 +36,7 @@ const router = createRouter({
                 { path: 'get-data', name: 'getData', component: GetData },
                 { path: 'delete-data', name: 'deleteData', component: DeleteData },
                 { path: 'upload-tracks', name: 'uploadTracks', component: UploadTracks },
+                { path: 'real-time-upload-tracks', name: 'realTimeUploadTracks', component: RealTimeUploadTracks },
             ],
         },
         {

@@ -40,7 +40,7 @@
             :on-change="handleFileChange" accept=".xlsx, .xls">
             <el-icon class="el-icon--upload"><upload-filled /></el-icon>
             <div class="el-upload__text">
-                <p>点击或将文件拖拽到这里上传</p>
+                <p>点击或将实时模板文件拖拽到这里上传</p>
                 <p class="el-upload__tip">只能上传xlsx/xls文件</p>
             </div>
         </el-upload>
@@ -94,15 +94,15 @@
         </el-tabs>
     </div>
     <div class="upload-tips" v-else>
-        <h3 class="upload-tips-title">上传须知</h3>
+        <h3 class="upload-tips-title">实时模板上传须知</h3>
         <p>上传文件大小不超过<b>2MB</b>。</p>
         <p>只支持<b>Excel</b>文件格式（.xlsx或.xls）。</p>
         <p>请确保Excel文件中包含以下列：<b>工号</b>、<b>进站时间</b>、<b>出站时间</b>、<b>考勤开始时间</b>、<b>考勤结束时间</b>、<b>站点名称</b>、<b>方向</b>、<b>是否结束</b>、<b>班次</b>。
         </p>
         <p>文件中的时间格式应为“年-月-日 时:分:秒”，例如 “<b>2024-01-28 13:46:21</b>”。</p>
         <p>我们会根据“<b>考勤开始时间</b>”、“<b>考勤结束时间</b>”和“<b>是否结束</b>”的变化来分组和更新数据。</p>
-        <p>最多只支持上传<b>5组</b>数据。</p>
-        <p>上传后，请仔细检查每个分组的数据并进行必要的调整。</p>
+        <p>最多只支持上传<b>1组</b>数据。</p>
+        <p>上传后，请仔细检查数据并进行必要的调整。</p>
         <p>提交数据前，请确认所有数据<b>准确无误</b>。</p>
     </div>
 </template>
@@ -114,6 +114,7 @@ import * as XLSX from 'xlsx';
 import { UploadFilled } from '@element-plus/icons-vue'
 import { ElUpload, UploadFile, ElMessage, ElMessageBox } from 'element-plus';
 import { GenerateDataByStation, GenerateDataByMoreStation } from '@/api/func';
+import { differenceInDays, parseISO } from 'date-fns'
 
 interface reviewTracksData {
     station_name: string;
@@ -283,7 +284,6 @@ const groupData = (data: RowData[]) => {
     return filteredGroups;
 };
 
-
 const padZero = (num: number) => {
     return num < 10 ? '0' + num : num;
 }
@@ -298,6 +298,7 @@ const handleFileChange = (uploadFile: UploadFile) => {
 
     let exceedsLimit = false; // 标志变量
     let processedData: DataRow[] = []; // 处理过的数据
+    let allGroupsValid = true; // 标志变量，用于检查所有组的时间是否有效
 
     const reader = new FileReader();
     reader.onload = (e: ProgressEvent<FileReader>) => {
@@ -359,13 +360,24 @@ const handleFileChange = (uploadFile: UploadFile) => {
         const newGroups = groupData(processedData);
 
         // 检查当前组数加上新分组后是否超过 5 组
-        if (groupedData.value.length + newGroups.length > 5) {
-            ElMessage.warning('最多只能上传 5 组数据');
+        if (groupedData.value.length + newGroups.length > 1) {
+            ElMessage.warning('实时模板最多只能上传 1 组数据');
             exceedsLimit = true; // 设置标志变量
         }
 
+        // 检查每组数据的考勤开始时间是否满足条件
+        allGroupsValid = newGroups.every(group => {
+            const startTime = parseISO(group.start_time);
+            return differenceInDays(startTime, new Date()) >= 5;
+        });
+
+        if (!allGroupsValid) {
+            ElMessage.error('实时模版要求所有考勤开始时间必须大于当前时间5天');
+            return; // 阻止文件上传
+        }
+
         // 只有当未超出限制时才更新 groupedData
-        if (!exceedsLimit) {
+        if (!exceedsLimit && allGroupsValid) {
             groupedData.value = [...groupedData.value, ...newGroups];
             console.log(groupedData.value, 'groupedData.value');
             activeTab.value = 0;
@@ -374,8 +386,6 @@ const handleFileChange = (uploadFile: UploadFile) => {
 
     reader.readAsArrayBuffer(file);
 };
-
-
 
 // 点击表格某行的查看轨迹
 const handleClickReviewTracks = (rowData: any) => {
@@ -506,10 +516,7 @@ const GenerateDataByStationAPI = async (params: reviewTracksData) => {
     .time-span {
         margin-right: 20px; // 调整这个值来改变间隔的大小
     }
-
-
 }
-
 .upload-tips {
     background-color: #f8f8f8; // 背景颜色
     border: 1px solid #ddd; // 边框
@@ -545,6 +552,5 @@ const GenerateDataByStationAPI = async (params: reviewTracksData) => {
         }
     }
 }
-
 </style>
   
