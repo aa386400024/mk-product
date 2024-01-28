@@ -45,11 +45,11 @@ const menuItems = [
                 path: '/data-management/upload-tracks',
                 children: [] // 更多嵌套
             },
-            {
-                title: '实时导入',
-                path: '/data-management/real-time-upload-tracks',
-                children: [] // 更多嵌套
-            },
+            // {
+            //     title: '实时导入',
+            //     path: '/data-management/real-time-upload-tracks',
+            //     children: [] // 更多嵌套
+            // },
             
             {
                 title: '删除轨迹',
