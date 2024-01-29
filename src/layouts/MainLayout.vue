@@ -31,46 +31,6 @@ const menuItems = [
         path: '/',
         children: []
     },
-    {
-        title: '轨迹管理',
-        path: '/data-management',
-        children: [
-            {
-                title: '添加轨迹',
-                path: '/data-management/get-data',
-                children: [] // 更多嵌套
-            },
-            {
-                title: '模板导入',
-                path: '/data-management/upload-tracks',
-                children: [] // 更多嵌套
-            },
-            // {
-            //     title: '实时导入',
-            //     path: '/data-management/real-time-upload-tracks',
-            //     children: [] // 更多嵌套
-            // },
-            
-            {
-                title: '删除轨迹',
-                path: '/data-management/delete-data',
-                children: [] // 更多嵌套
-            },
-            // ...更多子页面
-        ]
-    },
-    {
-        title: '考勤管理',
-        path: '/attendance',
-        children: [
-            {
-                title: '考勤偏移',
-                path: '/attendance/edit',
-                children: [] // 更多嵌套
-            },
-            // ...更多子页面
-        ]
-    },
     // {
     //     title: '其他页面2',
     //     path: '/about',

@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <!-- <img src="@/assets/images/logo.svg" alt="Logo" class="logo" /> -->
-        <div class="title">煤矿智能管理系统</div>
+        <div class="title">应用</div>
         <div class="nav-items">
             <!-- 直接显示用户名 -->
             <span v-if="userStore.userinfo">{{ userStore.userinfo.username }}</span>
