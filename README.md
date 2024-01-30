@@ -51,6 +51,10 @@ pnpm test:unit
 pnpm lint
 ```
 
+当然可以，我们可以在通用规则部分添加一条关于 CSS 类名的规则。以下是一个示例：
+
+---
+
 ### 项目命名规范
 
 #### 通用规则
@@ -61,6 +65,7 @@ pnpm lint
 | Vue 组件文件 | 使用帕斯卡命名法（PascalCase）。 | `UserProfile.vue`, `InventoryList.vue` |
 | JavaScript/TypeScript 文件 | 使用小写字母和连字符（kebab-case）进行命名，适用于包含多个单词的名称。单一单词的文件名使用全小写字母，不加连字符。特殊文件（如配置和入口文件）保持通用命名。 | `api-client.ts`, `use-user-profile.ts`, `auth.ts`, `router.ts`, `main.ts`, `vite.config.ts` |
 | 样式文件 (CSS/SCSS) | 使用小写字母和连字符（kebab-case）。 | `main-layout.scss`, `variables.scss` |
+| CSS 类名 | 使用小写字母和连字符（kebab-case）。 | `main-layout`, `button-styles` |
 | 测试文件 | 与其对应的文件名相同，后缀为 `.spec` 或 `.test`。 | `user-profile.spec.ts`, `api-client.test.ts` |
 | 类名、接口名和枚举 | 使用帕斯卡命名法（PascalCase）。即使是单一单词，也应首字母大写。对于包含多个单词的名称，每个单词的首字母都大写。 | `User`, `OrderStatus`, `UserInfo`, `ProductDetail` |
 | 方法名 (函数名) | 使用驼峰命名法（camelCase）。名称应清晰反映方法的功能和意图。对于布尔值返回的函数，建议使用如 `is`, `can`, `has` 等前缀。 | `getUserInfo()`, `calculateTotalPrice()`, `isLoggedIn()`, `canEdit()` |
