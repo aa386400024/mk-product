@@ -68,18 +68,18 @@ export const usePermissionStore = defineStore({
         },
         async generateRoutes(roles: string[]) {
             try {
-                // const { data: asyncRoutes } = await fetchRouterList({});
-                const asyncRoutes = [
-                    {
-                        path: '/',
-                        component: 'MainLayout', // 由于这是硬编码数据，我们只能用字符串来表示组件
-                        children: [
-                            { path: '', name: 'home', component: 'HomeView' },
-                            { path: 'about', name: 'about', component: 'AboutView' }
-                        ]
-                    }
-                    // 可以根据需要添加更多路由
-                ];
+                const { data: asyncRoutes } = await fetchRouterList({});
+                // const asyncRoutes = [
+                //     {
+                //         path: '/',
+                //         component: 'MainLayout', // 由于这是硬编码数据，我们只能用字符串来表示组件
+                //         children: [
+                //             { path: '', name: 'home', component: 'HomeView' },
+                //             { path: 'about', name: 'about', component: 'AboutView' }
+                //         ]
+                //     }
+                //     // 可以根据需要添加更多路由
+                // ];
                 
                 const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles);
                 this.setRoutes(accessedRoutes);

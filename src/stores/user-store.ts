@@ -25,24 +25,17 @@ export const useUserStore = defineStore('user', {
         login() {
             // 实现登录逻辑
             this.isLoggedIn = true
-            this.accessToken = 'your-token' // 假设这是你的token
-
-            // 假设这是从后端获取的用户信息
-            const userInfoFromApi = {
-                username: 'admin',
-                rolesss: ['admin', 'editor']
-            }
-            this.userinfo = userInfoFromApi // 设置用户信息
-            router.push({ name: 'home' })
+            this.accessToken = 'your-token'
         },
 
         getUserInfo() {
-            // 返回用户信息
-            const aa = {
+            // 假设这是从后端获取的用户信息
+            const userInfoFromApi = {
                 username: 'admin',
                 roles: ['admin', 'editor']
             }
-            this.userinfo = aa
+            this.userinfo = userInfoFromApi // 设置用户信息
+            router.push({ name: 'home' })
             return this.userinfo
         },
 
