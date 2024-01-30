@@ -13,14 +13,14 @@ import RegisterView from '../views/auth/RegisterView.vue'
 import ForgotPasswordView from '../views/auth/ForgotPasswordView.vue'
 
 export const constantRoutes: RouteRecordRaw[] = [
-    {
-        path: '/',
-        component: MainLayout, // 使用主布局
-        children: [
-            { path: '', name: 'home', component: HomeView },
-            { path: 'about', name: 'about', component: AboutView }
-        ]
-    },
+    // {
+    //     path: '/',
+    //     component: MainLayout, // 使用主布局
+    //     children: [
+    //         { path: '', name: 'home', component: HomeView },
+    //         { path: 'about', name: 'about', component: AboutView }
+    //     ]
+    // },
     {
         path: '/auth',
         component: AuthLayout,
