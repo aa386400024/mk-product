@@ -18,9 +18,9 @@ import { useUserStore } from '@/stores/user-store'; // 导入用户状态store
 
 const userStore = useUserStore();
 
-// 当组件被加载时，可以调用getUserinfo来确保userinfo是最新的
+// 当组件被加载时，调用getUserInfo来确保userinfo是最新的
 onMounted(() => {
-    userStore.getUserinfo();
+    userStore.getUserInfo();
 });
 
 // 登出方法

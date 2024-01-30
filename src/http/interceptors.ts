@@ -10,7 +10,7 @@ export function setupInterceptors(http: AxiosInstance): void {
     // 请求拦截器
     http.interceptors.request.use(
         (config: CustomAxiosRequestConfig) => {
-            startLoading(config.loadingText)
+            startLoading(config)
             // 确保 headers 对象存在且不为 undefined
             config.headers = config.headers ?? {}
             const token = localStorage.getItem('token')
