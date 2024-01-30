@@ -18,45 +18,47 @@ import RealTimeUploadTracks from "../views/onePage/RealTimeUploadTracks.vue";
 
 import AttendanceEdit from "../views/attendance/AttendanceEdit.vue";
 
+const routes = [
+    {
+        path: '/',
+        component: MainLayout, // 使用主布局
+        children: [
+            { path: '', name: 'home', component: HomeView },
+            { path: 'about', name: 'about', component: AboutView },
+        ],
+    },
+    {
+        path: '/data-management',
+        component: MainLayout, // 使用主布局
+        children: [
+            { path: 'get-data', name: 'getData', component: GetData },
+            { path: 'delete-data', name: 'deleteData', component: DeleteData },
+            { path: 'upload-tracks', name: 'uploadTracks', component: UploadTracks },
+            { path: 'real-time-upload-tracks', name: 'realTimeUploadTracks', component: RealTimeUploadTracks },
+        ],
+    },
+    {
+        path: '/attendance',
+        component: MainLayout, // 使用主布局
+        children: [
+            { path: 'edit', name: 'AttendanceEdit', component: AttendanceEdit },
+        ],
+    },
+    {
+        path: '/auth',
+        component: AuthLayout,
+        children: [
+            { path: 'login', name: 'login', component: LoginView },
+            { path: 'register', name: 'register', component: RegisterView },
+            { path: 'forgot-password', name: 'forgot-password', component: ForgotPasswordView },
+        ],
+    },
+    // 可以添加更多路由规则
+]
+
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes: [
-        {
-            path: '/',
-            component: MainLayout, // 使用主布局
-            children: [
-                { path: '', name: 'home', component: HomeView },
-                { path: 'about', name: 'about', component: AboutView },
-            ],
-        },
-        {
-            path: '/data-management',
-            component: MainLayout, // 使用主布局
-            children: [
-                { path: 'get-data', name: 'getData', component: GetData },
-                { path: 'delete-data', name: 'deleteData', component: DeleteData },
-                { path: 'upload-tracks', name: 'uploadTracks', component: UploadTracks },
-                { path: 'real-time-upload-tracks', name: 'realTimeUploadTracks', component: RealTimeUploadTracks },
-            ],
-        },
-        {
-            path: '/attendance',
-            component: MainLayout, // 使用主布局
-            children: [
-                { path: 'edit', name: 'AttendanceEdit', component: AttendanceEdit },
-            ],
-        },
-        {
-            path: '/auth',
-            component: AuthLayout,
-            children: [
-                { path: 'login', name: 'login', component: LoginView },
-                { path: 'register', name: 'register', component: RegisterView },
-                { path: 'forgot-password', name: 'forgot-password', component: ForgotPasswordView },
-            ],
-        },
-        // 可以添加更多路由规则
-    ],
+    routes,
 });
 
 export default router;

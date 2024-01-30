@@ -1,24 +1,50 @@
+import { useUserStore } from '@/stores/userStore' // 假设这是您的用户 store
+import { usePermissionStore } from '@/stores/permissionStore' // 假设这是您的权限 store
+import router from '@/router'
+import 'nprogress/nprogress.css'
 
-import { useUserStore } from '@/stores/userStore';
+// 白名单路由
+const whiteList = ['/login']
 
-export function setupRouterGuard(router) {
-    router.beforeEach((to, from, next) => {
-        const hasToken = localStorage.getItem('accessToken');
+router.beforeEach(async (to, from, next) => {
+    const userStore = useUserStore()
+    const permissionStore = usePermissionStore()
 
-        if (to.path !== '/auth/login' && !hasToken) {
-            next('/auth/login');
+    if (userStore.accessToken) {
+        // 使用 Pinia store 中的令牌
+        if (to.path === '/login') {
+            next({ path: '/' })
         } else {
-            if (to.path !== '/auth/login') {
-                // 确保在这里调用 useUserStore，这样只有在应用实例化之后才会执行
-                const userStore = useUserStore();
-                if (!userStore.isLoggedIn) {
-                    next('/auth/login');
+            if (userStore.user.roles && userStore.user.roles.length > 0) {
+                // 有角色信息
+                if (to.matched.length === 0) {
+                    from.name ? next({ name: from.name }) : next('/404')
                 } else {
-                    next();
+                    next()
                 }
             } else {
-                next();
+                try {
+                    const { roles } = await userStore.getUserInfo() // 获取用户信息
+                    const accessRoutes = await permissionStore.generateRoutes(roles) // 生成基于角色的路由
+                    accessRoutes.forEach((route) => router.addRoute(route))
+                    next({ ...to, replace: true })
+                } catch (error) {
+                    // 错误处理：重置令牌并跳转到登录页
+                    await userStore.resetToken()
+                    next(`/login?redirect=${to.path}`)
+                }
             }
         }
-    });
-}
+    } else {
+        // 未登录
+        if (whiteList.includes(to.path)) {
+            next()
+        } else {
+            next(`/login?redirect=${to.path}`)
+        }
+    }
+})
+
+router.afterEach(() => {
+    
+})

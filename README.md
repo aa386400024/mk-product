@@ -51,6 +51,68 @@ pnpm test:unit
 pnpm lint
 ```
 
+你的想法非常好，使用表格来展示命名规范可以使内容更加清晰易读。以下是一个修改后的示例：
+
+---
+
+### 项目命名规范
+
+#### 通用规则
+
+| 类型 | 命名规则 | 示例 |
+| --- | --- | --- |
+| 文件夹 | 使用小写字母和连字符（kebab-case）进行命名，适用于包含多个单词的名称。单一单词的文件夹名称使用全小写字母，不加连字符。 | `user-profile`, `inventory-management`, `assets`, `components`, `stores` |
+| Vue 组件文件 | 使用帕斯卡命名法（PascalCase）。 | `UserProfile.vue`, `InventoryList.vue` |
+| JavaScript/TypeScript 文件 | 使用小写字母和连字符（kebab-case）进行命名，适用于包含多个单词的名称。单一单词的文件名使用全小写字母，不加连字符。特殊文件（如配置和入口文件）保持通用命名。 | `api-client.ts`, `use-user-profile.ts`, `auth.ts`, `router.ts`, `main.ts`, `vite.config.ts` |
+| 样式文件 (CSS/SCSS) | 使用小写字母和连字符（kebab-case）。 | `main-layout.scss`, `variables.scss` |
+| 测试文件 | 与其对应的文件名相同，后缀为 `.spec` 或 `.test`。 | `user-profile.spec.ts`, `api-client.test.ts` |
+| 类名、接口名和枚举 | 使用帕斯卡命名法（PascalCase）。即使是单一单词，也应首字母大写。对于包含多个单词的名称，每个单词的首字母都大写。 | `User`, `OrderStatus`, `UserInfo`, `ProductDetail` |
+| 方法名 (函数名) | 使用驼峰命名法（camelCase）。名称应清晰反映方法的功能和意图。对于布尔值返回的函数，建议使用如 `is`, `can`, `has` 等前缀。 | `getUserInfo()`, `calculateTotalPrice()`, `isLoggedIn()`, `canEdit()` |
+| 变量名 | 同样使用驼峰命名法（camelCase）。名称应具有描述性，清楚地表明其代表的内容。对于布尔值变量，建议使用如 `is`, `can`, `has` 等前缀。 | `userName`, `shoppingCart`, `isVisible`, `hasItems` |
+
+#### 特定目录规则
+
+| 目录 | 规则 | 示例 |
+| --- | --- | --- |
+| `src/api` | 包含所有 API 调用相关文件，使用小写字母和连字符命名。 | `reset-password.ts`, `login.ts` |
+| `src/assets` | 子目录按资源类型命名，如 `images`, `styles`, `fonts`。 | - |
+| `src/components` | 每个组件以帕斯卡命名法命名，如果有子组件，则在父组件的文件夹下创建。 | - |
+| `src/views` 和 `src/layouts` | 使用帕斯卡命名法，反映其代表的视图或布局。 | `HomeView.vue`, `MainLayout.vue` |
+| `src/stores` | 对于 Pinia store，使用小写字母和连字符命名。 | `user-store.ts` |
+| 环境配置文件 | 如 `.env`, `.env.production` 使用小写字母。 | - |
+
+#### 特殊文件
+
+- **入口文件**：如 `main.ts`，`index.html` 保持这种通用命名不变。
+- **配置文件**：如 `vite.config.ts`, `tsconfig.json` 保持这种通用命名不变。
+- **README 和 LICENSE**：使用全大写字母命名。
+
+### 示例摘要
+
+- Vue 组件：`NavBar.vue`, `UserProfile.vue`
+- API 文件：`reset-password.ts`, `login.ts`
+- CSS/SCSS 文件：`main-layout.scss`, `button-styles.scss`
+- 测试文件：`auth-api.spec.ts`, `NavBar.test.ts`
+
+---
+
+### 温馨提示
+
+## 帕斯卡命名法 vs 驼峰命名法
+
+| 命名法 | 描述 | 示例 |
+| --- | --- | --- |
+| 帕斯卡命名法（PascalCase） | 每个单词的首字母都大写，包括第一个单词。适用于类名、接口名、枚举等。 | `UserInfo`, `ProductDetail`, `OrderStatus` |
+| 驼峰命名法（camelCase） | 第一个单词的首字母小写，后续单词的首字母大写。常用于方法名、变量名。 | `userInfo`, `productDetail`, `orderStatus` |
+
+### 后端数据的处理
+
+在我们的项目中，后端接口可能会返回使用下划线（例如 `total_exchange`）或者其他不符合前端命名规范的数据。对于这种情况，我们的决定是**不进行处理**。
+
+虽然我们可以通过编写转换函数将这些数据转换为符合前端命名规范的格式，但这可能会增加代码的复杂性和出错的风险。因此，我们选择接受后端返回的任何命名规范，以保持代码的简洁性和稳定性。
+
+请注意，这个决定可能会导致前端代码中出现不同的命名规范。但只要我们保持代码的清晰和可维护性，这就不会成为问题。
+
 ### 新增的详细目录树（部分示例）:
 
 ```

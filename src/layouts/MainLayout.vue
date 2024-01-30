@@ -19,7 +19,7 @@
         </el-container>
     </el-container>
 </template>
-  
+
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import { Sidebar, Navbar, Footer } from '@/components/layout';
@@ -39,7 +39,7 @@ const menuItems = [
     // ...更多顶级菜单项
 ];
 </script>
-  
+
 <style scoped lang="scss">
 .el-header {
     position: fixed; // 设置为固定定位
