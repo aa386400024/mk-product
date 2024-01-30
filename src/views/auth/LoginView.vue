@@ -27,7 +27,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { UserFilled, Lock } from '@element-plus/icons-vue'
-import { useUserStore } from '@/stores/userStore';
+import { useUserStore } from '@/stores/user-store';
 import { ElMessage } from 'element-plus'
 
 // Component state

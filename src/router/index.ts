@@ -1,5 +1,4 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { useUserStore } from '@/stores/userStore'; // 导入 userStore
 
 // 主布局和视图
 import MainLayout from '../layouts/MainLayout.vue'; // 主布局组件

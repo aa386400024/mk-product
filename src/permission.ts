@@ -1,4 +1,4 @@
-import { useUserStore } from '@/stores/userStore' // 假设这是您的用户 store
+import { useUserStore } from '@/stores/user-store' // 假设这是您的用户 store
 import { usePermissionStore } from '@/stores/permissionStore' // 假设这是您的权限 store
 import router from '@/router'
 import 'nprogress/nprogress.css'

@@ -222,7 +222,7 @@ my-product
     │      authService.ts     # 认证服务
     │      
     ├─stores                  # 状态管理
-    │      userStore.ts       # 用户状态
+    │      user-store.ts       # 用户状态
     │      
     └─views                   # 视图组件
         │  AboutView.vue      # 关于页面视图

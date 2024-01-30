@@ -14,7 +14,7 @@
 
 <script setup lang="ts">
 import { onMounted } from 'vue';
-import { useUserStore } from '@/stores/userStore'; // 导入用户状态store
+import { useUserStore } from '@/stores/user-store'; // 导入用户状态store
 
 const userStore = useUserStore();
 
