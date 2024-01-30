@@ -1,22 +1,15 @@
 // src/http/http.ts
-import axios, { type AxiosInstance } from 'axios';
+import axios from 'axios';
+import type { AxiosInstance } from 'axios';
 import { setupInterceptors } from './interceptors';
 
-// 定义 HTTP 实例配置的接口
-interface HttpConfig {
-    baseURL: string;
-    timeout: number;
-    headers: {
-        'Content-Type': string;
-    };
-}
 
 // 创建配置对象
-const config: HttpConfig = {
+const config = {
     baseURL: "", // 您的 API 基础 URL
     timeout: 1000 * 60,
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json;charset=utf-8'
     }
 };
 

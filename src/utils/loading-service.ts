@@ -1,10 +1,13 @@
-// src/services/loadingService.ts
 import { ElLoading } from 'element-plus';
 
-let loadingInstance;
+let loadingInstance: any;
 let requestCount = 0;
+const whiteList = ['/api/user/info', '/api/check/update']; // 不需要loading的接口
 
-function startLoading() {
+function startLoading(config) {
+    if (whiteList.includes(config.url)) {
+        return;
+    }
     if (requestCount === 0) {
         loadingInstance = ElLoading.service({
             lock: true,
