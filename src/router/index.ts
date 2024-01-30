@@ -1,47 +1,25 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router'
+import type { RouteRecordRaw } from 'vue-router'
 
 // 主布局和视图
-import MainLayout from '../layouts/MainLayout.vue'; // 主布局组件
-import HomeView from '../views/HomeView.vue';
-import AboutView from '../views/AboutView.vue';
+import MainLayout from '../layouts/MainLayout.vue' // 主布局组件
+import HomeView from '../views/HomeView.vue'
+import AboutView from '../views/AboutView.vue'
 
 // 身份验证布局和视图
-import AuthLayout from "../views/auth/AuthLayout.vue";
-import LoginView from "../views/auth/LoginView.vue";
-import RegisterView from "../views/auth/RegisterView.vue";
-import ForgotPasswordView from "../views/auth/ForgotPasswordView.vue";
-import GetData from "../views/onePage/GetData.vue";
-import DeleteData from "../views/onePage/DeleteData.vue";
-import UploadTracks from "../views/onePage/UploadTracks.vue";
-import RealTimeUploadTracks from "../views/onePage/RealTimeUploadTracks.vue";
+import AuthLayout from '../views/auth/AuthLayout.vue'
+import LoginView from '../views/auth/LoginView.vue'
+import RegisterView from '../views/auth/RegisterView.vue'
+import ForgotPasswordView from '../views/auth/ForgotPasswordView.vue'
 
-import AttendanceEdit from "../views/attendance/AttendanceEdit.vue";
-
-const routes = [
+export const constantRoutes: RouteRecordRaw[] = [
     {
         path: '/',
         component: MainLayout, // 使用主布局
         children: [
             { path: '', name: 'home', component: HomeView },
-            { path: 'about', name: 'about', component: AboutView },
-        ],
-    },
-    {
-        path: '/data-management',
-        component: MainLayout, // 使用主布局
-        children: [
-            { path: 'get-data', name: 'getData', component: GetData },
-            { path: 'delete-data', name: 'deleteData', component: DeleteData },
-            { path: 'upload-tracks', name: 'uploadTracks', component: UploadTracks },
-            { path: 'real-time-upload-tracks', name: 'realTimeUploadTracks', component: RealTimeUploadTracks },
-        ],
-    },
-    {
-        path: '/attendance',
-        component: MainLayout, // 使用主布局
-        children: [
-            { path: 'edit', name: 'AttendanceEdit', component: AttendanceEdit },
-        ],
+            { path: 'about', name: 'about', component: AboutView }
+        ]
     },
     {
         path: '/auth',
@@ -49,15 +27,25 @@ const routes = [
         children: [
             { path: 'login', name: 'login', component: LoginView },
             { path: 'register', name: 'register', component: RegisterView },
-            { path: 'forgot-password', name: 'forgot-password', component: ForgotPasswordView },
-        ],
-    },
+            { path: 'forgot-password', name: 'forgot-password', component: ForgotPasswordView }
+        ]
+    }
     // 可以添加更多路由规则
 ]
 
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
-    routes,
-});
+    routes: constantRoutes as RouteRecordRaw[]
+})
 
-export default router;
+// 动态添加路由的函数
+export function addAsyncRoutes(routes: RouteRecordRaw[]) {
+    routes.forEach((route) => {
+        // 确保 route.name 存在且不是已有的路由
+        if (route.name && !router.hasRoute(route.name)) {
+            router.addRoute(route)
+        }
+    })
+}
+
+export default router

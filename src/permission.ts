@@ -1,50 +1,57 @@
-import { useUserStore } from '@/stores/user-store' // 假设这是您的用户 store
-import { usePermissionStore } from '@/stores/permissionStore' // 假设这是您的权限 store
-import router from '@/router'
-import 'nprogress/nprogress.css'
+import { useUserStore } from '@/stores/user-store'; // 导入用户 store
+import { usePermissionStore } from '@/stores/permission-store'; // 导入权限 store
+import router from '@/router';
 
-// 白名单路由
-const whiteList = ['/login']
+// 白名单路由，无需登录即可访问
+const whiteList = ['/login'];
 
+// 路由全局前置守卫
 router.beforeEach(async (to, from, next) => {
-    const userStore = useUserStore()
-    const permissionStore = usePermissionStore()
+    const userStore = useUserStore(); // 使用用户 store
+    const permissionStore = usePermissionStore(); // 使用权限 store
 
+    // 如果用户已经登录
     if (userStore.accessToken) {
-        // 使用 Pinia store 中的令牌
-        if (to.path === '/login') {
-            next({ path: '/' })
+        // 如果已登录但访问登录页面，则重定向到主页
+        if (to.path === '/auth/login') {
+            next({ path: '/' });
         } else {
-            if (userStore.user.roles && userStore.user.roles.length > 0) {
-                // 有角色信息
+            // 检查用户是否有角色信息
+            if (userStore.userinfo?.roles && userStore.userinfo?.roles.length > 0) {
+                // 如果有角色信息且即将访问的路由不存在，则重定向到404页面
                 if (to.matched.length === 0) {
-                    from.name ? next({ name: from.name }) : next('/404')
+                    from.name ? next({ name: from.name }) : next('/404');
                 } else {
-                    next()
+                    // 如果路由存在，则正常导航
+                    next();
                 }
             } else {
+                // 如果没有角色信息，则尝试获取用户信息
                 try {
-                    const { roles } = await userStore.getUserInfo() // 获取用户信息
-                    const accessRoutes = await permissionStore.generateRoutes(roles) // 生成基于角色的路由
-                    accessRoutes.forEach((route) => router.addRoute(route))
-                    next({ ...to, replace: true })
+                    const { roles } = await userStore.getUserInfo(); // 异步获取用户信息
+                    await permissionStore.generateRoutes(roles); // 根据角色生成相应的路由
+                    next({ ...to, replace: true }); // 确保路由加载完毕后再跳转
                 } catch (error) {
-                    // 错误处理：重置令牌并跳转到登录页
-                    await userStore.resetToken()
-                    next(`/login?redirect=${to.path}`)
+                    // 获取用户信息失败，重置 token 并重定向到登录页面
+                    await userStore.resetToken();
+                    next(`/auth/login?redirect=${to.path}`);
                 }
             }
         }
     } else {
-        // 未登录
+        // 如果用户未登录
+        // 检查即将访问的路由是否在白名单内
         if (whiteList.includes(to.path)) {
-            next()
+            next(); // 在白名单内直接放行
         } else {
-            next(`/login?redirect=${to.path}`)
+            // 不在白名单内，重定向到登录页面
+            next(`/auth/login?redirect=${to.path}`);
         }
     }
-})
+});
 
+// 路由全局后置守卫
 router.afterEach(() => {
-    
-})
+    // 这里可以添加一些全局的路由导航后置处理逻辑
+    // 比如关闭进度条、页面标题设置等
+});
