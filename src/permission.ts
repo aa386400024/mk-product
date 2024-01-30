@@ -30,11 +30,13 @@ router.beforeEach(async (to, from, next) => {
                 try {
                     const userInfo = await userStore.getUserInfo()
                     if (userInfo !== null) {
-                        const { roles } = userInfo 
+                        const { roles } = userInfo
                         await permissionStore.generateRoutes(roles)
                         next({ ...to, replace: true })
                     } else {
-                        // 处理userInfo为null的情况
+                        // 获取用户信息失败，重置 token 并重定向到登录页面
+                        await userStore.resetToken()
+                        next(`/auth/login?redirect=${to.path}`)
                     }
                 } catch (error) {
                     // 获取用户信息失败，重置 token 并重定向到登录页面
