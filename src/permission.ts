@@ -20,7 +20,7 @@ router.beforeEach(async (to, from, next) => {
             if (userStore.userinfo?.roles && userStore.userinfo?.roles.length > 0) {
                 // 如果有角色信息且即将访问的路由不存在，则重定向到404页面
                 if (to.matched.length === 0) {
-                    from.name ? next({ name: from.name }) : next('/404')
+                    from.name ? next({ name: from.name }) : next('/NotFound404')
                 } else {
                     // 如果路由存在，则正常导航
                     next()

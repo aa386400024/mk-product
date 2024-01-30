@@ -39,7 +39,7 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
                 if (component) {
                     tmpRoute.component = component;
                 } else {
-                    tmpRoute.component = modules['../views/error-page/404.vue'];
+                    tmpRoute.component = modules['../views/error-page/NotFound404.vue'];
                 }
             }
 
