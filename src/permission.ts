@@ -30,7 +30,7 @@ router.beforeEach(async (to, from, next) => {
                 try {
                     const userInfo = await userStore.getUserInfo()
                     if (userInfo !== null) {
-                        const { roles } = userInfo
+                        const { roles } = userInfo 
                         await permissionStore.generateRoutes(roles)
                         next({ ...to, replace: true })
                     } else {
