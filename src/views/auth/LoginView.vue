@@ -46,7 +46,6 @@ const handleLogin = () => {
         return;
     }
 
-    console.log('Login:', loginForm.value);
     userStore.login();
 };
 </script>

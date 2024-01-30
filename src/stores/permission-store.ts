@@ -30,6 +30,7 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
             tmpRoute.name = route.path;
         }
         if (hasPermission(roles, tmpRoute)) {
+            console.log(tmpRoute, 'tmpRoute')
             if (tmpRoute.component?.toString() === 'Layout') {
                 tmpRoute.component = Layout;
             } else {
