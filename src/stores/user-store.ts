@@ -30,7 +30,7 @@ export const useUserStore = defineStore('user', {
             // 假设这是从后端获取的用户信息
             const userInfoFromApi = {
                 username: 'admin',
-                roles: ['admin', 'editor']
+                rolesss: ['admin', 'editor']
             }
             this.userinfo = userInfoFromApi // 设置用户信息
             router.push({ name: 'home' })
@@ -38,6 +38,11 @@ export const useUserStore = defineStore('user', {
 
         getUserInfo() {
             // 返回用户信息
+            const aa = {
+                username: 'admin',
+                roles: ['admin', 'editor']
+            }
+            this.userinfo = aa
             return this.userinfo
         },
 
