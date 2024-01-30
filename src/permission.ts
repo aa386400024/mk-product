@@ -3,7 +3,7 @@ import { usePermissionStore } from '@/stores/permission-store'; // 导入权限 
 import router from '@/router';
 
 // 白名单路由，无需登录即可访问
-const whiteList = ['/login'];
+const whiteList = ['/auth/login'];
 
 // 路由全局前置守卫
 router.beforeEach(async (to, from, next) => {

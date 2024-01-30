@@ -1,7 +1,6 @@
 // src/http/interceptors.ts
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, AxiosError } from 'axios';
-import { startLoading, endLoading } from '../services/loadingService';
-
+import { startLoading, endLoading } from '@/utils/loadingService';
 export function setupInterceptors(http: AxiosInstance): void {
     // 请求拦截器
     http.interceptors.request.use(

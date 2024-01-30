@@ -16,15 +16,12 @@ interface UserState {
 }
 
 export const useUserStore = defineStore('user', {
+    persist: true,
     state: (): UserState => ({
         isLoggedIn: false,
         userinfo: null, // 初始状态为null
         accessToken: null // 初始状态为null
     }),
-    persist: {
-        enabled: true,
-        storage: window.localStorage
-    },
     actions: {
         login() {
             // 实现登录逻辑

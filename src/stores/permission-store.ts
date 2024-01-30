@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia';
 import type { RouteRecordRaw } from 'vue-router';
 import { constantRoutes, addAsyncRoutes } from '@/router';
-import { listRoutes } from '@/api/menu';
+import { fetchRouterList } from '@/api/router/list';
 
 const modules = import.meta.glob('../../views/**/**.vue');
-const Layout = () => import('@/layout/index.vue');
+const Layout = () => import('@/layouts/MainLayout.vue');
 
 // 判断是否有权限
 const hasPermission = (roles: string[], route: RouteRecordRaw) => {
@@ -54,6 +54,7 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
 
 export const usePermissionStore = defineStore({
     id: 'permission',
+    persist: true,
     state: () => ({
         routes: constantRoutes,
         mixLeftMenu: []
@@ -65,7 +66,7 @@ export const usePermissionStore = defineStore({
         },
         async generateRoutes(roles: string[]) {
             try {
-                const { data: asyncRoutes } = await listRoutes();
+                const { data: asyncRoutes } = await fetchRouterList({});
                 const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles);
                 this.setRoutes(accessedRoutes);
                 return accessedRoutes;
