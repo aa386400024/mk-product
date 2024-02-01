@@ -38,7 +38,7 @@
         <!-- 入井实时轨迹添加部分 -->
         <el-card class="form-card" shadow="never">
             <template #header>
-                <div class="card-header">入井实时轨迹添加</div>
+                <div class="card-header">入井实时轨迹设置</div>
             </template>
             <el-form :model="tracksForm" :rules="rules" ref="tracksRef" size="large" label-width="100px" class="form-grid">
                 <el-form-item label="入井时间" prop="in_station_time">
@@ -64,6 +64,11 @@
                     </el-select>
                 </el-form-item>
             </el-form>
+        </el-card>
+        <el-card class="form-card" shadow="never">
+            <template #header>
+                <div class="card-header">下井目的地排序</div>
+            </template>
             <draggable v-model="sortedStations" class="drag-list" item-key="id">
                 <template #item="{ element }">
                     <div>{{ element.name }}</div>
@@ -230,6 +235,31 @@ onMounted(async () => {
     :deep(.el-date-editor.el-input),
     :deep(.el-date-editor.el-input__wrapper) {
         --el-date-editor-width: 100%; // 设置日期编辑器的宽度为 100%
+    }
+
+    .sort-title {
+        margin-top: 20px; // 在标题和上一个表单项之间添加一些间距
+        padding-left: 10px; // 与排序列表的内边距对齐
+        font-size: 16px; // 根据需要调整字体大小
+        font-weight: bold; // 加粗字体以突出显示
+        color: #606266; // 标题颜色，可根据实际UI调整
+    }
+
+    .drag-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px; // 根据需要调整间隙大小
+        padding: 10px;
+        border-radius: 4px; // 添加圆角
+
+        > div {
+            padding: 5px 10px;
+            background-color: #fff;
+            border: 1px solid #dcdfe6;
+            border-radius: 4px;
+            box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
+            cursor: grab; // 更改鼠标样式以指示这些项可以拖动
+        }
     }
 
     .form-card {
