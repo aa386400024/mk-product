@@ -241,7 +241,7 @@ const GetStationInfoAPI = async () => {
                 value: item[1]   // 实际的值
             }));
         } else {
-            stationInfoSelectList.value = []
+            stationOptions.value = []
         }
     } catch (error) {
         // 处理请求失败的逻辑

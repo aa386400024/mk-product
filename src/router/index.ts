@@ -15,6 +15,7 @@ import ForgotPasswordView from '../views/auth/ForgotPasswordView.vue'
 import AddTracks from "../views/tracks/AddTracks.vue";
 import DeleteTracks from "../views/tracks/DeleteTracks.vue";
 import UploadTracks from "../views/tracks/UploadTracks.vue";
+import MiningRealTimeTracking from "../views/tracks/MiningRealTimeTracking.vue";
 
 import AttendanceEdit from "../views/attendance/AttendanceEdit.vue";
 
@@ -34,6 +35,7 @@ export const constantRoutes: RouteRecordRaw[] = [
             { path: 'add-tracks', name: 'addTracks', component: AddTracks },
             { path: 'delete-tracks', name: 'deleteTracks', component: DeleteTracks },
             { path: 'upload-tracks', name: 'uploadTracks', component: UploadTracks },
+            { path: 'mining-track-add', name: 'miningTrackAdd', component: MiningRealTimeTracking },
         ],
     },
     {

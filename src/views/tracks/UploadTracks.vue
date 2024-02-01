@@ -67,7 +67,6 @@
                         <span class="label">考勤结束时间：</span>
                         <span class="value">{{ group.end_time }}</span>
                     </span>
-
                 </div>
                 <el-table :data="group.data" stripe border style="width: 100%; margin-bottom: 60px;" max-height="400"
                     :header-cell-style="{ background: '#304156', color: '#fff' }">
@@ -507,8 +506,6 @@ const GenerateDataByStationAPI = async (params: reviewTracksData) => {
     .time-span {
         margin-right: 20px; // 调整这个值来改变间隔的大小
     }
-
-
 }
 
 .upload-tips {
