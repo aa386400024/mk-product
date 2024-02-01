@@ -4,13 +4,12 @@
             <template #header>
                 <div class="header-flex">
                     <div class="card-header">员工信息</div>
-                    <el-form :model="{ user_code }" :rules="rules" ref="userCodeRef" class="header-form" inline
-                        @submit.prevent="fetchEmployeeData">
+                    <el-form :model="{ user_code }" :rules="rules" ref="userCodeRef" class="header-form" inline>
                         <el-form-item class="form-item-inline" label="工号" prop="user_code">
                             <el-input v-model="user_code" size="small"></el-input>
                         </el-form-item>
                         <el-form-item class="form-item-inline">
-                            <el-button type="primary" size="small" @click="fetchEmployeeData">查询</el-button>
+                            <el-button type="primary" size="small" @click="fetchUserinfoData(userCodeRef)">查询</el-button>
                         </el-form-item>
                     </el-form>
                 </div>
@@ -79,8 +78,11 @@ import type { FormInstance } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { addMoreData, GetStationInfo } from "@/api/tracks/tracks";
 
-const user_code: Ref<string> = ref('');
-const userInfoData: Ref<any> = ref(null);
+interface StationOption {
+    label: string;
+    value: string | number;
+}
+
 const tracksForm = reactive({
     in_station_time: '',
     out_station_time: '',
@@ -88,11 +90,11 @@ const tracksForm = reactive({
     station_id: ''
 })
 
-const tracksRef = ref<FormInstance>()
-
-const userCodeRef = ref<FormInstance>()
-
-const stationOptions = ref([]);
+const user_code: Ref<string> = ref('');
+const userInfoData: Ref<any> = ref(null);
+const tracksRef = ref<FormInstance>();
+const userCodeRef = ref<FormInstance>();
+const stationOptions: Ref<Array<StationOption>> = ref([]);
 
 // 定义校验规则
 const rules = reactive({
@@ -114,13 +116,7 @@ const rules = reactive({
     ],
 });
 
-const fetchEmployeeData = async () => {
-    userInfoData.value = {
-        name: '',
-        team: '',
-        user_code: '',
-        card_number: ''
-    };
+const fetchUserinfoAPI = async () => {
     try {
         // 调用删除数据接口
         const response = await addMoreData({});
@@ -142,6 +138,18 @@ const fetchEmployeeData = async () => {
     }
 };
 
+const fetchUserinfoData = (formEl: FormInstance | undefined) => {
+    if (!formEl) return;
+    formEl.validate((valid) => {
+        if (valid) {
+            fetchUserinfoAPI()
+        } else {
+            console.error('校验失败');
+            return false
+        }
+    })
+}
+
 // 基站编号下拉菜单数据
 const GetStationInfoAPI = async () => {
     try {
@@ -162,6 +170,7 @@ const GetStationInfoAPI = async () => {
     }
 }
 
+// 添加入井实时轨迹
 const submitForm = (formEl: FormInstance | undefined) => {
     if (!formEl) return
 
@@ -170,7 +179,7 @@ const submitForm = (formEl: FormInstance | undefined) => {
         ElMessage.error('请先查询并确认员工信息');
         return; // 提前退出函数，不执行表单提交
     }
-    
+
     formEl.validate((valid) => {
         if (valid) {
             console.log('submit!')
