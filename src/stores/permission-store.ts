@@ -39,7 +39,7 @@ const filterAsyncRoutes = (routes: RouteRecordRaw[], roles: string[]) => {
                 if (component) {
                     tmpRoute.component = component;
                 } else {
-                    tmpRoute.component = modules['../views/error-page/404.vue'];
+                    tmpRoute.component = modules['../views/error-page/NotFound404.vue'];
                 }
             }
 
@@ -70,14 +70,14 @@ export const usePermissionStore = defineStore({
             try {
                 // const { data: asyncRoutes } = await fetchRouterList({});
                 const asyncRoutes = [
-                    {
-                        path: '/',
-                        component: 'MainLayout', // 由于这是硬编码数据，我们只能用字符串来表示组件
-                        children: [
-                            { path: '', name: 'home', component: 'HomeView' },
-                            { path: 'about', name: 'about', component: 'AboutView' }
-                        ]
-                    }
+                    // {
+                    //     path: '/',
+                    //     component: 'MainLayout', // 由于这是硬编码数据，我们只能用字符串来表示组件
+                    //     children: [
+                    //         { path: '', name: 'home', component: 'HomeView' },
+                    //         { path: 'about', name: 'about', component: 'AboutView' }
+                    //     ]
+                    // }
                     // 可以根据需要添加更多路由
                 ];
                 

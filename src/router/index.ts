@@ -13,14 +13,14 @@ import RegisterView from '../views/auth/RegisterView.vue'
 import ForgotPasswordView from '../views/auth/ForgotPasswordView.vue'
 
 export const constantRoutes: RouteRecordRaw[] = [
-    // {
-    //     path: '/',
-    //     component: MainLayout, // 使用主布局
-    //     children: [
-    //         { path: '', name: 'home', component: HomeView },
-    //         { path: 'about', name: 'about', component: AboutView }
-    //     ]
-    // },
+    {
+        path: '/',
+        component: MainLayout, // 使用主布局
+        children: [
+            { path: '', name: 'home', component: HomeView },
+            { path: 'about', name: 'about', component: AboutView }
+        ]
+    },
     {
         path: '/auth',
         component: AuthLayout,
@@ -29,7 +29,11 @@ export const constantRoutes: RouteRecordRaw[] = [
             { path: 'register', name: 'register', component: RegisterView },
             { path: 'forgot-password', name: 'forgot-password', component: ForgotPasswordView }
         ]
-    }
+    },
+    // {
+    //     path: '/app1/*', // 为app1子应用预留的路由
+    //     component: () => import('@/components/micro-frontend/MicroAppContainer.vue')
+    // },
     // 可以添加更多路由规则
 ]
 

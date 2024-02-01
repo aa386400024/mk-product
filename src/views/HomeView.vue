@@ -1,5 +1,6 @@
 <template>
 	<div class="main-content">
+		<button @click="goToSubApp">Go to Sub App</button>
 		<el-row :gutter="16">
 			<el-col :span="8">
 				<el-card class="box-card" :body-style="{ padding: '0px' }" shadow="hover">
@@ -52,6 +53,14 @@
   
 <script setup lang="ts">
 // 在这里导入需要的脚本或组件
+
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+const goToSubApp = () => {
+	router.push('/app1');
+}
+
 </script>
   
 <style scoped lang="scss">

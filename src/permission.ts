@@ -4,56 +4,55 @@ import router from '@/router'
 
 // 白名单路由，无需登录即可访问
 const whiteList = ['/auth/login']
+// 定义子应用的路由前缀
+const subAppRoutes = ['/app1', '/app2']; // 假设您有两个子应用
 
-// 路由全局前置守卫
 router.beforeEach(async (to, from, next) => {
-    const userStore = useUserStore() // 使用用户 store
-    const permissionStore = usePermissionStore() // 使用权限 store
+    // 检查当前路由是否属于任何子应用
+    const isSubAppRoute = subAppRoutes.some(prefix => to.path.startsWith(prefix));
+    if (isSubAppRoute) {
+        // 如果是子应用路由，直接放行
+        return next();
+    }
 
-    // 如果用户已经登录
+    const userStore = useUserStore();
+    const permissionStore = usePermissionStore();
+
     if (userStore.accessToken) {
-        // 如果已登录但访问登录页面，则重定向到主页
         if (to.path === '/auth/login') {
-            next({ path: '/' })
+            next({ path: '/' });
         } else {
-            // 检查用户是否有角色信息
-            if (userStore.userinfo?.roles && userStore.userinfo?.roles.length > 0) {
-                // 如果有角色信息且即将访问的路由不存在，则重定向到404页面
+            if (userStore.userinfo?.roles && userStore.userinfo.roles.length > 0) {
                 if (to.matched.length === 0) {
-                    from.name ? next({ name: from.name }) : next('/404')
+                    from.name ? next({ name: from.name }) : next('/NotFound404');
                 } else {
-                    // 如果路由存在，则正常导航
-                    next()
+                    next();
                 }
             } else {
-                // 如果没有角色信息，则尝试获取用户信息
                 try {
-                    const userInfo = await userStore.getUserInfo()
-                    if (userInfo !== null) {
-                        const { roles } = userInfo 
-                        await permissionStore.generateRoutes(roles)
-                        next({ ...to, replace: true })
+                    const userInfo = await userStore.getUserInfo();
+                    if (userInfo) {
+                        const { roles } = userInfo;
+                        await permissionStore.generateRoutes(roles);
+                        next({ ...to, replace: true });
                     } else {
-                        // 处理userInfo为null的情况
+                        await userStore.resetToken();
+                        next(`/auth/login?redirect=${to.path}`);
                     }
                 } catch (error) {
-                    // 获取用户信息失败，重置 token 并重定向到登录页面
-                    await userStore.resetToken()
-                    next(`/auth/login?redirect=${to.path}`)
+                    await userStore.resetToken();
+                    next(`/auth/login?redirect=${to.path}`);
                 }
             }
         }
     } else {
-        // 如果用户未登录
-        // 检查即将访问的路由是否在白名单内
         if (whiteList.includes(to.path)) {
-            next() // 在白名单内直接放行
+            next();
         } else {
-            // 不在白名单内，重定向到登录页面
-            next(`/auth/login?redirect=${to.path}`)
+            next(`/auth/login?redirect=${to.path}`);
         }
     }
-})
+});
 
 // 路由全局后置守卫
 router.afterEach(() => {
