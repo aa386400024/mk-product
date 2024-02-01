@@ -1,11 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
-// 主布局和视图
-import MainLayout from '../layouts/MainLayout.vue' // 主布局组件
-import HomeView from '../views/HomeView.vue'
-import AboutView from '../views/AboutView.vue'
-
 // 身份验证布局和视图
 import AuthLayout from '../views/auth/AuthLayout.vue'
 import LoginView from '../views/auth/LoginView.vue'

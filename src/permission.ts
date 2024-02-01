@@ -30,14 +30,15 @@ router.beforeEach(async (to, from, next) => {
                 }
             } else {
                 try {
-                    const userInfo = await userStore.getUserInfo();
-                    if (userInfo) {
-                        const { roles } = userInfo;
-                        await permissionStore.generateRoutes(roles);
-                        next({ ...to, replace: true });
+                    const userInfo = await userStore.getUserInfo()
+                    if (userInfo !== null) {
+                        const { roles } = userInfo
+                        await permissionStore.generateRoutes(roles)
+                        next({ ...to, replace: true })
                     } else {
-                        await userStore.resetToken();
-                        next(`/auth/login?redirect=${to.path}`);
+                        // 获取用户信息失败，重置 token 并重定向到登录页面
+                        await userStore.resetToken()
+                        next(`/auth/login?redirect=${to.path}`)
                     }
                 } catch (error) {
                     await userStore.resetToken();
