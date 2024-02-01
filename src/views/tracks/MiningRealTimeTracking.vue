@@ -56,14 +56,19 @@
                         <el-option label="0点班" value="0"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="下井目的地" prop="station_id">
-                    <el-select v-model="tracksForm.station_id" filterable multiple placeholder="请选择下井目的地">
+                <el-form-item label="下井目的地" prop="station_ids">
+                    <el-select v-model="tracksForm.station_ids" filterable multiple placeholder="请选择下井目的地">
                         <el-option v-for="(item, index) in stationOptions" :key="index" :label="item.label"
                             :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
+            <draggable v-model="sortedStations" class="drag-list" item-key="id">
+                <template #item="{ element }">
+                    <div>{{ element.name }}</div>
+                </template>
+            </draggable>
             <template #footer>
                 <div class="footer-view"><el-button class="submit-button" size="large" type="primary"
                         @click="submitForm(tracksRef)">添加入井实时轨迹</el-button></div>
@@ -73,21 +78,27 @@
 </template>
   
 <script setup lang="ts">
-import { ref, Ref, reactive, onMounted } from 'vue';
+import { ref, Ref, reactive, onMounted, watch } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { addMoreData, GetStationInfo } from "@/api/tracks/tracks";
+import draggable from 'vuedraggable';
 
 interface StationOption {
     label: string;
     value: string | number;
 }
 
+interface SortedStation {
+    id: string | number;
+    name: string;
+}
+
 const tracksForm = reactive({
     in_station_time: '',
     out_station_time: '',
     shift_time_quantum_id: '',
-    station_id: ''
+    station_ids: []
 })
 
 const user_code: Ref<string> = ref('');
@@ -95,6 +106,13 @@ const userInfoData: Ref<any> = ref(null);
 const tracksRef = ref<FormInstance>();
 const userCodeRef = ref<FormInstance>();
 const stationOptions: Ref<Array<StationOption>> = ref([]);
+const sortedStations = ref<Array<SortedStation>>([
+    { id: 1, name: '地点 A' },
+    { id: 2, name: '地点 B' },
+    { id: 3, name: '地点 C' },
+    { id: 4, name: '地点 D' },
+]);
+
 
 // 定义校验规则
 const rules = reactive({
@@ -111,10 +129,21 @@ const rules = reactive({
     shift_time_quantum_id: [
         { required: true, message: '请选择班次', trigger: 'change' }
     ],
-    station_id: [
+    station_ids: [
         { required: true, message: '请选择下井目的地', trigger: 'change' }
     ],
 });
+
+// 监听tracksForm.station_id的变化，更新sortedStations
+watch(() => tracksForm.station_ids, (newValue) => {
+    // 使用类型断言确保 newValue 是一个数组
+    const newValues = newValue as Array<string | number>;
+    sortedStations.value = newValues.map(value => {
+        const foundOption = stationOptions.value.find(option => option.value === value);
+        return foundOption ? { id: value, name: foundOption.label } : { id: '', name: '' };
+    });
+}, { deep: true });
+
 
 const fetchUserinfoAPI = async () => {
     try {
