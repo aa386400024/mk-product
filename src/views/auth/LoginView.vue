@@ -1,7 +1,7 @@
 <template>
     <div class="login-container">
         <el-card class="login-card">
-            <h1 class="title">应用 <span class="version"></span></h1>
+            <h1 class="title">煤矿智能管理系统 <span class="version"></span></h1>
 
             <el-form size="large">
                 <el-form-item>

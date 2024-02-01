@@ -20,7 +20,7 @@
     "paths": {
       "@/*": ["src/*"] // 这将 @ 符号映射到 src 目录
     },
-    "typeRoots": ["./node_modules/@types", "./src/types"],
+    "typeRoots": ["./node_modules/@types", "./src/types", "./src/api"],
     "lib": ["dom", "es2015", "esnext"]
   }
 }

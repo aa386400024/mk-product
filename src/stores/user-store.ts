@@ -48,7 +48,7 @@ export const useUserStore = defineStore('user', {
         // logout 方法：清理认证信息并处理登出相关逻辑
         async logout() {
             try {
-                await logout({}); // 调用登出 API
+                // await logout({}); // 调用登出 API
                 this.resetToken(); // 清除认证状态
                 router.push({ name: 'login' }); // 重定向到登录页面
             } catch (error) {

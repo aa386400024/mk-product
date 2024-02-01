@@ -1,11 +1,22 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
+// 主布局和视图
+import MainLayout from '../layouts/MainLayout.vue'; // 主布局组件
+import HomeView from '../views/HomeView.vue';
+import AboutView from '../views/AboutView.vue';
+
 // 身份验证布局和视图
 import AuthLayout from '../views/auth/AuthLayout.vue'
 import LoginView from '../views/auth/LoginView.vue'
 import RegisterView from '../views/auth/RegisterView.vue'
 import ForgotPasswordView from '../views/auth/ForgotPasswordView.vue'
+
+import AddTracks from "../views/tracks/AddTracks.vue";
+import DeleteTracks from "../views/tracks/DeleteTracks.vue";
+import UploadTracks from "../views/tracks/UploadTracks.vue";
+
+import AttendanceEdit from "../views/attendance/AttendanceEdit.vue";
 
 export const constantRoutes: RouteRecordRaw[] = [
     {
@@ -15,6 +26,22 @@ export const constantRoutes: RouteRecordRaw[] = [
             { path: '', name: 'home', component: HomeView },
             { path: 'about', name: 'about', component: AboutView }
         ]
+    },
+    {
+        path: '/tracks-management',
+        component: MainLayout, // 轨迹管理
+        children: [
+            { path: 'add-tracks', name: 'addTracks', component: AddTracks },
+            { path: 'delete-tracks', name: 'deleteTracks', component: DeleteTracks },
+            { path: 'upload-tracks', name: 'uploadTracks', component: UploadTracks },
+        ],
+    },
+    {
+        path: '/attendance',
+        component: MainLayout, // 考勤管理
+        children: [
+            { path: 'attendance-edit', name: 'AttendanceEdit', component: AttendanceEdit },
+        ],
     },
     {
         path: '/auth',

@@ -19,7 +19,7 @@
         </el-container>
     </el-container>
 </template>
-
+  
 <script setup lang="ts">
 import { RouterView } from 'vue-router';
 import { Sidebar, Navbar, Footer } from '@/components/layout';
@@ -31,6 +31,46 @@ const menuItems = [
         path: '/',
         children: []
     },
+    {
+        title: '轨迹管理',
+        path: '/tracks-management',
+        children: [
+            {
+                title: '添加轨迹',
+                path: '/tracks-management/add-tracks',
+                children: [] // 更多嵌套
+            },
+            {
+                title: '模板导入',
+                path: '/tracks-management/upload-tracks',
+                children: [] // 更多嵌套
+            },
+            // {
+            //     title: '实时导入',
+            //     path: '/data-management/real-time-upload-tracks',
+            //     children: [] // 更多嵌套
+            // },
+            
+            {
+                title: '删除轨迹',
+                path: '/tracks-management/delete-tracks',
+                children: [] // 更多嵌套
+            },
+            // ...更多子页面
+        ]
+    },
+    {
+        title: '考勤管理',
+        path: '/attendance',
+        children: [
+            {
+                title: '考勤偏移',
+                path: '/attendance/attendance-edit',
+                children: [] // 更多嵌套
+            },
+            // ...更多子页面
+        ]
+    },
     // {
     //     title: '其他页面2',
     //     path: '/about',
@@ -39,7 +79,7 @@ const menuItems = [
     // ...更多顶级菜单项
 ];
 </script>
-
+  
 <style scoped lang="scss">
 .el-header {
     position: fixed; // 设置为固定定位
