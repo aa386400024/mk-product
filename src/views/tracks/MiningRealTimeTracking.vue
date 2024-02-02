@@ -42,19 +42,26 @@
             </template>
             <el-form :model="tracksForm" :rules="rules" ref="tracksRef" size="large" label-width="100px" class="form-grid">
                 <el-form-item label="入井时间" prop="in_station_time">
-                    <el-date-picker v-model="tracksForm.in_station_time" type="datetime" placeholder="选择入井日期时间"
+                    <el-date-picker v-model="tracksForm.in_station_time" type="datetime" format="YYYY-MM-DD HH:mm:ss"
+                        value-format="YYYY-MM-DD HH:mm:ss" placeholder="选择入井时间"
                         :disabledDate="(time: Date) => time.getTime() < Date.now() - 8.64e7"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="出井时间" prop="out_station_time">
-                    <el-date-picker v-model="tracksForm.out_station_time" type="datetime" placeholder="选择出井日期时间"
-                        :disabledDate="(time: Date) => time.getTime() < new Date(tracksForm.in_station_time).getTime()"></el-date-picker>
+                    <el-date-picker v-model="tracksForm.out_station_time" type="datetime" format="YYYY-MM-DD HH:mm:ss"
+                        value-format="YYYY-MM-DD HH:mm:ss" placeholder="选择出井时间"
+                        :disabledDate="disabledDate"></el-date-picker>
                 </el-form-item>
+
+
                 <el-form-item label="班次" prop="shift_time_quantum_id">
                     <el-select v-model="tracksForm.shift_time_quantum_id" placeholder="请选择班次">
                         <el-option label="8点班" value="8"></el-option>
                         <el-option label="4点班" value="4"></el-option>
                         <el-option label="0点班" value="0"></el-option>
                     </el-select>
+                </el-form-item>
+                <el-form-item label="途径点个数" prop="waypoint_count">
+                    <el-input-number v-model="tracksForm.waypoint_count" :min="1" :max="10"></el-input-number>
                 </el-form-item>
             </el-form>
         </el-card>
@@ -74,7 +81,7 @@
                         </el-select>
                     </template>
                 </el-table-column>
-                <el-table-column label="入井时间" sortable>
+                <el-table-column label="途径时间" sortable>
                     <template #default="{ row }">
                         <el-input v-model="row.in_station_time" placeholder="YYYY-MM-DD HH:MM:SS" maxlength="19"
                             @blur="updateDateTime($event.target.value, row)"
@@ -120,6 +127,7 @@ const tracksForm = reactive({
     in_station_time: '',
     out_station_time: '',
     shift_time_quantum_id: '',
+    waypoint_count: 1
 })
 
 const user_code: Ref<string> = ref('');
@@ -135,9 +143,46 @@ const stationOptions = ref([
     // 可以根据需要添加更多选项
 ]);
 
+watch([() => tracksForm.in_station_time, () => tracksForm.out_station_time, () => tracksForm.waypoint_count], () => {
+    if (tracksForm.in_station_time && tracksForm.out_station_time) {
+        const startTime = new Date(tracksForm.in_station_time).getTime();
+        const endTime = new Date(tracksForm.out_station_time).getTime();
+        const count = Math.max(1, tracksForm.waypoint_count); // 确保途径点至少为1
+        tableData.value = [];
+
+        if (count === 1) {
+            // 如果只有一个途径点，直接使用入井和出井时间
+            tableData.value.push({
+                id: 1,
+                station_id: '',
+                in_station_time: tracksForm.in_station_time
+            });
+        } else {
+            // 多个途径点时，计算每个途径点的时间
+            const interval = (endTime - startTime) / (count - 1);
+            for (let i = 0; i < count; i++) {
+                let time = new Date(startTime + interval * i);
+                // 对于第一个和最后一个途径点，直接使用入井和出井时间
+                let formattedTime = formatTime(time);
+                if (i === 0) formattedTime = tracksForm.in_station_time;
+                if (i === count - 1) formattedTime = tracksForm.out_station_time;
+
+                tableData.value.push({
+                    id: i + 1,
+                    station_id: '',
+                    in_station_time: formattedTime
+                });
+            }
+        }
+    }
+}, { deep: true });
+
+
+
+
 // 表格数据
 const tableData = ref<TableRow[]>([
-    { id: 1, station_id: '', in_station_time: '2024-01-02 12:12:21' }
+    { id: 1, station_id: '', in_station_time: '' }
 ])
 
 // 新增行的ID计数器
@@ -160,20 +205,62 @@ const rules = reactive({
     ],
 });
 
+const formatTime = (date: Date) => {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+    const hours = date.getHours().toString().padStart(2, '0');
+    const minutes = date.getMinutes().toString().padStart(2, '0');
+    const seconds = date.getSeconds().toString().padStart(2, '0');
+    return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+}
+
+const disabledDate = (time: Date) => {
+    // 入井时间转换为时间戳
+    const inTime = tracksForm.in_station_time ? new Date(tracksForm.in_station_time).getTime() : null;
+    if (!inTime) {
+        // 如果没有设置入井时间，则不禁用任何日期
+        return false;
+    }
+
+    // 获取当前时间的0时0分0秒的时间戳
+    const today = new Date().setHours(0, 0, 0, 0);
+
+    // 如果选择的日期是今天之前的日期，则禁用
+    if (time.getTime() < today) {
+        return true;
+    }
+
+    // 如果选择的日期是入井日期当天，则只禁用入井时间之前的时间
+    const inDate = new Date(inTime).setHours(0, 0, 0, 0);
+    const selectedDate = new Date(time).setHours(0, 0, 0, 0);
+    if (inDate === selectedDate) {
+        return time.getTime() < inTime;
+    }
+
+    // 如果选择的日期早于入井日期，则禁用
+    return selectedDate < inDate;
+};
+
+
+
 // 新增行
 const addRow = () => {
-    tableData.value.push({ id: nextId++, station_id: '', in_station_time: '2024-01-02 12:12:21' })
+    const newRow = { id: nextId++, station_id: '', in_station_time: '' };
+    tableData.value.push(newRow);
+    tracksForm.waypoint_count = tableData.value.length; // 同步更新计步器的值
 }
 
 // 删除行
 const deleteRow = (row: TableRow) => {
-    const index = tableData.value.findIndex(item => item.id === row.id)
+    const index = tableData.value.findIndex(item => item.id === row.id);
     if (index !== -1) {
-        tableData.value.splice(index, 1)
+        tableData.value.splice(index, 1);
+        tracksForm.waypoint_count = tableData.value.length; // 同步更新计步器的值
     }
 }
 
-// 更新日期时间格式验证
+
 // 更新日期时间格式验证
 const updateDateTime = (value: string, row: TableRow) => {
     const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
@@ -383,7 +470,7 @@ onMounted(async () => {
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            grid-template-columns: repeat(4, 1fr);
             gap: 20px;
 
             .el-form-item {
