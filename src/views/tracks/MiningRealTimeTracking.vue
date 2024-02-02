@@ -239,8 +239,6 @@ const disabledDate = (time: Date) => {
     return selectedDate < inDate;
 };
 
-
-
 // 新增行
 const addRow = () => {
     const newRow = { id: nextId++, station_id: '', in_station_time: '' };
@@ -256,7 +254,6 @@ const deleteRow = (row: TableRow) => {
         tracksForm.waypoint_count = tableData.value.length; // 同步更新计步器的值
     }
 }
-
 
 // 更新日期时间格式验证
 const updateDateTime = (value: string, row: TableRow) => {
