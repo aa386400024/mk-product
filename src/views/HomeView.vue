@@ -1,6 +1,7 @@
 <template>
 	<div class="main-content">
 		<button @click="goToSubApp">Go to Sub App</button>
+		
 		<el-row :gutter="16">
 			<el-col :span="8">
 				<el-card class="box-card" :body-style="{ padding: '0px' }" shadow="hover">

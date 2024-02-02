@@ -30,10 +30,10 @@ export const constantRoutes: RouteRecordRaw[] = [
             { path: 'forgot-password', name: 'forgot-password', component: ForgotPasswordView }
         ]
     },
-    // {
-    //     path: '/app1/*', // 为app1子应用预留的路由
-    //     component: () => import('@/components/micro-frontend/MicroAppContainer.vue')
-    // },
+    {
+        path: '/app1/*', // 为app1子应用预留的路由
+        component: () => import('@/components/micro-frontend/MicroAppContainer.vue')
+    },
     // 可以添加更多路由规则
 ]
 

@@ -1,6 +1,6 @@
 <template>
     <div>
-        <!-- <div v-for="app in microApps" :key="app.name" :id="app.container"></div> -->
+        <div v-for="app in microApps" :key="app.name" :id="app.container"></div>
     </div>
 </template>
   

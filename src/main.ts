@@ -10,8 +10,6 @@ import pinia from './stores';
 import { setupQiankun } from './plugins/qiankun';
 import './permission'
 
-
-setupQiankun();
 const app = createApp(App)
 
 app.use(pinia)
@@ -19,5 +17,6 @@ app.use(router)
 app.use(ElementPlus, {
     locale: zhCn
 })
+setupQiankun();
 
 app.mount('#app')
