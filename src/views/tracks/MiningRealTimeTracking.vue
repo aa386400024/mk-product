@@ -82,8 +82,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column label="途径时间" sortable>
-                    <template #default="{ row }">
-                        <el-input v-model="row.in_station_time" placeholder="YYYY-MM-DD HH:MM:SS" maxlength="19"
+                    <template #default="{ row, $index }">
+                        <el-input v-model="row.in_station_time" placeholder="YYYY-MM-DD HH:MM:SS" maxlength="19" :disabled="$index === 0 || $index === tableData.length - 1"
                             @blur="updateDateTime($event.target.value, row)"
                             @input="(event: any) => restrictInput(event, row)" />
                     </template>
