@@ -67,27 +67,36 @@
         </el-card>
         <el-card class="form-card" shadow="never">
             <template #header>
-                <div class="card-header">下井目的地设置</div>
+                <div class="card-header">下井途径点设置</div>
             </template>
             <el-table :data="tableData" border stripe style="width: 100%"
                 :header-cell-style="{ background: '#304156', color: '#fff' }" max-height="400">
                 <el-table-column type="index" label="序号" width="80" />
-                <el-table-column label="下井目的地">
+                <el-table-column label="途径点">
                     <template #default="{ row }">
-                        <el-select v-model="row.station_id" filterable placeholder="请选择下井目的地">
+                        <el-select v-model="row.station_id" filterable placeholder="请选择途径点">
                             <el-option v-for="(item, index) in stationOptions" :key="index" :label="item.label"
                                 :value="item.value">
                             </el-option>
                         </el-select>
                     </template>
                 </el-table-column>
-                <el-table-column label="途径时间" sortable>
+                <el-table-column label="途径点开始时间">
                     <template #default="{ row, $index }">
-                        <el-input v-model="row.in_station_time" placeholder="YYYY-MM-DD HH:MM:SS" maxlength="19" :disabled="$index === 0 || $index === tableData.length - 1"
-                            @blur="updateDateTime($event.target.value, row)"
+                        <el-input v-model="row.in_station_time" placeholder="YYYY-MM-DD HH:MM:SS" maxlength="19"
+                            :disabled="$index === 0" @blur="updateDateTime($event.target.value, row, 'in')"
                             @input="(event: any) => restrictInput(event, row)" />
                     </template>
                 </el-table-column>
+                <el-table-column label="途径点结束时间">
+                    <template #default="{ row, $index }">
+                        <el-input v-model="row.out_station_time" placeholder="YYYY-MM-DD HH:MM:SS" maxlength="19"
+                            :disabled="$index === tableData.length - 1"
+                            @blur="updateDateTime($event.target.value, row, 'out')"
+                            @input="(event: any) => restrictInput(event, row)" />
+                    </template>
+                </el-table-column>
+
                 <el-table-column label="操作" width="150">
                     <template #default="scope">
                         <el-button size="small" type="danger" @click="deleteRow(scope.row)">删除</el-button>
@@ -121,6 +130,7 @@ interface TableRow {
     id: number;
     station_id: string;
     in_station_time: string;
+    out_station_time: string;
 }
 
 const tracksForm = reactive({
@@ -140,46 +150,59 @@ const stationOptions = ref([
     { label: '目的地A', value: 'A' },
     { label: '目的地B', value: 'B' },
     { label: '目的地C', value: 'C' },
-    // 可以根据需要添加更多选项
+    { label: '目的地D', value: 'D' },
+    { label: '目的地E', value: 'E' },
+    { label: '目的地F', value: 'F' },
+    { label: '目的地G', value: 'G' },
+    { label: '目的地H', value: 'H' },
+    { label: '目的地I', value: 'I' },
+    { label: '目的地J', value: 'J' },
+    { label: '目的地K', value: 'K' },
+    { label: '目的地L', value: 'L' },
 ]);
 
 watch([() => tracksForm.in_station_time, () => tracksForm.out_station_time, () => tracksForm.waypoint_count], () => {
     if (tracksForm.in_station_time && tracksForm.out_station_time) {
         const startTime = new Date(tracksForm.in_station_time).getTime();
         const endTime = new Date(tracksForm.out_station_time).getTime();
-        const count = Math.max(1, tracksForm.waypoint_count); // 确保途径点至少为1
+        const totalTime = endTime - startTime;
+        const count = Math.max(1, tracksForm.waypoint_count);
         tableData.value = [];
 
-        if (count === 1) {
-            // 如果只有一个途径点，直接使用入井和出井时间
-            tableData.value.push({
-                id: 1,
-                station_id: '',
-                in_station_time: tracksForm.in_station_time
-            });
-        } else {
-            // 多个途径点时，计算每个途径点的时间
-            const interval = (endTime - startTime) / (count - 1);
-            for (let i = 0; i < count; i++) {
-                let time = new Date(startTime + interval * i);
-                // 对于第一个和最后一个途径点，直接使用入井和出井时间
-                let formattedTime = formatTime(time);
-                if (i === 0) formattedTime = tracksForm.in_station_time;
-                if (i === count - 1) formattedTime = tracksForm.out_station_time;
+        // 计算每个途径点的时间跨度，包括3分钟的间隔时间
+        // 减去(count - 1) * 3分钟是为了扣除每个间隔时间，以便准确分配每个途径点的时间
+        const timePerWaypoint = (totalTime - (count - 1) * 3 * 60 * 1000) / count;
 
-                tableData.value.push({
-                    id: i + 1,
-                    station_id: '',
-                    in_station_time: formattedTime
-                });
+        for (let i = 0; i < count; i++) {
+            let inTime, outTime;
+
+            if (i === 0) {
+                inTime = new Date(startTime);
+                outTime = new Date(startTime + timePerWaypoint);
+            } else {
+                inTime = new Date(startTime + i * timePerWaypoint + i * 3 * 60 * 1000);
+                outTime = new Date(inTime.getTime() + timePerWaypoint);
             }
+
+            // 确保最后一个途径点的结束时间不超过出井时间
+            if (i === count - 1 && outTime.getTime() > endTime) {
+                outTime = new Date(endTime);
+            }
+
+            tableData.value.push({
+                id: i + 1,
+                station_id: '',
+                in_station_time: formatTime(inTime),
+                out_station_time: formatTime(outTime)
+            });
         }
     }
 }, { deep: true });
 
+
 // 表格数据
 const tableData = ref<TableRow[]>([
-    { id: 1, station_id: '', in_station_time: '' }
+    { id: 1, station_id: '', in_station_time: '', out_station_time: '' }
 ])
 
 // 新增行的ID计数器
@@ -241,10 +264,10 @@ const disabledDate = (time: Date) => {
 
 // 新增行
 const addRow = () => {
-    const newRow = { id: nextId++, station_id: '', in_station_time: '' };
+    const newRow = { id: nextId++, station_id: '', in_station_time: '', out_station_time: '' }; // 确保新行的格式与其他行相匹配
     tableData.value.push(newRow);
     tracksForm.waypoint_count = tableData.value.length; // 同步更新计步器的值
-}
+};
 
 // 删除行
 const deleteRow = (row: TableRow) => {
@@ -253,37 +276,54 @@ const deleteRow = (row: TableRow) => {
         tableData.value.splice(index, 1);
         tracksForm.waypoint_count = tableData.value.length; // 同步更新计步器的值
     }
-}
+};
 
 // 更新日期时间格式验证
-const updateDateTime = (value: string, row: TableRow) => {
-    const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
+const updateDateTime = (value: string, row: TableRow, type: 'in' | 'out') => {
+    const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
     if (!regex.test(value)) {
-        ElMessage.error('日期时间格式不正确，正确格式为YYYY-MM-DD HH:MM:SS')
-        row.in_station_time = ''
-        return false
+        ElMessage.error('日期时间格式不正确，正确格式为YYYY-MM-DD HH:MM:SS');
+        if (type === 'in') {
+            row.in_station_time = '';
+        } else {
+            row.out_station_time = '';
+        }
+        return false;
     }
     const parts = value.split(/[- :]/g);
-    const year = parseInt(parts[0]);
-    const month = parseInt(parts[1]);
-    const day = parseInt(parts[2]);
-    const hour = parseInt(parts[3]);
-    const minute = parseInt(parts[4]);
-    const second = parseInt(parts[5]);
+    const year = parseInt(parts[0], 10);
+    const month = parseInt(parts[1], 10);
+    const day = parseInt(parts[2], 10);
+    const hour = parseInt(parts[3], 10);
+    const minute = parseInt(parts[4], 10);
+    const second = parseInt(parts[5], 10);
     if (month < 1 || month > 12 || day < 1 || day > 31 || hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59) {
-        ElMessage.error('日期或时间不正确')
-        row.in_station_time = ''
-        return false
+        ElMessage.error('日期或时间不正确');
+        if (type === 'in') {
+            row.in_station_time = '';
+        } else {
+            row.out_station_time = '';
+        }
+        return false;
     }
     const maxDay = new Date(year, month, 0).getDate();
     if (day > maxDay) {
-        ElMessage.error('日期不正确')
-        row.in_station_time = ''
-        return false
+        ElMessage.error('日期不正确');
+        if (type === 'in') {
+            row.in_station_time = '';
+        } else {
+            row.out_station_time = '';
+        }
+        return false;
     }
-    row.in_station_time = value
-    return true
-}
+    if (type === 'in') {
+        row.in_station_time = value;
+    } else {
+        row.out_station_time = value;
+    }
+    return true;
+};
+
 
 
 // 限制输入只能为数字和短横线，并且格式必须为YYYY-MM-DD HH:MM:SS
