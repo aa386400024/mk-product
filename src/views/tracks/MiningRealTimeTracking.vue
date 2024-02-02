@@ -42,38 +42,54 @@
             </template>
             <el-form :model="tracksForm" :rules="rules" ref="tracksRef" size="large" label-width="100px" class="form-grid">
                 <el-form-item label="入井时间" prop="in_station_time">
-                    <el-date-picker v-model="tracksForm.in_station_time" type="datetime"
-                        placeholder="选择日期时间"></el-date-picker>
+                    <el-date-picker v-model="tracksForm.in_station_time" type="datetime" placeholder="选择入井日期时间"
+                        :disabledDate="(time: Date) => time.getTime() < Date.now() - 8.64e7"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="出井时间" prop="out_station_time">
-                    <el-date-picker v-model="tracksForm.out_station_time" type="datetime"
-                        placeholder="选择日期时间"></el-date-picker>
+                    <el-date-picker v-model="tracksForm.out_station_time" type="datetime" placeholder="选择出井日期时间"
+                        :disabledDate="(time: Date) => time.getTime() < new Date(tracksForm.in_station_time).getTime()"></el-date-picker>
                 </el-form-item>
                 <el-form-item label="班次" prop="shift_time_quantum_id">
-                    <el-select v-model="tracksForm.shift_time_quantum_id" placeholder="请选择">
+                    <el-select v-model="tracksForm.shift_time_quantum_id" placeholder="请选择班次">
                         <el-option label="8点班" value="8"></el-option>
                         <el-option label="4点班" value="4"></el-option>
                         <el-option label="0点班" value="0"></el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="下井目的地" prop="station_ids">
-                    <el-select v-model="tracksForm.station_ids" filterable multiple placeholder="请选择下井目的地">
-                        <el-option v-for="(item, index) in stationOptions" :key="index" :label="item.label"
-                            :value="item.value">
-                        </el-option>
                     </el-select>
                 </el-form-item>
             </el-form>
         </el-card>
         <el-card class="form-card" shadow="never">
             <template #header>
-                <div class="card-header">下井目的地排序</div>
+                <div class="card-header">下井目的地设置</div>
             </template>
-            <draggable v-model="sortedStations" class="drag-list" item-key="id">
-                <template #item="{ element }">
-                    <div>{{ element.name }}</div>
-                </template>
-            </draggable>
+            <el-table :data="tableData" border stripe style="width: 100%"
+                :header-cell-style="{ background: '#304156', color: '#fff' }" max-height="400">
+                <el-table-column type="index" label="序号" width="80" />
+                <el-table-column label="下井目的地">
+                    <template #default="{ row }">
+                        <el-select v-model="row.station_id" filterable placeholder="请选择下井目的地">
+                            <el-option v-for="(item, index) in stationOptions" :key="index" :label="item.label"
+                                :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </template>
+                </el-table-column>
+                <el-table-column label="入井时间" sortable>
+                    <template #default="{ row }">
+                        <el-input v-model="row.in_station_time" placeholder="YYYY-MM-DD HH:MM:SS" maxlength="19"
+                            @blur="updateDateTime($event.target.value, row)"
+                            @input="(event: any) => restrictInput(event, row)" />
+                    </template>
+                </el-table-column>
+                <el-table-column label="操作" width="150">
+                    <template #default="scope">
+                        <el-button size="small" type="danger" @click="deleteRow(scope.row)">删除</el-button>
+                    </template>
+                </el-table-column>
+            </el-table>
+            <div class="add-row-container" @click="addRow">
+                <span>点击此处新增一行</span>
+            </div>
             <template #footer>
                 <div class="footer-view"><el-button class="submit-button" size="large" type="primary"
                         @click="submitForm(tracksRef)">添加入井实时轨迹</el-button></div>
@@ -87,37 +103,45 @@ import { ref, Ref, reactive, onMounted, watch } from 'vue';
 import type { FormInstance } from 'element-plus';
 import { ElMessage } from 'element-plus';
 import { addMoreData, GetStationInfo } from "@/api/tracks/tracks";
-import draggable from 'vuedraggable';
 
 interface StationOption {
     label: string;
     value: string | number;
 }
 
-interface SortedStation {
-    id: string | number;
-    name: string;
+// 表格行数据接口
+interface TableRow {
+    id: number;
+    station_id: string;
+    in_station_time: string;
 }
 
 const tracksForm = reactive({
     in_station_time: '',
     out_station_time: '',
     shift_time_quantum_id: '',
-    station_ids: []
 })
 
 const user_code: Ref<string> = ref('');
 const userInfoData: Ref<any> = ref(null);
 const tracksRef = ref<FormInstance>();
 const userCodeRef = ref<FormInstance>();
-const stationOptions: Ref<Array<StationOption>> = ref([]);
-const sortedStations = ref<Array<SortedStation>>([
-    { id: 1, name: '地点 A' },
-    { id: 2, name: '地点 B' },
-    { id: 3, name: '地点 C' },
-    { id: 4, name: '地点 D' },
+
+// 目的地选择选项
+const stationOptions = ref([
+    { label: '目的地A', value: 'A' },
+    { label: '目的地B', value: 'B' },
+    { label: '目的地C', value: 'C' },
+    // 可以根据需要添加更多选项
 ]);
 
+// 表格数据
+const tableData = ref<TableRow[]>([
+    { id: 1, station_id: '', in_station_time: '2024-01-02 12:12:21' }
+])
+
+// 新增行的ID计数器
+let nextId = 2
 
 // 定义校验规则
 const rules = reactive({
@@ -134,21 +158,60 @@ const rules = reactive({
     shift_time_quantum_id: [
         { required: true, message: '请选择班次', trigger: 'change' }
     ],
-    station_ids: [
-        { required: true, message: '请选择下井目的地', trigger: 'change' }
-    ],
 });
 
-// 监听tracksForm.station_id的变化，更新sortedStations
-watch(() => tracksForm.station_ids, (newValue) => {
-    // 使用类型断言确保 newValue 是一个数组
-    const newValues = newValue as Array<string | number>;
-    sortedStations.value = newValues.map(value => {
-        const foundOption = stationOptions.value.find(option => option.value === value);
-        return foundOption ? { id: value, name: foundOption.label } : { id: '', name: '' };
-    });
-}, { deep: true });
+// 新增行
+const addRow = () => {
+    tableData.value.push({ id: nextId++, station_id: '', in_station_time: '2024-01-02 12:12:21' })
+}
 
+// 删除行
+const deleteRow = (row: TableRow) => {
+    const index = tableData.value.findIndex(item => item.id === row.id)
+    if (index !== -1) {
+        tableData.value.splice(index, 1)
+    }
+}
+
+// 更新日期时间格式验证
+// 更新日期时间格式验证
+const updateDateTime = (value: string, row: TableRow) => {
+    const regex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/
+    if (!regex.test(value)) {
+        ElMessage.error('日期时间格式不正确，正确格式为YYYY-MM-DD HH:MM:SS')
+        row.in_station_time = ''
+        return false
+    }
+    const parts = value.split(/[- :]/g);
+    const year = parseInt(parts[0]);
+    const month = parseInt(parts[1]);
+    const day = parseInt(parts[2]);
+    const hour = parseInt(parts[3]);
+    const minute = parseInt(parts[4]);
+    const second = parseInt(parts[5]);
+    if (month < 1 || month > 12 || day < 1 || day > 31 || hour < 0 || hour > 23 || minute < 0 || minute > 59 || second < 0 || second > 59) {
+        ElMessage.error('日期或时间不正确')
+        row.in_station_time = ''
+        return false
+    }
+    const maxDay = new Date(year, month, 0).getDate();
+    if (day > maxDay) {
+        ElMessage.error('日期不正确')
+        row.in_station_time = ''
+        return false
+    }
+    row.in_station_time = value
+    return true
+}
+
+
+// 限制输入只能为数字和短横线，并且格式必须为YYYY-MM-DD HH:MM:SS
+const restrictInput = (event: any, row: TableRow) => {
+    const regex = /^(\d{0,4}|\d{4}-\d{0,2}|\d{4}-\d{2}-\d{0,2}|\d{4}-\d{2}-\d{2} \d{0,2}|\d{4}-\d{2}-\d{2} \d{2}:\d{0,2}|\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{0,2})$/
+    if (!regex.test(event)) {
+        row.in_station_time = row.in_station_time.slice(0, -1)
+    }
+}
 
 const fetchUserinfoAPI = async () => {
     try {
@@ -237,33 +300,24 @@ onMounted(async () => {
         --el-date-editor-width: 100%; // 设置日期编辑器的宽度为 100%
     }
 
-    .sort-title {
-        margin-top: 20px; // 在标题和上一个表单项之间添加一些间距
-        padding-left: 10px; // 与排序列表的内边距对齐
-        font-size: 16px; // 根据需要调整字体大小
-        font-weight: bold; // 加粗字体以突出显示
-        color: #606266; // 标题颜色，可根据实际UI调整
-    }
-
-    .drag-list {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px; // 根据需要调整间隙大小
-        padding: 10px;
-        border-radius: 4px; // 添加圆角
-
-        > div {
-            padding: 5px 10px;
-            background-color: #fff;
-            border: 1px solid #dcdfe6;
-            border-radius: 4px;
-            box-shadow: 0 2px 4px rgb(0 0 0 / 10%);
-            cursor: grab; // 更改鼠标样式以指示这些项可以拖动
-        }
-    }
-
     .form-card {
         margin-bottom: 15px;
+
+        .add-row-container {
+            margin-top: 10px;
+            padding: 6px 0;
+            text-align: center;
+            border: 2px dashed $border-color-medium;
+            cursor: pointer;
+            color: $color-primary;
+            font-size: 14px;
+            border-radius: 4px;
+
+            &:hover {
+                background-color: #f5f7fa;
+            }
+        }
+
 
         .footer-view {
             display: flex;
@@ -329,17 +383,14 @@ onMounted(async () => {
 
         .form-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: repeat(3, 1fr);
             gap: 20px;
 
             .el-form-item {
+                margin: 0;
+                padding: 0;
                 display: flex;
                 align-items: center;
-
-                &:last-child {
-                    grid-column: span 1; // 让提交按钮占据整行
-                    text-align: center;
-                }
 
                 .el-input,
                 .el-input-number,
@@ -356,8 +407,6 @@ onMounted(async () => {
         margin-top: 20px;
         border-radius: 8px;
     }
-
-
 
     .text.item {
         display: flex;
