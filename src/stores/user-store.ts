@@ -14,6 +14,15 @@ interface UserState {
     accessToken: string | null
 }
 
+// 模拟的用户数据
+const mockUsers = [
+    { username: 'xy1', password: 'xy@142536..$', roles: ['user'] },
+    { username: 'xy2', password: 'xy@142536..$', roles: ['user'] },
+    { username: 'xy3', password: 'xy@142536..$', roles: ['user'] },
+    { username: 'xy4', password: 'xy@142536..$', roles: ['user'] },
+    { username: 'xy5', password: 'xy@142536..$', roles: ['user'] },
+];
+
 export const useUserStore = defineStore('user', {
     persist: true,
     state: (): UserState => ({
@@ -22,11 +31,18 @@ export const useUserStore = defineStore('user', {
         accessToken: null // 初始状态为null
     }),
     actions: {
-        login() {
-            // 实现登录逻辑
-            this.isLoggedIn = true
-            this.accessToken = 'your-token'
-            router.push({ name: 'home' })
+        login(username: string, password: string) {
+            const user = mockUsers.find(u => u.username === username && u.password === password);
+            if (user) {
+                // 用户认证成功
+                this.isLoggedIn = true;
+                this.userinfo = { username: user.username, roles: user.roles };
+                this.accessToken = 'mock-token'; // 模拟 token
+                router.push({ name: 'home' });
+            } else {
+                // 用户认证失败
+                throw new Error('登录失败，请检查您的用户名和密码。');
+            }
         },
 
         getUserInfo() {

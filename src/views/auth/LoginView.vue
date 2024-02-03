@@ -40,13 +40,16 @@ const userStore = useUserStore();
 
 // Method to handle login
 const handleLogin = () => {
-    // 检查用户名和密码是否已输入
     if (!loginForm.value.username || !loginForm.value.password) {
         ElMessage.error('请输入账号和密码');
         return;
     }
 
-    userStore.login();
+    try {
+        userStore.login(loginForm.value.username, loginForm.value.password);
+    } catch (error: any) {
+        ElMessage.error(error.message);
+    }
 };
 </script>
   
