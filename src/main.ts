@@ -9,8 +9,12 @@ import router from './router'
 import pinia from './stores';
 import { setupQiankun } from './plugins/qiankun';
 import './permission'
+import { SvgIcon } from './components/icons';
 
 const app = createApp(App)
+
+// 全局注册 SvgIcon 组件
+app.component('SvgIcon', SvgIcon);
 
 app.use(pinia)
 app.use(router)
