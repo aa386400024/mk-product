@@ -69,6 +69,7 @@
             <template #header>
                 <div class="card-header">下井途径点设置</div>
             </template>
+            {{ tableData }}
             <el-table :data="tableData" border stripe style="width: 100%"
                 :header-cell-style="{ background: '#304156', color: '#fff' }" max-height="400">
                 <el-table-column type="index" label="序号" width="80" />
@@ -167,10 +168,12 @@ watch([() => tracksForm.in_station_time, () => tracksForm.out_station_time, () =
         const endTime = new Date(tracksForm.out_station_time).getTime();
         const totalTime = endTime - startTime;
         const count = Math.max(1, tracksForm.waypoint_count);
-        tableData.value = [];
 
-        // 计算每个途径点的时间跨度，包括3分钟的间隔时间
-        // 减去(count - 1) * 3分钟是为了扣除每个间隔时间，以便准确分配每个途径点的时间
+        // 保存现有的 station_id 值
+        const existingStationIds = tableData.value.map(row => row.station_id);
+
+        tableData.value = []; // 清空数组前先保存station_id
+
         const timePerWaypoint = (totalTime - (count - 1) * 3 * 60 * 1000) / count;
 
         for (let i = 0; i < count; i++) {
@@ -184,20 +187,23 @@ watch([() => tracksForm.in_station_time, () => tracksForm.out_station_time, () =
                 outTime = new Date(inTime.getTime() + timePerWaypoint);
             }
 
-            // 确保最后一个途径点的结束时间不超过出井时间
             if (i === count - 1 && outTime.getTime() > endTime) {
                 outTime = new Date(endTime);
             }
 
+            // 在这里重新应用保存的 station_id
+            const stationId = existingStationIds[i] || ''; // 如果不存在则默认为空字符串
+
             tableData.value.push({
                 id: i + 1,
-                station_id: '',
+                station_id: stationId,
                 in_station_time: formatTime(inTime),
                 out_station_time: formatTime(outTime)
             });
         }
     }
 }, { deep: true });
+
 
 
 // 表格数据
