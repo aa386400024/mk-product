@@ -20,19 +20,29 @@ import { ref } from 'vue';
 import { RouterView } from 'vue-router';
 import { VerticalMenu } from '@/components/layout';
 
+
 const menuItems = ref([
     { name: '首页', icon: 'home', active: true, path: '/' },
+    { name: '对话', icon: 'chat', active: false, path: '/chat' },
+    { name: '知识库', icon: 'knowledge-base', active: false, path: '/knowledge-base' },
     { name: '关于', icon: 'home', active: false, path: '/about' },
 ]); 
 </script>
 
 <style scoped lang="scss">
 .el-aside {
+    width: 72px;
+    position: relative;
+}
+
+.el-scrollbar {
+    position: absolute;
+    right: 0;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60px;
+    width: 72px;
+    height: 100%;
 }
-
 </style>
   

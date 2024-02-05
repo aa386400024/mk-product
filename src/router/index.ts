@@ -12,12 +12,17 @@ import LoginView from '../views/auth/LoginView.vue'
 import RegisterView from '../views/auth/RegisterView.vue'
 import ForgotPasswordView from '../views/auth/ForgotPasswordView.vue'
 
+import ChatView from '../views/chat/index.vue';
+import KnowledgeBase from '../views/knowledge-base/index.vue';
+
 export const constantRoutes: RouteRecordRaw[] = [
     {
         path: '/',
         component: MainLayout, // 使用主布局
         children: [
             { path: '', name: 'home', component: HomeView },
+            { path: 'chat', name: 'chat', component: ChatView },
+            { path: 'knowledge-base', name: 'knowledgeBase', component: KnowledgeBase },
             { path: 'about', name: 'about', component: AboutView }
         ]
     },
