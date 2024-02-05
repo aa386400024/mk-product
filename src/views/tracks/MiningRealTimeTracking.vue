@@ -69,7 +69,6 @@
             <template #header>
                 <div class="card-header">下井途径点设置</div>
             </template>
-            {{ tableData }}
             <el-table :data="tableData" border stripe style="width: 100%"
                 :header-cell-style="{ background: '#304156', color: '#fff' }" max-height="400">
                 <el-table-column type="index" label="序号" width="80" />
@@ -108,8 +107,24 @@
                 <span>点击此处新增一行</span>
             </div>
             <template #footer>
-                <div class="footer-view"><el-button class="submit-button" size="large" type="primary"
-                        @click="submitForm(tracksRef)">添加入井实时轨迹</el-button></div>
+                <div class="footer-view">
+                    <el-button 
+                        class="submit-button" 
+                        size="large" 
+                        type="primary"
+                        @click="submitForm(tracksRef)"
+                    >
+                        预览实时轨迹
+                    </el-button>
+                    <el-button 
+                        class="submit-button" 
+                        size="large" 
+                        type="danger"
+                        @click="submitForm(tracksRef)"
+                    >
+                        添加入井实时轨迹
+                    </el-button>
+                </div>
             </template>
         </el-card>
     </div>
@@ -449,7 +464,7 @@ onMounted(async () => {
         .footer-view {
             display: flex;
             justify-content: center;
-
+            margin-bottom: 20px;
             .submit-button {
                 width: 200px;
             }
