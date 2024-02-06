@@ -3,7 +3,7 @@
 </template>
   
 <script setup lang="ts">
-import { computed, defineProps, onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 // 定义接收的属性
 const props = defineProps({

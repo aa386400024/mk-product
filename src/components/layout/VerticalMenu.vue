@@ -23,7 +23,7 @@
 
 <script setup lang="ts">
 // 导入 Vue 3 的 API
-import { defineProps, onMounted } from 'vue';
+import { onMounted } from 'vue';
 // 导入 Vue Router
 import { useRouter } from 'vue-router';
 

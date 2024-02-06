@@ -12,7 +12,7 @@ import LoginView from '../views/auth/LoginView.vue'
 import RegisterView from '../views/auth/RegisterView.vue'
 import ForgotPasswordView from '../views/auth/ForgotPasswordView.vue'
 
-import ChatView from '../views/chat/index.vue';
+import ChatView from '../views/chat/ChatView.vue';
 import KnowledgeBase from '../views/knowledge-base/index.vue';
 
 export const constantRoutes: RouteRecordRaw[] = [

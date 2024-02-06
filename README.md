@@ -260,8 +260,8 @@ my-product
     ├─router                  # 路由配置
     │      index.ts           # 路由配置文件
     │
-    ├─services                # 服务层
-    │      authService.ts     # 认证服务
+    ├─utils                   # 工具
+    │      loading-service.ts # 加载状态
     │
     ├─stores                  # 状态管理
     │      user-store.ts       # 用户状态

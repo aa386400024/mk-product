@@ -26,7 +26,10 @@ const menuItems = ref([
     { name: '对话', icon: 'chat', active: false, path: '/chat' },
     { name: '知识库', icon: 'knowledge-base', active: false, path: '/knowledge-base' },
     { name: '关于', icon: 'home', active: false, path: '/about' },
-]); 
+]);
+
+// 定义响应式属性来控制内边距
+const adjustPadding = ref(true);
 </script>
 
 <style scoped lang="scss">
