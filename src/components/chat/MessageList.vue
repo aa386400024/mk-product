@@ -5,7 +5,7 @@
 </template>
   
 <script setup lang="ts">
-import { defineProps } from 'vue';
+import { nextTick, onUpdated } from 'vue';
 import MessageItem from './MessageItem.vue';
 
 const props = defineProps<{
@@ -16,15 +16,26 @@ const props = defineProps<{
         avatar: string,
     }>
 }>();
+
+// 添加滚动到底部的方法
+const scrollToBottom = () => {
+    nextTick(() => {
+        const container = document.querySelector('.message-list');
+        if (container) {
+            container.scrollTop = container.scrollHeight;
+        }
+    });
+};
+
+onUpdated(scrollToBottom);
 </script>
   
 <style scoped lang="scss">
 .message-list {
+    height: calc(100% - 130px);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    padding: 10px;
-    max-height: 500px; // Adjust according to your needs
+    padding: 30px 10px;
 }
 </style>
-  

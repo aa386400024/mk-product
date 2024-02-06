@@ -1,94 +1,94 @@
 <template>
-    <div>
-        <div class="message-item" :class="{ 'is-sent': message.isSent }">
-            <div class="avatar">
-                <img :src="message.avatar" alt="User avatar" />
+    <div class="message-item" :class="{ 'is-sent': message.isSent }">
+        <div class="avatar">
+            <img :src="message.avatar" alt="User avatar" />
+        </div>
+        <div class="message-content">
+            <div class="time">{{ message.time }}</div>
+            <div class="content">
+                <MarkdownRenderer :markdown="message.text" />
             </div>
-            <div class="message-content">
-                <div class="time">{{ message.time }}</div>
-                <div class="content">
-                    <MarkdownRenderer :markdown="message.text" />
-                </div>
-                <div class="tools">
-                    <SvgIcon v-for="item in toolItems" :key="item.icon" :name="item.icon" :size="'24px'" class="icon"
-                        @click="() => handleToolClick(item.icon)" />
-                </div>
+            <div class="tools">
+                <SvgIcon v-for="item in toolItems" :key="item.icon" :name="item.icon" :size="'24px'" class="icon"
+                    @click="() => handleToolClick(item.icon)" />
             </div>
         </div>
     </div>
 </template>
-  
+
 <script setup lang="ts">
-import { defineProps, computed } from 'vue';
+import { defineProps, computed } from 'vue'
 import { ElMessage } from 'element-plus'
-import MarkdownRenderer from '@/components/markdown/MarkdownRenderer.vue';
+import MarkdownRenderer from '@/components/markdown/MarkdownRenderer.vue'
 
 const props = defineProps<{
     message: {
-        text: string,
-        time: string,
-        isSent: boolean,
-        avatar: string,
+        text: string
+        time: string
+        isSent: boolean
+        avatar: string
     }
-}>();
+}>()
 
-const toolItems = computed(() => props.message.isSent ? [
-    { icon: 'resend', label: '重发' },
-    { icon: 'copy', label: '复制' },
-] : [
-    { icon: 'voice', label: '语音播报' },
-    { icon: 'copy', label: '复制' },
-    { icon: 'like', label: '点赞' },
-    { icon: 'dislike', label: '踩' },
-    { icon: 'word', label: '导出Word' },
-]);
+const toolItems = computed(() =>
+    props.message.isSent
+        ? [
+            { icon: 'resend', label: '重发' },
+            { icon: 'copy', label: '复制' }
+        ]
+        : [
+            { icon: 'voice', label: '语音播报' },
+            { icon: 'copy', label: '复制' },
+            { icon: 'like', label: '点赞' },
+            { icon: 'dislike', label: '踩' },
+            { icon: 'word', label: '导出Word' }
+        ]
+)
 
 const copyTextToClipboard = async (text: string) => {
     try {
-        await navigator.clipboard.writeText(text);
-        ElMessage.success('消息文本已成功复制到剪贴板。');
+        await navigator.clipboard.writeText(text)
+        ElMessage.success('文本已复制到剪贴板。')
     } catch (err) {
-        ElMessage.error('无法复制文本，请手动复制或检查浏览器权限。');
-        console.error('Failed to copy: ', err);
+        ElMessage.error('无法复制文本，请手动复制或检查浏览器权限。')
+        console.error('Failed to copy: ', err)
     }
-};
+}
 
 const handleToolClick = (iconName: string) => {
-    console.log(`${iconName} clicked`);
+    console.log(`${iconName} clicked`)
     // 根据iconName执行不同的逻辑
     switch (iconName) {
         case 'resend':
             // 重发逻辑
-            break;
+            break
         case 'copy':
             // 复制逻辑
-            copyTextToClipboard(props.message.text);
-            break;
+            copyTextToClipboard(props.message.text)
+            break
         case 'voice':
             // 语音播报逻辑
-            break;
+            break
         case 'like':
             // 点赞逻辑
-            break;
+            break
         case 'dislike':
             // 踩逻辑
-            break;
+            break
         case 'word':
             // 导出Word逻辑
-            break;
+            break
         default:
-            console.log('未知工具操作');
+            console.log('未知工具操作')
     }
-};
-
-
+}
 </script>
 
 <style scoped lang="scss">
 .message-item {
     display: flex;
     align-items: flex-start;
-    margin-bottom: 30px;
+    padding: 0 10px 20px 10px;
 
     &.is-sent {
         flex-direction: row-reverse;
@@ -107,10 +107,10 @@ const handleToolClick = (iconName: string) => {
 
     .avatar {
         flex-shrink: 0;
-        width: 40px;
-        height: 40px;
+        width: 36px;
+        height: 36px;
         overflow: hidden;
-        border-radius: 20px;
+        border-radius: 50%;
 
         img {
             width: 100%;
@@ -138,10 +138,8 @@ const handleToolClick = (iconName: string) => {
     }
 
     &.is-sent .content {
-        background-color: #dcf8c6;
-        /* 设定发送消息的背景颜色为浅蓝色 */
+        background-color: #fff2d0;
     }
-
 
     .content {
         padding: 8px;
@@ -174,7 +172,7 @@ const handleToolClick = (iconName: string) => {
 
             &:hover {
                 background-color: $gray-600;
-                color: #ffd04b;
+                color: $color-theme;
             }
         }
     }

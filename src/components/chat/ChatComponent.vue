@@ -2,12 +2,13 @@
     <div class="main-content">
         <!-- <MessageList :messages="chatStore.messages" /> -->
         <MessageList :messages="mockMessages" />
-        <InputArea @sendMessage="sendMessage" />
+        <InputArea @sendMessage="sendMessage"  class="input-area"/>
     </div>
 </template>
   
 <script setup lang="ts">
 import { onMounted, onUnmounted, inject, ref } from 'vue';
+import { format } from 'date-fns';
 import { useChatStore } from '@/stores/use-chat-store';
 import MessageList from './MessageList.vue';
 import InputArea from './InputArea.vue';
@@ -48,7 +49,7 @@ const socketPlugin = inject('socket') as any; // 使用时确保已正确提供�
 const sendMessage = (message: string) => {
     const newMessage = {
         text: message,
-        time: new Date().toLocaleTimeString(),
+        time: format(new Date(), 'yyyy-MM-dd HH:mm:ss'),
         isSent: true,
         avatar: "https://via.placeholder.com/40", // 假设的用户头像URL
     };
@@ -70,6 +71,14 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 .main-content {
-    padding: 15px 0 15px 0;
+    height: 100%;
+    padding: 0 0 15px 0;
+    position: relative;
+    .input-area {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        right: 0;
+    }
 }
 </style>
