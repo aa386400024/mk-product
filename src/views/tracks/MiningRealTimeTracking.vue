@@ -450,8 +450,12 @@ const updateSelectedStation = (row: any, selectedOption: any) => {
 
 // 点击表格某行的查看轨迹
 const handleClickReviewTracks = (rowData: any) => {
+    // 检查是否已获取用户信息
+    if (!userInfoData.value || userInfoData.value.length === 0 || !userInfoData.value[0].name) {
+        ElMessage.error('请先查询并确认员工信息');
+        return; // 提前退出函数，不执行表单提交
+    }
     selectedRow.value = rowData
-    console.log(rowData, 'rowDatarowData')
     const params = {
         in_station_time: rowData.in_station_time,
         out_station_time: rowData.out_station_time,
@@ -618,9 +622,12 @@ const saveDataByMoreStationAPI = async () => {
         }
         // 调用表格数据接口
         const response = await saveDataByMoreStation(params);
-        const { code, data } = response.data || {}
+        const { code } = response.data || {}
         if (code == 1) {
             ElMessage.success('数据提交成功');
+            setTimeout(() => {
+                fetchTaskProgressAPI()
+            }, 2000);
         } else {
             ElMessage.error('数据提交失败，请重试');
         }
