@@ -46,7 +46,7 @@ const menuItems = [
                 children: [] // 更多嵌套
             },
             {
-                title: '入井实时轨迹添加',
+                title: '无中生有',
                 path: '/tracks-management/mining-track-add',
                 children: [] // 更多嵌套
             },
