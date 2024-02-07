@@ -50,7 +50,6 @@ const menuItems = [
                 path: '/tracks-management/mining-track-add',
                 children: [] // 更多嵌套
             },
-            
             {
                 title: '删除轨迹',
                 path: '/tracks-management/delete-tracks',
