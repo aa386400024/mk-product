@@ -21,6 +21,7 @@ const mockUsers = [
     { username: 'xy3', password: 'xy@142536..$', roles: ['user'] },
     { username: 'xy4', password: 'xy@142536..$', roles: ['user'] },
     { username: 'xy5', password: 'xy@142536..$', roles: ['user'] },
+    { username: 'xyadmin', password: 'xy@147258_@$&', roles: ['user'] },
 ];
 
 export const useUserStore = defineStore('user', {

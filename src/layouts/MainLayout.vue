@@ -46,7 +46,7 @@ const menuItems = [
                 children: [] // 更多嵌套
             },
             {
-                title: '无中生有',
+                title: '新元测试',
                 path: '/tracks-management/mining-track-add',
                 children: [] // 更多嵌套
             },

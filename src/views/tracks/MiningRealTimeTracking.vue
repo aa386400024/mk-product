@@ -193,6 +193,7 @@ interface StationOption {
 interface SelectedStation {
     label: string
     value: string | number
+    station_name: string
 }
 
 // 表格行数据接口
@@ -444,7 +445,6 @@ const restrictInput = (event: any, row: TableRow) => {
 // 更新选中的途径点
 const updateSelectedStation = (row: any, selectedOption: any) => {
     // 假设row有一个属性叫selectedStation来存储选中的整个对象
-    console
     row.selectedStation = selectedOption;
 };
 
@@ -456,7 +456,7 @@ const handleClickReviewTracks = (rowData: any) => {
         in_station_time: rowData.in_station_time,
         out_station_time: rowData.out_station_time,
         left_or_right: 1,
-        station_name: rowData.selectedStation?.label || '未选择',
+        station_name: rowData.selectedStation?.station_name || '未选择',
     }
     GenerateDataByStationAPI(params)
 }
@@ -529,7 +529,8 @@ const GetStationInfoAPI = async () => {
         if (code == 1) {
             stationOptions.value = data.map((item: [string, string]) => ({
                 label: `${item[1]}(${item[0]})`,  // 显示的文本
-                value: item[1]   // 实际的值
+                value: item[1],   // 实际的值
+                station_name: item[0]
             }));
         } else {
             stationOptions.value = []
