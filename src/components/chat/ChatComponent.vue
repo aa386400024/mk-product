@@ -1,7 +1,7 @@
 <template>
     <div class="main-content">
-        <!-- <MessageList :messages="chatStore.messages" /> -->
-        <MessageList :messages="mockMessages" />
+        <MessageList :messages="chatStore.messages" />
+        <!-- <MessageList :messages="mockMessages" /> -->
         <InputArea @sendMessage="sendMessage"  class="input-area"/>
     </div>
 </template>
@@ -53,9 +53,10 @@ const sendMessage = (message: string) => {
         isSent: true,
         avatar: "https://via.placeholder.com/40", // 假设的用户头像URL
     };
-    mockMessages.value.push(newMessage);
+    // mockMessages.value.push(newMessage);
     // 调用WebSocketPlugin的sendMessage方法发送消息
-    socketPlugin.sendMessage(message);
+    console.log(newMessage, 'newMessage')
+    socketPlugin.sendMessage(newMessage);
 };
 
 onMounted(() => {
