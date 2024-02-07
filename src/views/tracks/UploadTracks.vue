@@ -76,7 +76,6 @@
                     <el-table-column label="方向">
                         <template #default="{ row }">
                             <el-radio-group v-model="row.left_or_right">
-                                {{ row }}
                                 <el-radio :label="1">左</el-radio>
                                 <el-radio :label="2">右</el-radio>
                             </el-radio-group>
