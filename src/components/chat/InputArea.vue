@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue'
+import { ref } from 'vue'
 
 // 使用const定义组件事件发射器
 const emit = defineEmits(['sendMessage'])
