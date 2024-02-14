@@ -15,15 +15,12 @@ import { ChatComponent, HistoryChatSidebar } from "@/components/chat";
 
 const isSidebarCollapsed = ref(false);
 
-const handleSidebarCollapse = (collapsed) => {
+const handleSidebarCollapse = (collapsed: boolean) => {
     isSidebarCollapsed.value = collapsed;
 };
 </script>
 
 <style lang="scss" scoped>
-::v-deep(.el-main) {
-    --el-main-padding: 0 !important;
-}
 .el-row {
     height: 100%;
 }

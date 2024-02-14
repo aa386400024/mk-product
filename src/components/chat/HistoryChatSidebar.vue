@@ -22,7 +22,7 @@
 
         <!-- 展开/收起控制按钮 -->
         <div class="collapse-icon" @click="toggleSidebar">
-            <SvgIcon :name="'home'" class="icon" size="24" />
+            <SvgIcon :name="'collapsed-left'" class="icon" size="16" />
         </div>
     </aside>
 </template>
@@ -140,12 +140,23 @@ onMounted(fetchChats);
     }
 
     .collapse-icon {
+        width: 18px;
+        height: 50px;
+        background-color: $gray-700;
         position: absolute;
         top: 50%;
-        right: -20px; // 根据需要调整
+        right: -18px; // 根据需要调整
         cursor: pointer;
         transform: translateY(-50%);
         z-index: 100;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 0 10px 10px 0;
+        .icon {
+            display: flex;
+            color: $gray-300;
+        }
     }
 
     // 侧边栏样式
