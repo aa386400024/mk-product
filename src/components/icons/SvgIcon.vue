@@ -65,9 +65,9 @@ onMounted(async () => {
 </script>
   
 <style lang="scss" scoped>
-.svg-icon {
-    display: block;
-}
+// .svg-icon {
+//     display: inline-block;
+// }
 
 </style>
   

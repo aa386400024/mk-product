@@ -36,6 +36,6 @@ onUpdated(scrollToBottom);
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    padding: 30px 10px;
+    padding: 20px; 
 }
 </style>

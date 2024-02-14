@@ -39,7 +39,6 @@ const handleSend = () => {
 <style scoped lang="scss">
 .input-area {
     position: relative;
-    margin: auto 20px;
 
     ::v-deep(.el-textarea) {
         --el-input-focus-border: 1px solid #ffd04b;

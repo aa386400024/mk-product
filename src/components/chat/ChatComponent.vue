@@ -1,7 +1,7 @@
 <template>
     <div class="main-content">
-        <MessageList :messages="chatStore.messages" />
-        <!-- <MessageList :messages="mockMessages" /> -->
+        <!-- <MessageList :messages="chatStore.messages" /> -->
+        <MessageList :messages="mockMessages" />
         <InputArea @sendMessage="sendMessage"  class="input-area"/>
     </div>
 </template>
@@ -41,6 +41,30 @@ const mockMessages = ref([
         isSent: false,
         avatar: "https://via.placeholder.com/40",
     },
+    {
+        text: "我想了解更多关于你们产品的信息。",
+        time: "10:06 AM",
+        isSent: false,
+        avatar: "https://via.placeholder.com/40",
+    },
+    {
+        text: "我想了解更多关于你们产品的信息。",
+        time: "10:06 AM",
+        isSent: false,
+        avatar: "https://via.placeholder.com/40",
+    },
+    {
+        text: "我想了解更多关于你们产品的信息。",
+        time: "10:06 AM",
+        isSent: false,
+        avatar: "https://via.placeholder.com/40",
+    },
+    {
+        text: "我想了解更多关于你们产品的信息。",
+        time: "10:06 AM",
+        isSent: false,
+        avatar: "https://via.placeholder.com/40",
+    },
 ]);
 
 // 从provide/inject获取WebSocketPlugin实例
@@ -72,14 +96,14 @@ onUnmounted(() => {
 
 <style scoped lang="scss">
 .main-content {
-    height: 100%;
-    padding: 0 0 15px 0;
+    height: 100vh;
+    // padding: 20px 0 40px 10px; 
     position: relative;
     .input-area {
         position: absolute;
         bottom: 10px;
-        left: 0;
-        right: 0;
+        left: 20px;
+        right: 20px;
     }
 }
 </style>
