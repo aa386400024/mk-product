@@ -12,7 +12,7 @@
                 <SvgIcon :name="'home'" :size="'24px'" class="icon" @click="handleSend" />
             </div>
             <div>
-                <SvgIcon :name="'home'" :size="'24px'" class="icon" @click="handleSend" />
+                <SvgIcon :name="'send'" :size="'24px'" class="icon" @click="handleSend" />
             </div>
         </div>
     </div>

@@ -19,11 +19,6 @@
                 </ul>
             </section>
         </el-scrollbar>
-
-        <!-- 展开/收起控制按钮 -->
-        <div class="collapse-icon" @click="toggleSidebar">
-            <SvgIcon :name="'collapsed'" class="icon" size="16" />
-        </div>
     </aside>
 </template>
   
@@ -81,17 +76,6 @@ const state = reactive({
 // 将reactive状态转换为单独的响应式引用
 const { pinnedChats, categorizedChats, selectedChatId, categoryLabels } = toRefs(state);
 
-const emit = defineEmits(['update:collapse']);
-
-// 新增侧边栏展开/收起状态
-const isCollapsed = ref(false);
-
-// 切换侧边栏状态
-const toggleSidebar = () => {
-    isCollapsed.value = !isCollapsed.value;
-    // 发出事件以便父组件可以相应调整布局
-    emit('update:collapse', isCollapsed.value);
-};
 
 // 获取聊天记录的异步函数
 // const fetchChats = async () => {
@@ -137,29 +121,6 @@ onMounted(fetchChats);
 
     &.is-collapsed {
         width: 50px; // 或其他你希望的收起宽度
-    }
-
-    .collapse-icon {
-        width: 18px;
-        height: 50px;
-        background-color: $gray-500;
-        position: absolute;
-        top: 50%;
-        right: -18px; // 根据需要调整
-        cursor: pointer;
-        transform: translateY(-50%);
-        z-index: 100;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 0 10px 10px 0;
-        &:hover {
-            background-color: $gray-600;
-        }
-        .icon {
-            display: flex;
-            color: $gray-200;
-        }
     }
 
     // 侧边栏样式
