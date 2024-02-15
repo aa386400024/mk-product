@@ -22,7 +22,7 @@
 
         <!-- 展开/收起控制按钮 -->
         <div class="collapse-icon" @click="toggleSidebar">
-            <SvgIcon :name="'collapsed-left'" class="icon" size="16" />
+            <SvgIcon :name="'collapsed'" class="icon" size="16" />
         </div>
     </aside>
 </template>
@@ -117,7 +117,7 @@ const fetchChats = () => {
             last7Days: mockData.last7Days,
             last30Days: mockData.last30Days,
         };
-    }, 1000); // 延迟1秒模拟网络延迟
+    }, 300); // 延迟1秒模拟网络延迟
 };
 
 const selectChat = (id: number | null) => {
@@ -142,7 +142,7 @@ onMounted(fetchChats);
     .collapse-icon {
         width: 18px;
         height: 50px;
-        background-color: $gray-700;
+        background-color: $gray-500;
         position: absolute;
         top: 50%;
         right: -18px; // 根据需要调整
@@ -153,9 +153,12 @@ onMounted(fetchChats);
         justify-content: center;
         align-items: center;
         border-radius: 0 10px 10px 0;
+        &:hover {
+            background-color: $gray-600;
+        }
         .icon {
             display: flex;
-            color: $gray-300;
+            color: $gray-200;
         }
     }
 
