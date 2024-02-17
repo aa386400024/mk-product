@@ -87,7 +87,6 @@ const selectItem = (selectedItem: MenuItem) => {
 onMounted(() => {
     // 创建 style 元素，用于添加自定义的 CSS 样式
     const style = document.createElement('style');
-    // 设置 style 元素的内容
     style.textContent = `
     .el-popper.is-customized {
       padding: 8px 12px;
@@ -101,7 +100,7 @@ onMounted(() => {
       color: ${props.activeColor};
       right: 0;
     }
-  `;
+    `;
     // 将 style 元素添加到 head 中
     document.head.appendChild(style);
     
@@ -109,12 +108,16 @@ onMounted(() => {
     const selectedMenuItemName = localStorage.getItem('selectedMenuItem');
     // 如果存在选中项的名称
     if (selectedMenuItemName) {
-        // 遍历 menuItems 数组，将与选中项名称相同的菜单项的 active 属性设置为 true
-        props.menuItems.forEach(item => {
-            item.active = item.name === selectedMenuItemName;
-        });
+        const selectedMenuItem = props.menuItems.find(item => item.name === selectedMenuItemName);
+        if (selectedMenuItem) {
+            // 设置选中项为 active
+            selectItem(selectedMenuItem);
+            // 自动跳转到选中项对应的路径
+            router.push(selectedMenuItem.path);
+        }
     }
 });
+
 
 </script>
 

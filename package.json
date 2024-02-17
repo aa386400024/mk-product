@@ -24,6 +24,7 @@
     "prismjs": "^1.29.0",
     "qiankun": "^2.10.16",
     "socket.io-client": "^4.7.4",
+    "v-click-outside-vue3": "^0.0.1",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5",
     "xlsx": "^0.18.5"

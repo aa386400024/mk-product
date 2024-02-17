@@ -1,6 +1,14 @@
 <template>
     <aside class="chat-sidebar">
-        <el-scrollbar>
+        <div class="sidebar-controls">
+            <el-button color="#FFA500" plain round @click="createNewChat">
+                <SvgIcon name="chat-3" class="chat-icon" size="15" /> 新会话
+            </el-button>
+            <div class="icon-view">
+                <SvgIcon name="clear" class="icon" size="20" @click="clearChatHistory" />
+            </div>
+        </div>
+        <el-scrollbar class="scrollbar-content">
             <!-- 置顶聊天 -->
             <section v-if="pinnedChats.length > 0" class="chat-section">
                 <h2 class="chat-header">置顶</h2>
@@ -26,6 +34,7 @@
 import { ref, reactive, toRefs, onMounted } from 'vue'
 import SidebarItem from './SidebarItem.vue'
 import { chatHistory } from '@/api/chat';
+import { ElMessage, ElMessageBox } from 'element-plus'
 import type { Chat, CategorizedChats } from '@/types/chat'
 
 // 定义mock数据
@@ -104,6 +113,36 @@ const fetchChats = () => {
     }, 300); // 延迟1秒模拟网络延迟
 };
 
+const createNewChat = () => {
+    // 实现新建会话的逻辑
+};
+
+const clearChatHistory = () => {
+    // 实现清空聊天记录的逻辑
+    ElMessageBox.confirm(
+        '确定清空所有聊天记录？此操作不可撤销。',
+        '清空聊天记录确认',
+        {
+            confirmButtonText: '立即清空',
+            cancelButtonText: '我再想想',
+            type: 'warning',
+        }
+    )
+        .then(() => {
+            ElMessage({
+                type: 'success',
+                message: '聊天记录已成功清空。',
+            })
+        })
+        .catch(() => {
+            ElMessage({
+                type: 'info',
+                message: '操作已取消，聊天记录未被清空。',
+            })
+        })
+};
+
+
 const selectChat = (id: number | null) => {
     state.selectedChatId = id;
 };
@@ -114,13 +153,70 @@ onMounted(fetchChats);
   
 <style lang="scss" scoped>
 .chat-sidebar {
+    display: flex;
+    flex-direction: column;
     height: 100vh;
     background-color: $gray-800;
     position: relative;
     transition: width 0.3s ease;
+    overflow: hidden;
 
-    &.is-collapsed {
-        width: 50px; // 或其他你希望的收起宽度
+    .sidebar-controls {
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px; // 根据需要调整内边距
+
+        .el-button {
+            flex-grow: 1;
+            // color: #fff;
+        }
+
+        .chat-icon {
+            margin-right: 8px;
+        }
+
+        .icon-view {
+            height: 35px;
+            width: 35px;
+            background-color: #FFF6E6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            cursor: pointer;
+            margin-left: 15px;
+            border: 1px solid #FFD280;
+
+            &:hover {
+                background-color: $color-theme;
+                border: 1px solid #FFD280;
+
+                .icon {
+                    color: #fff; // 当.icon-view被悬停时改变图标颜色
+                }
+            }
+
+            .icon {
+                display: flex;
+                color: $color-theme;
+            }
+        }
+
+    }
+
+    .scrollbar-content {
+        flex: 1; // 让滚动内容占据剩余空间
+        overflow-y: auto; // 如果内容超出则显示滚动条
+    }
+
+    .el-scrollbar {
+        height: 100%;
+        flex: 1;
+        /* 占据剩余空间 */
+        overflow-y: auto;
+        /* 如果需要滚动 */
     }
 
     // 侧边栏样式

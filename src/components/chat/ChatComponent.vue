@@ -1,5 +1,9 @@
 <template>
     <div class="main-content">
+        <div class="header">
+            <MyDropdown :options="options" v-model="selectedValue">
+            </MyDropdown>
+        </div>
         <!-- <MessageList :messages="chatStore.messages" /> -->
         <MessageList :messages="mockMessages" />
         <InputArea @sendMessage="sendMessage"  class="input-area"/>
@@ -7,14 +11,31 @@
 </template>
   
 <script setup lang="ts">
-import { onMounted, onUnmounted, inject, ref } from 'vue';
+import { onMounted, onUnmounted, inject, ref, computed  } from 'vue';
 import { format } from 'date-fns';
 import { useChatStore } from '@/stores/use-chat-store';
 import MessageList from './MessageList.vue';
+import { MyDropdown } from "@/components/dropdown";
 import InputArea from './InputArea.vue';
 
 // 使用Pinia store管理聊天状态
 const chatStore = useChatStore();
+
+// 这里定义一个响应式数据来与下拉选择的值进行双向绑定
+const selectedValue = ref(1);
+
+// 定义下拉菜单的选项
+const options = [
+{ 
+    name: "分组1", 
+    options: [
+      { value: "1", label: "选项1" },
+      { value: "2", label: "选项2" },
+    ] 
+  },
+  // 未分组的选项
+  { value: "3", label: "独立选项" }
+];
 
 const mockMessages = ref([
     {
@@ -104,6 +125,13 @@ onUnmounted(() => {
         bottom: 10px;
         left: 20px;
         right: 20px;
+    }
+
+    .header {
+        width: 100%;
+        height: 50px;
+        border-bottom: 1px solid $gray-400;
+        box-shadow: var(--el-box-shadow-light);
     }
 }
 </style>

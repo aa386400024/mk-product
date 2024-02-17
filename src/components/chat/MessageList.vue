@@ -32,7 +32,7 @@ onUpdated(scrollToBottom);
   
 <style scoped lang="scss">
 .message-list {
-    height: calc(100% - 130px);
+    height: calc(100% - 180px);
     display: flex;
     flex-direction: column;
     overflow-y: auto;

@@ -29,8 +29,11 @@ const toggleSidebar = () => {
 
 <style lang="scss" scoped>
 .el-row {
-    height: 100%;
     position: relative; /* Ensure that the absolute positioning is relative to the row */
+    display: flex;
+    flex-direction: row;
+    height: 100vh; /* 或者使用100%，前提是父元素正确设置了高度 */
+    align-items: stretch; /* 这会使所有子元素（el-col）的高度与el-row一样 */
 }
 
 .expand-sidebar-btn {
