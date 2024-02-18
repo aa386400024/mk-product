@@ -9,7 +9,7 @@
         <InputArea @sendMessage="sendMessage"  class="input-area"/>
     </div>
 </template>
-  
+
 <script setup lang="ts">
 import { onMounted, onUnmounted, inject, ref, computed  } from 'vue';
 import { format } from 'date-fns';
@@ -22,20 +22,45 @@ import InputArea from './InputArea.vue';
 const chatStore = useChatStore();
 
 // 这里定义一个响应式数据来与下拉选择的值进行双向绑定
-const selectedValue = ref(1);
+const selectedValue = ref('1');
 
 // 定义下拉菜单的选项
 const options = [
-{ 
-    name: "分组1", 
-    options: [
-      { value: "1", label: "选项1" },
-      { value: "2", label: "选项2" },
-    ] 
-  },
-  // 未分组的选项
-  { value: "3", label: "独立选项" }
+    {
+        value: '1',
+        label: '选项1',
+        title: '选项标题1',
+        description: '这是选项1的描述。',
+        avatar: 'https://example.com/avatar1.png',
+    },
+    {
+        name: '选项组1',
+        options: [
+            {
+                value: '2',
+                label: '选项2',
+                title: '选项标题2',
+                description: '这是选项2的描述。',
+                avatar: 'https://example.com/avatar2.png',
+            },
+            {
+                value: '3',
+                label: '选项3',
+                title: '选项标题3',
+                description: '这是选项3的描述。',
+                avatar: 'https://example.com/avatar3.png',
+            },
+        ],
+    },
+    {
+        value: '4',
+        label: '选项4',
+        title: '选项标题4',
+        description: '这是选项4的描述。',
+        avatar: 'https://example.com/avatar4.png',
+    },
 ];
+
 
 const mockMessages = ref([
     {
