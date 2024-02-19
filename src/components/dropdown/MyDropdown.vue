@@ -122,7 +122,7 @@ onMounted(() => {
 
 /* 滚动条轨道的样式 */
 .dropdown-menu::-webkit-scrollbar-track {
-    background: rgba(130, 137, 145, 0);
+    background: rgba(130, 137, 145, 0.1);
     border-radius: 10px; /* 轨道的圆角 */
 }
 
