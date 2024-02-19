@@ -27,37 +27,49 @@ const selectedValue = ref('1');
 // 定义下拉菜单的选项
 const options = [
     {
-        value: '1',
-        label: '选项1',
-        title: '选项标题1',
-        description: '这是选项1的描述。',
-        avatar: 'https://example.com/avatar1.png',
-    },
-    {
-        name: '选项组1',
+        name: '通用大模型',
         options: [
             {
                 value: '2',
-                label: '选项2',
-                title: '选项标题2',
-                description: '这是选项2的描述。',
-                avatar: 'https://example.com/avatar2.png',
+                label: '文心一言',
+                title: '文心一言-3.5',
+                description: '这是选项2的描述这是选项2的描述这是选项2的描述这是选项2的描述这是选项2的描述这是选项2的描述。',
+                avatar: '/images/model-avatars/yiyan-bg.png',
             },
             {
                 value: '3',
-                label: '选项3',
-                title: '选项标题3',
+                label: '智谱清言',
+                title: '智谱清言',
                 description: '这是选项3的描述。',
-                avatar: 'https://example.com/avatar3.png',
+                avatar: '/images/model-avatars/chatglm.png',
+            },
+            {
+                value: '1',
+                label: 'ChatGPT-4',
+                title: 'GPT-4',
+                description: '这是选项1的描述。',
+                avatar: '/images/model-avatars/chatgpt.png',
+            },
+            {
+                value: '4',
+                label: '通义千问',
+                title: '通义千问',
+                description: '这是选项4的描述。',
+                avatar: '/images/model-avatars/tongyi.png',
             },
         ],
     },
     {
-        value: '4',
-        label: '选项4',
-        title: '选项标题4',
-        description: '这是选项4的描述。',
-        avatar: 'https://example.com/avatar4.png',
+        name: '私有模型',
+        options: [
+            {
+                value: '5',
+                label: '母猪的产后护理',
+                title: '母猪的产后护理',
+                description: '这是选项2的描述。',
+                avatar: '/images/model-avatars/yiyan-bg.png',
+            },
+        ],
     },
 ];
 

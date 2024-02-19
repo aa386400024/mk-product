@@ -12,7 +12,8 @@
                     <template v-for="(item, index) in options" :key="index">
                         <div v-if="isOptionGroup(item)" class="dropdown-group">
                             <div class="dropdown-group-title">{{ item.name }}</div>
-                            <div v-for="option in item.options" :key="option.value" :class="{'is-selected': selectedOption?.value === option.value}" class="dropdown-item"
+                            <div v-for="option in item.options" :key="option.value"
+                                :class="{ 'is-selected': selectedOption?.value === option.value }" class="dropdown-item"
                                 @click="() => handleSelect(option)">
                                 <div class="item-content">
                                     <img v-if="option.avatar" :src="option.avatar" class="avatar">
@@ -21,11 +22,13 @@
                                         <div class="description">{{ option.description }}</div>
                                     </div>
                                     <!-- 根据选中状态显示不同图标 -->
-                                    <SvgIcon :name="selectedOption?.value === option.value ? 'selected' : 'not-selected'" class="status-icon" />
+                                    <SvgIcon :name="selectedOption?.value === option.value ? 'selected' : 'not-selected'"
+                                        class="status-icon" />
                                 </div>
                             </div>
                         </div>
-                        <div v-else :class="{'is-selected': selectedOption?.value === item.value}" class="dropdown-item" @click="() => handleSelect(item)">
+                        <div v-else :class="{ 'is-selected': selectedOption?.value === item.value }" class="dropdown-item"
+                            @click="() => handleSelect(item)">
                             <div class="item-content">
                                 <img v-if="item.avatar" :src="item.avatar" class="avatar">
                                 <div class="text-content">
@@ -33,7 +36,8 @@
                                     <div class="description">{{ item.description }}</div>
                                 </div>
                                 <!-- 根据选中状态显示不同图标 -->
-                                <SvgIcon :name="selectedOption?.value === item.value ? 'selected' : 'not-selected'" class="status-icon" />
+                                <SvgIcon :name="selectedOption?.value === item.value ? 'selected' : 'not-selected'"
+                                    class="status-icon" />
                             </div>
                         </div>
                     </template>
@@ -44,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
+import { ref, onMounted } from 'vue';
 import { clickOutside as vClickOutside } from "v-click-outside-vue3";
 
 interface Option {
@@ -88,9 +92,28 @@ const closeDropdown = () => {
 const isOptionGroup = (item: Option | OptionGroup): item is OptionGroup => {
     return (item as OptionGroup).options !== undefined;
 };
+
+// 初始化selectedOption为第一个选项
+onMounted(() => {
+    if (props.options.length > 0) {
+        const firstOption = props.options[0];
+        if (isOptionGroup(firstOption)) {
+            // 如果第一个选项是OptionGroup，选取该组的第一个选项
+            if (firstOption.options.length > 0) {
+                selectedOption.value = firstOption.options[0];
+                emit('update:modelValue', firstOption.options[0].value);
+            }
+        } else {
+            // 如果第一个选项是单个Option
+            selectedOption.value = firstOption;
+            emit('update:modelValue', firstOption.value);
+        }
+    }
+});
 </script>
 
 <style scoped lang="scss">
+@import "@/assets/styles/mixins.scss";
 .dropdown {
     position: relative;
     user-select: none;
@@ -114,44 +137,65 @@ const isOptionGroup = (item: Option | OptionGroup): item is OptionGroup => {
     &-menu {
         position: absolute;
         top: 100%;
-        left: 0;
+        left: 10px;
         border: 1px solid #ccc;
         background: white;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        border-radius: 10px;
+        overflow: hidden;
         z-index: 1000;
-        color: red;
+
+        .dropdown-group {
+            &-title {
+                margin: 10px;
+                color: $gray-900;
+                font-weight: bold;
+            }
+
+            // 直接在这个级别处理最后一个 .dropdown-item，无需重复声明.dropdown-group
+            .dropdown-item:last-child {
+                border-bottom: none; // 移除分组中最后一项的下边距
+            }
+        }
+
+        .dropdown-item:last-child {
+            border-bottom: none; // 移除作为单独选项时的最后一项的下边距
+        }
 
         .dropdown-item {
-            min-width: 210px;
+            min-width: 300px;
             width: auto; // 或者根据需要设置具体的宽度
             max-width: 100%; // 确保不会超过其父容器的宽度
             overflow: hidden; // 防止内容溢出导致布局问题
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 10px;
+            padding: 10px 20px;
             border-bottom: 1px solid #eee; // 分隔线
             cursor: pointer;
 
             &.is-selected {
-                color: $color-theme; /* 选中项的字体颜色 */
+                color: $color-theme;
+                /* 选中项的字体颜色 */
 
-                .title, .description {
-                    color: $color-theme; /* 选中项的标题和描述的字体颜色 */
-                }
+                // .title, .description {
+                //     color: $color-theme; /* 选中项的标题和描述的字体颜色 */
+                // }
             }
 
             &:not(.is-selected) {
-                .title {
-                    color: #333; /* 未选中项的标题颜色 */
-                }
-                .description {
-                    color: #666; /* 未选中项的描述颜色 */
-                }
+                color: $gray-400;
+                // .title {
+                //     color: $gray-800; /* 未选中项的标题颜色 */
+                // } 
+                // .description {
+                //     color: #666; /* 未选中项的描述颜色 */
+                // }
             }
 
             &:hover {
-                background-color: #f2f2f2; /* 悬停时的背景颜色，根据需要调整 */
+                background-color: #f2f2f2;
+                /* 悬停时的背景颜色，根据需要调整 */
             }
 
             .item-content {
@@ -172,23 +216,22 @@ const isOptionGroup = (item: Option | OptionGroup): item is OptionGroup => {
                     display: flex;
                     flex-direction: column;
                     flex-grow: 1; // 确保可以填充空间
-                    margin-right: 10px; // 保持与图标的距离
+                    margin-right: 30px; // 保持与图标的距离
                 }
 
-                .title, .description {
-                    white-space: nowrap; // 防止这些元素内的文字换行
-                    overflow: hidden; // 超出部分隐藏
-                    text-overflow: ellipsis; // 显示省略号
-                    max-width: 150px; // 根据实际布局调整最大宽度
-                }
-
+                // 现在使用混合优化样式
                 .title {
-                    font-weight: bold;
+                    font-weight: 500;
+                    color: $gray-800;
+                    @include text-overflow-lines(1); // 仅显示一行
+                    max-width: 150px; // 根据实际布局调整最大宽度
                 }
 
                 .description {
                     font-size: 0.8em;
-                    color: #666;
+                    color: $gray-500;
+                    @include text-overflow-lines(2); // 最多显示两行
+                    max-width: 150px; // 根据实际布局调整最大宽度
                 }
 
                 .status-icon {
@@ -213,5 +256,4 @@ const isOptionGroup = (item: Option | OptionGroup): item is OptionGroup => {
 .fade-enter,
 .fade-leave-to {
     opacity: 0;
-}
-</style>
+}</style>

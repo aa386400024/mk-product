@@ -71,4 +71,31 @@
     }
 }
 
+// 生成文本溢出效果，支持指定显示行数
+@mixin text-overflow-lines($lines: 1) {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -webkit-line-clamp: $lines;
+    max-width: 100%; // 确保文本框不会超出其容器宽度
+
+    // 对于不支持-webkit-line-clamp的浏览器，可以考虑回退方案
+    // 例如，限制元素高度，但这不会显示省略号
+    @supports not (-webkit-line-clamp: $lines) {
+        white-space: nowrap;
+
+        @if $lines ==1 {
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        @else {
+            // 对于多行文本的简单回退，可能需要额外的逻辑处理
+            // 这里不提供完整的跨浏览器解决方案，因为CSS当前不支持跨浏览器的多行文本溢出
+        }
+    }
+}
+
+
 // 在这里添加更多您项目所需的混合
