@@ -2,9 +2,7 @@
     <el-container class="outer-container">
         <!-- 使用封装的动态菜单组件 -->
         <el-aside>
-            <el-scrollbar>
-                <VerticalMenu :menuItems="menuItems" />
-            </el-scrollbar>
+            <sidebar :menu-items="menuItems" />
         </el-aside>
 
         <el-container>
@@ -18,21 +16,42 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterView } from 'vue-router';
-import { VerticalMenu } from '@/components/layout';
+import { Sidebar } from '@/components/layout';
 
 
 const menuItems = ref([
-    { name: '首页', icon: 'home', active: true, path: '/' },
-    { name: '对话', icon: 'chat', active: false, path: '/chat' },
-    { name: '知识库', icon: 'knowledge-base', active: false, path: '/knowledge-base' },
-    { name: '训练', icon: 'model-training', active: false, path: '/about' },
+    {
+        title: '首页',
+        path: '/',
+        children: []
+    },
+    {
+        title: '其他页面',
+        path: '/some-other-page',
+        children: [
+            {
+                title: '子页面1',
+                path: '/about',
+                children: [] // 更多嵌套
+            },
+            // ...更多子页面
+        ]
+    },
+    {
+        title: '其他页面2',
+        path: '/about',
+        children: []
+    },
 ]);
 </script>
 
 <style scoped lang="scss">
 .el-aside {
-    width: 72px;
+    width: 240px;
     position: relative;
+}
+.el-main {
+    padding: 20px;
 }
 
 .el-scrollbar {
