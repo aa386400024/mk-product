@@ -40,7 +40,7 @@ const options = [
                 value: '3',
                 label: '智谱清言',
                 title: '智谱清言',
-                description: '这是选项3的描述。',
+                description: '清华大学与智谱AI合作研发，基于中英双语对话模型ChatGLM2，支持编程语言，智能化服务的AI助手',
                 avatar: '/images/model-avatars/chatglm.png',
             },
             {
@@ -54,7 +54,7 @@ const options = [
                 value: '4',
                 label: '通义千问',
                 title: '通义千问',
-                description: '这是选项4的描述。',
+                description: '阿里巴巴的智能问答大模型，涵盖广泛知识点，适用于多场景应用。',
                 avatar: '/images/model-avatars/tongyi.png',
             },
         ],

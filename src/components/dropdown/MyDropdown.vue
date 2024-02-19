@@ -114,6 +114,27 @@ onMounted(() => {
 
 <style scoped lang="scss">
 @import "@/assets/styles/mixins.scss";
+
+/* 自定义滚动条样式 */
+.dropdown-menu::-webkit-scrollbar {
+    width: 4px; /* 滚动条的宽度 */
+}
+
+/* 滚动条轨道的样式 */
+.dropdown-menu::-webkit-scrollbar-track {
+    background: #f1f1f1; /* 轨道的背景颜色 */
+    border-radius: 10px; /* 轨道的圆角 */
+}
+
+/* 滚动条滑块的样式 */
+.dropdown-menu::-webkit-scrollbar-thumb {
+    background: $gray-500; /* 滑块的背景颜色 */
+
+}
+/* 当鼠标悬停在滑块上时的样式 */
+.dropdown-menu::-webkit-scrollbar-thumb:hover {
+    background: $gray-600; /* 滑块的背景颜色（悬停时） */
+}
 .dropdown {
     position: relative;
     user-select: none;
@@ -138,11 +159,12 @@ onMounted(() => {
         position: absolute;
         top: 100%;
         left: 10px;
+        max-height: 400px;
+        overflow-y: auto;
         border: 1px solid #ccc;
         background: white;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         border-radius: 10px;
-        overflow: hidden;
         z-index: 1000;
 
         .dropdown-group {
