@@ -44,7 +44,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits } from 'vue';
+import { ref } from 'vue';
 import { clickOutside as vClickOutside } from "v-click-outside-vue3";
 
 interface Option {
