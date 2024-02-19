@@ -10,7 +10,6 @@ import pinia from './stores';
 import { setupQiankun } from './plugins/qiankun';
 import './permission'
 import { SvgIcon } from './components/icons';
-import { WebSocketPlugin } from './plugins/websocket-plugin';
 
 const app = createApp(App)
 
@@ -22,7 +21,6 @@ app.use(router)
 app.use(ElementPlus, {
     locale: zhCn
 })
-app.use(new WebSocketPlugin(), { url: import.meta.env.VITE_SOCKET_IO_URL });
 setupQiankun();
 
 app.mount('#app')
