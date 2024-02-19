@@ -33,7 +33,7 @@ const options = [
                 value: '2',
                 label: '文心一言',
                 title: '文心一言-3.5',
-                description: '这是选项2的描述这是选项2的描述这是选项2的描述这是选项2的描述这是选项2的描述这是选项2的描述。',
+                description: '百度打造的AI大模型，中文内容生成与理解的先锋',
                 avatar: '/images/model-avatars/yiyan-bg.png',
             },
             {
@@ -47,7 +47,7 @@ const options = [
                 value: '1',
                 label: 'ChatGPT-4',
                 title: 'GPT-4',
-                description: '这是选项1的描述。',
+                description: '全球认可的顶尖AI模型，创意写作与逻辑推理的佼佼者。',
                 avatar: '/images/model-avatars/chatgpt.png',
             },
             {
@@ -66,7 +66,7 @@ const options = [
                 value: '5',
                 label: '母猪的产后护理',
                 title: '母猪的产后护理',
-                description: '这是选项2的描述。',
+                description: '专注畜牧业，提供专业深入的产后护理知识与建议。',
                 avatar: '/images/model-avatars/yiyan-bg.png',
             },
         ],

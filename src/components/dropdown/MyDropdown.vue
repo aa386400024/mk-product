@@ -163,7 +163,7 @@ onMounted(() => {
         }
 
         .dropdown-item {
-            min-width: 300px;
+            min-width: 290px;
             width: auto; // 或者根据需要设置具体的宽度
             max-width: 100%; // 确保不会超过其父容器的宽度
             overflow: hidden; // 防止内容溢出导致布局问题
@@ -216,6 +216,7 @@ onMounted(() => {
                     display: flex;
                     flex-direction: column;
                     flex-grow: 1; // 确保可以填充空间
+                    min-width: 150px;
                     margin-right: 30px; // 保持与图标的距离
                 }
 
@@ -228,15 +229,17 @@ onMounted(() => {
                 }
 
                 .description {
-                    font-size: 0.8em;
+                    font-size: 0.9em;
                     color: $gray-500;
                     @include text-overflow-lines(2); // 最多显示两行
                     max-width: 150px; // 根据实际布局调整最大宽度
+                    margin-top: 6px;
                 }
 
                 .status-icon {
                     // 根据需要调整图标样式
                     flex-shrink: 0; // 防止图标被压缩
+                    margin-left: auto;
                 }
             }
 
