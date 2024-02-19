@@ -128,11 +128,11 @@ onMounted(() => {
 
 /* 滚动条滑块的样式 */
 .dropdown-menu::-webkit-scrollbar-thumb {
-    background: rgba(173, 181, 189, 0.5); /* 滑块的背景颜色 */
+    background: rgba(141, 148, 155, 0.5); /* 滑块的背景颜色 */
 }
 /* 当鼠标悬停在滑块上时的样式 */
 .dropdown-menu::-webkit-scrollbar-thumb:hover {
-    background: rgba(130, 137, 145, 0.5); /* 滑块的背景颜色（悬停时） */
+    background: rgba(76, 80, 85, 0.5); /* 滑块的背景颜色（悬停时） */
 }
 .dropdown {
     position: relative;
@@ -163,7 +163,7 @@ onMounted(() => {
         border: 1px solid $gray-300;
         background: white;
         box-shadow: var(--el-box-shadow);
-        border-radius: 4px;
+        border-radius: 6px;
         z-index: 1000;
 
         .dropdown-group {
