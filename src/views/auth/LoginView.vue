@@ -1,26 +1,31 @@
 <template>
     <div class="login-container">
         <el-card class="login-card">
-            <h1 class="title">应用 <span class="version"></span></h1>
+            <h1 class="title">人工智能策略交易平台</h1>
 
-            <el-form size="large">
-                <el-form-item>
-                    <el-input v-model="loginForm.username" :prefix-icon="UserFilled" placeholder="请输入账号"></el-input>
+            <el-form size="large" label-width="65px">
+                <el-form-item label="账户 :">
+                    <el-input v-model="loginForm.userName" placeholder="请输入邮箱、手机号或工号"></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-input v-model="loginForm.password" :prefix-icon="Lock" show-password placeholder="请输入密码"></el-input>
+                <el-form-item label="密码 :">
+                    <el-input v-model="loginForm.passWord" show-password placeholder="请输入密码"></el-input>
                 </el-form-item>
-                <el-form-item>
-                    <el-button type="primary" @click="handleLogin">登 录</el-button>
+                <el-form-item label="验证码 :">
+                    <el-input v-model="loginForm.verifyCode" placeholder="请输入验证码">
+                        <template #append>
+                            <div class="verify-view">
+                                <el-button type="primary" @click="handleGetVerifyCod">获取验证码</el-button>
+                            </div>
+                        </template>
+                    </el-input>
                 </el-form-item>
             </el-form>
+            <el-checkbox v-model="checked">15天内免登录</el-checkbox>
+            <el-button type="primary" size="large" class="login-btn" @click="handleLogin">登 录</el-button>
+            <div class="action-links">
+                <span>忘记密码</span>
+            </div>
         </el-card>
-
-        <footer class="login-footer">
-            Copyright © 2021 - 2024 company.tech All Rights Reserved. 公司名称 版权所有
-            <br>
-            备案号
-        </footer>
     </div>
 </template>
   
@@ -32,16 +37,24 @@ import { ElMessage } from 'element-plus'
 
 // Component state
 const loginForm = ref({
-    username: '',
-    password: ''
+    userName: '',
+    passWord: '',
+    verifyCode: ''
 });
 
+const checked = ref(false)
+
 const userStore = useUserStore();
+
+// 获取验证码
+const handleGetVerifyCod = () => {
+
+}
 
 // Method to handle login
 const handleLogin = () => {
     // 检查用户名和密码是否已输入
-    if (!loginForm.value.username || !loginForm.value.password) {
+    if (!loginForm.value.userName || !loginForm.value.passWord) {
         ElMessage.error('请输入账号和密码');
         return;
     }
@@ -61,20 +74,32 @@ const handleLogin = () => {
 }
 
 .login-card {
-    width: 420px;
-    border-radius: 15px;
-    margin-bottom: 15px;
+    min-width: 420px;
+    border-radius: 10px;
+    padding: 15px;
     box-shadow: var(--el-box-shadow-light);
-    .el-button {
+    .title {
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 30px;
+        color: $color-theme;
+    }
+    .login-btn {
         width: 100%;
+        margin: 8px auto 15px;
+    }
+    .verify-view {
+
+    }
+    .action-links {
+        color: $color-theme;
+        span {
+            cursor: pointer;
+        }
     }
 }
 
-.title {
-    text-align: center;
-    font-size: 24px;
-    margin-bottom: 20px;
-}
+
 
 .version {
     font-size: 14px;
