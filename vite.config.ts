@@ -22,6 +22,7 @@ export default defineConfig({
         }),
         ElementPlus({
             useSource: true,
+            defaultLocale: 'zh-cn'
         }),
         svgLoader(/* options */)
     ],
