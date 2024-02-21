@@ -1,5 +1,5 @@
 // base.scss
-
+@use 'variables.scss' as *;
 // 定义基础颜色、字体大小和其他变量
 $font-stack: Inter,
     -apple-system,
