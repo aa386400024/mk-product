@@ -1,7 +1,7 @@
 // 用于定义整个应用的布局相关的样式，比如头部、尾部、侧边栏等的基本布局样式。
 
 // layout.scss
-
+@use 'variables.scss' as *;
 // 容器样式
 .el-container {
     display: flex;

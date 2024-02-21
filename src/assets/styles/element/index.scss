@@ -1,0 +1,5 @@
+// styles/element/index.scss
+@forward 'element-plus/theme-chalk/src/common/var.scss' with ($colors: ('primary': ('base': rgb(0, 184, 0), // 这里把主题色改为绿色
+        ),
+    ),
+);

@@ -1,6 +1,6 @@
 // base.scss
-
 // 定义基础颜色、字体大小和其他变量
+@use 'variables.scss' as *;
 $font-stack: Inter,
     -apple-system,
     BlinkMacSystemFont,
