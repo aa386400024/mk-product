@@ -47,9 +47,8 @@ const setActive = (index: number) => {
         display: flex;
         justify-content: space-around;
         margin-bottom: 1rem;
-
         .button {
-            padding: 0.5rem 1rem;
+            padding: 0.3rem 1rem;
             margin: 0 5px;
             cursor: pointer;
             transition: background-color 0.3s, color 0.3s;
@@ -66,10 +65,10 @@ const setActive = (index: number) => {
         }
     }
 
-    .content {
-        padding: 1rem;
-        border: 1px solid #ddd;
-        border-radius: 0.25rem;
-    }
+    // .content {
+    //     padding: 1rem;
+    //     border: 1px solid #ddd;
+    //     border-radius: 0.25rem;
+    // }
 }
 </style>

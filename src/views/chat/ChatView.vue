@@ -1,13 +1,15 @@
 <template>
     <el-row>
         <el-col :span="isSidebarCollapsed ? 0 : 5">
-            <MySubsection :items="items" v-model="activeIndex" />
-            <template v-if="activeIndex === 0">
-                <HistoryChatSidebar @update:collapse="handleSidebarCollapse" />
-            </template>
-            <template v-else-if="activeIndex === 1">
-                <div>分段器2的内容</div>
-            </template>
+            <div class="left-menu">
+                <MySubsection :items="items" v-model="activeIndex" />
+                <template v-if="activeIndex === 0">
+                    <HistoryChatSidebar @update:collapse="handleSidebarCollapse" />
+                </template>
+                <template v-else-if="activeIndex === 1">
+                    <div>分段器2的内容</div>
+                </template>
+            </div>
         </el-col>
         <div :class="{ 'expand-sidebar-btn': true, 'is-collapsed': isSidebarCollapsed }" @click="toggleSidebar">
             <SvgIcon :name="isSidebarCollapsed ? 'expand' : 'collapsed'" class="icon" size="16" />
@@ -55,6 +57,11 @@ const toggleSidebar = () => {
     /* 或者使用100%，前提是父元素正确设置了高度 */
     align-items: stretch;
     /* 这会使所有子元素（el-col）的高度与el-row一样 */
+}
+
+.left-menu {
+    height: 100vh;
+    background-color: $gray-800;
 }
 
 .expand-sidebar-btn {

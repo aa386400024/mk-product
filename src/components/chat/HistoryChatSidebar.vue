@@ -207,14 +207,10 @@ onMounted(fetchChats);
 
     }
 
-    .scrollbar-content {
-        flex: 1; // 让滚动内容占据剩余空间
-        overflow-y: auto; // 如果内容超出则显示滚动条
-    }
 
     .el-scrollbar {
-        height: 100%;
-        flex: 1;
+        height: 500px;
+        // flex: 1;
         /* 占据剩余空间 */
         overflow-y: auto;
         /* 如果需要滚动 */
