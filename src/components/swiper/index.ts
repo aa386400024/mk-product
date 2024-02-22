@@ -1,0 +1,1 @@
+export { default as MySwiper } from './MySwiper.vue';
