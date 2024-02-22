@@ -1,12 +1,12 @@
 <template>
     <el-row>
-        <el-col :span="isSidebarCollapsed ? 0 : 4">
+        <el-col :span="isSidebarCollapsed ? 0 : 5">
             <HistoryChatSidebar @update:collapse="handleSidebarCollapse"/>
         </el-col>
         <div :class="{'expand-sidebar-btn': true, 'is-collapsed': isSidebarCollapsed}" @click="toggleSidebar">
             <SvgIcon :name="isSidebarCollapsed ? 'expand' : 'collapsed'" class="icon" size="16" />
         </div>
-        <el-col :span="isSidebarCollapsed ? 24 : 20">
+        <el-col :span="isSidebarCollapsed ? 24 : 19">
             <ChatComponent/>
         </el-col>
     </el-row>
@@ -61,7 +61,7 @@ const toggleSidebar = () => {
         left: 0; /* Stick to the left side when collapsed */
     }
     &:not(.is-collapsed) {
-        left: calc(4 * 100% / 24); /* Adjust this based on the actual width of the sidebar */
+        left: calc(5 * 100% / 24); /* Adjust this based on the actual width of the sidebar */
     }
 }
 </style>
