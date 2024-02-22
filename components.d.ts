@@ -25,6 +25,7 @@ declare module 'vue' {
     MarkdownRenderer: typeof import('./src/components/markdown/MarkdownRenderer.vue')['default']
     MicroAppContainer: typeof import('./src/components/micro-frontend/MicroAppContainer.vue')['default']
     'MicroAppContainer copy': typeof import('./src/components/micro-frontend/MicroAppContainer copy.vue')['default']
+    MySwiper: typeof import('./src/components/swiper/MySwiper.vue')['default']
     Navbar: typeof import('./src/components/layout/Navbar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

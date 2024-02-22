@@ -1,5 +1,8 @@
 <template>
     <div class="login-container">
+        <div class="swiper-container">
+            <MySwiper :slides="slidesData" />
+        </div>
         <el-card class="login-card">
             <h1 class="title">人工智能策略交易平台</h1>
 
@@ -31,19 +34,30 @@
   
 <script setup lang="ts">
 import { ref } from 'vue';
-import { UserFilled, Lock } from '@element-plus/icons-vue'
+import { MySwiper } from '@/components/swiper';
+
+import { UserFilled, Lock } from '@element-plus/icons-vue';
 import { useUserStore } from '@/stores/user-store';
 import { ElMessage } from 'element-plus'
 
-// Component state
+// 创建一个ref对象，用于存储登录表单的数据
 const loginForm = ref({
     userName: '',
     passWord: '',
     verifyCode: ''
 });
 
-const checked = ref(false)
+// 定义并初始化slides数据
+const slidesData = ref([
+    { type: 'video', src: '/videos/winter.mp4' },
+    // { type: 'image', src: 'path/to/image2.jpg', alt: 'Another image' },
+    // 可以根据需要添加更多的滑块数据
+]);
 
+// 创建一个ref对象，用于存储是否已选中登录按钮的状态
+const checked = ref(false);
+
+// 使用useUserStore钩子函数，获取用户store对象
 const userStore = useUserStore();
 
 // 获取验证码
@@ -64,42 +78,53 @@ const handleLogin = () => {
 </script>
   
 <style scoped lang="scss">
+.swiper-container {
+    position: fixed; // 设置为fixed使其充满整个屏幕
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    // z-index: -1; // 确保它在登录卡片下面
+}
+
 .login-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+    position: relative; // 设置为相对定位
     min-height: 100vh;
-    background: url('@/assets/images/login-bg.jpg') no-repeat center right;
+    display: flex;
+    justify-content: center; // 水平居中
+    align-items: center; // 垂直居中
 }
 
 .login-card {
+    position: absolute;
+    right: 40px;
     min-width: 420px;
     border-radius: 10px;
     padding: 15px;
     box-shadow: var(--el-box-shadow-light);
+
     .title {
         text-align: center;
         font-size: 20px;
         margin-bottom: 30px;
         color: $color-theme;
     }
+
     .login-btn {
         width: 100%;
         margin: 8px auto 15px;
     }
-    .verify-view {
 
-    }
+    .verify-view {}
+
     .action-links {
         color: $color-theme;
+
         span {
             cursor: pointer;
         }
     }
 }
-
-
 
 .version {
     font-size: 14px;
@@ -119,5 +144,6 @@ const handleLogin = () => {
     /* 将 footer 放置在底部 */
     left: 0;
     /* 与左边界对齐 */
-}</style>
+}
+</style>
   
