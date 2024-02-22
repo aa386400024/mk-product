@@ -1,13 +1,19 @@
 <template>
     <el-row>
         <el-col :span="isSidebarCollapsed ? 0 : 5">
-            <HistoryChatSidebar @update:collapse="handleSidebarCollapse"/>
+            <MySubsection :items="items" v-model="activeIndex" />
+            <template v-if="activeIndex === 0">
+                <HistoryChatSidebar @update:collapse="handleSidebarCollapse" />
+            </template>
+            <template v-else-if="activeIndex === 1">
+                <div>分段器2的内容</div>
+            </template>
         </el-col>
-        <div :class="{'expand-sidebar-btn': true, 'is-collapsed': isSidebarCollapsed}" @click="toggleSidebar">
+        <div :class="{ 'expand-sidebar-btn': true, 'is-collapsed': isSidebarCollapsed }" @click="toggleSidebar">
             <SvgIcon :name="isSidebarCollapsed ? 'expand' : 'collapsed'" class="icon" size="16" />
         </div>
         <el-col :span="isSidebarCollapsed ? 24 : 19">
-            <ChatComponent/>
+            <ChatComponent />
         </el-col>
     </el-row>
 </template>
@@ -15,8 +21,20 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { ChatComponent, HistoryChatSidebar } from "@/components/chat";
+import { MySubsection } from '@/components/subsection';
+
+// 定义子组件需要的items数组
+const items = ref([
+    { label: '分段器1', slotName: 'slot1' },
+    { label: '分段器2', slotName: 'slot2' },
+    // 根据需要添加更多分段器
+]);
+
+// 使用 ref 来响应式地跟踪当前激活的分段器索引
+const activeIndex = ref(0);
 
 const isSidebarCollapsed = ref(false);
+
 
 const handleSidebarCollapse = (collapsed: boolean) => {
     isSidebarCollapsed.value = collapsed;
@@ -29,11 +47,14 @@ const toggleSidebar = () => {
 
 <style lang="scss" scoped>
 .el-row {
-    position: relative; /* Ensure that the absolute positioning is relative to the row */
+    position: relative;
+    /* Ensure that the absolute positioning is relative to the row */
     display: flex;
     flex-direction: row;
-    height: 100vh; /* 或者使用100%，前提是父元素正确设置了高度 */
-    align-items: stretch; /* 这会使所有子元素（el-col）的高度与el-row一样 */
+    height: 100vh;
+    /* 或者使用100%，前提是父元素正确设置了高度 */
+    align-items: stretch;
+    /* 这会使所有子元素（el-col）的高度与el-row一样 */
 }
 
 .expand-sidebar-btn {
@@ -50,18 +71,23 @@ const toggleSidebar = () => {
     background-color: $gray-500;
     color: #fff;
     border-radius: 0 10px 10px 0;
+
     &:hover {
         background-color: $gray-600;
     }
+
     .icon {
         display: flex;
         color: $gray-200;
     }
+
     &.is-collapsed {
-        left: 0; /* Stick to the left side when collapsed */
+        left: 0;
+        /* Stick to the left side when collapsed */
     }
+
     &:not(.is-collapsed) {
-        left: calc(5 * 100% / 24); /* Adjust this based on the actual width of the sidebar */
+        left: calc(5 * 100% / 24);
+        /* Adjust this based on the actual width of the sidebar */
     }
-}
-</style>
+}</style>

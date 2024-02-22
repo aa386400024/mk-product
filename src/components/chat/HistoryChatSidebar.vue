@@ -155,7 +155,8 @@ onMounted(fetchChats);
 .chat-sidebar {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    // height: 100vh;
+    max-height: 500px;
     background-color: $gray-800;
     position: relative;
     transition: width 0.3s ease;
