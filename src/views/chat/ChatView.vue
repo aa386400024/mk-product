@@ -8,7 +8,7 @@
                     <div class="left-menu-footer">底部内容</div>
                 </template>
                 <template v-else-if="activeIndex === 1">
-                    <div>分段器2的内容</div>
+                    <ContantCreation />
                 </template>
                 <template v-else-if="activeIndex === 2">
                     <div>分段器2的内容</div>
@@ -28,6 +28,7 @@
 import { ref } from 'vue';
 import { ChatComponent, HistoryChatSidebar } from "@/components/chat";
 import { MySubsection } from '@/components/subsection';
+import ContantCreation from './ContentCreation.vue';
 
 // 定义子组件需要的items数组
 const items = ref([
