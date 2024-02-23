@@ -5,7 +5,6 @@
                 height: '100px',
                 borderRadius: '14px',
                 padding: '10px 20px 50px 20px',
-                border: '1px solid #ffd04b'
             }" placeholder="请输入消息..." clearable @keyup.enter="handleSend" />
         <div class="button-area">
             <div>
@@ -40,11 +39,11 @@ const handleSend = () => {
 .input-area {
     position: relative;
 
-    ::v-deep(.el-textarea) {
-        --el-input-focus-border: 1px solid #ffd04b;
-        --el-input-focus-border-color: 2px solid #ffd04b;
-        --el-input-hover-border-color: 1px solid #fff2d0;
-    }
+    // ::v-deep(.el-textarea) {
+    //     --el-input-focus-border: 1px solid #ffd04b;
+    //     --el-input-focus-border-color: 2px solid #ffd04b;
+    //     --el-input-hover-border-color: 1px solid #fff2d0;
+    // }
 
     ::v-deep(.el-textarea__inner) {
         scrollbar-width: none;
