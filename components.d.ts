@@ -33,6 +33,7 @@ declare module 'vue' {
     MicroAppContainer: typeof import('./src/components/micro-frontend/MicroAppContainer.vue')['default']
     'MicroAppContainer copy': typeof import('./src/components/micro-frontend/MicroAppContainer copy.vue')['default']
     MyDropdown: typeof import('./src/components/dropdown/MyDropdown.vue')['default']
+    MySubsection: typeof import('./src/components/subsection/MySubsection.vue')['default']
     MySwiper: typeof import('./src/components/swiper/MySwiper.vue')['default']
     Navbar: typeof import('./src/components/layout/Navbar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

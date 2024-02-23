@@ -155,7 +155,8 @@ onMounted(fetchChats);
 .chat-sidebar {
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    // height: 100vh;
+    max-height: 500px;
     background-color: $gray-800;
     position: relative;
     transition: width 0.3s ease;
@@ -206,14 +207,10 @@ onMounted(fetchChats);
 
     }
 
-    .scrollbar-content {
-        flex: 1; // 让滚动内容占据剩余空间
-        overflow-y: auto; // 如果内容超出则显示滚动条
-    }
 
     .el-scrollbar {
-        height: 100%;
-        flex: 1;
+        height: 500px;
+        // flex: 1;
         /* 占据剩余空间 */
         overflow-y: auto;
         /* 如果需要滚动 */
