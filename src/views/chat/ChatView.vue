@@ -55,7 +55,6 @@ const toggleSidebar = () => {
 <style lang="scss" scoped>
 .el-row {
     position: relative;
-    /* Ensure that the absolute positioning is relative to the row */
     display: flex;
     flex-direction: row;
     height: 100vh;
