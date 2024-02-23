@@ -41,12 +41,10 @@ watchEffect(() => {
 .title-wrapper {
     display: flex;
     align-items: center;
-    /* 确保图标和文字垂直居中对齐 */
     margin-left: 10px;
     .icon {
         display: flex;
-        margin-right: 8px;
-        /* 可根据需要调整图标和文字之间的间距 */
+        margin-right: 6px;
     }
 }
 </style>
