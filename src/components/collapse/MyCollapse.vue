@@ -3,8 +3,10 @@
         <el-collapse v-model="activeName" accordion>
             <el-collapse-item v-for="item in items" :key="item.name" :name="`item-${item.name}`">
                 <template #title>
-                    <SvgIcon :name="item.icon" size="16" />
-                    {{ item.title }}
+                    <div class="title-wrapper">
+                        <SvgIcon :name="item.icon" size="16" class="icon" />
+                        <span>{{ item.title }}</span>
+                    </div>
                 </template>
                 <!-- 插槽内容 -->
                 <slot :name="`item-${item.name}`"></slot>
@@ -24,7 +26,7 @@ const props = defineProps<{
     }>;
 }>();
 
-const activeName = ref(null);
+const activeName = ref<string | null>(null);
 
 // 使用watchEffect来响应items数组的变化
 watchEffect(() => {
@@ -34,3 +36,17 @@ watchEffect(() => {
     }
 });
 </script>
+
+<style scoped lang="scss">
+.title-wrapper {
+    display: flex;
+    align-items: center;
+    /* 确保图标和文字垂直居中对齐 */
+    margin-left: 10px;
+    .icon {
+        display: flex;
+        margin-right: 8px;
+        /* 可根据需要调整图标和文字之间的间距 */
+    }
+}
+</style>

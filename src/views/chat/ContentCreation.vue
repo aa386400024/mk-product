@@ -23,4 +23,11 @@ const collapseItems = ref([
     // 定义更多项...
 ]);
 </script>
+
+<style scoped lang="scss">
+    .content-creation {
+        margin: 10px;
+        border-radius: 10px;
+    }
+</style>
   
