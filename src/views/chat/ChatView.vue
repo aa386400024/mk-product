@@ -83,7 +83,7 @@ const toggleSidebar = () => {
     position: absolute;
     top: 50%;
     left: 0;
-    transform: translateY(-50%) scale(0.5);
+    transform: translateY(-50%) scale(0.6);
     z-index: 10;
     cursor: pointer;
     display: flex;
