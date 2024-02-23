@@ -1,4 +1,3 @@
-<!-- 父组件 -->
 <template>
     <div class="content-creation">
         <MyCollapse :items="collapseItems">
