@@ -13,11 +13,10 @@
                 <template v-else-if="activeIndex === 2">
                     <div>分段器2的内容</div>
                 </template>
-                
             </div>
         </el-col>
         <div :class="{ 'expand-sidebar-btn': true, 'is-collapsed': isSidebarCollapsed }" @click="toggleSidebar">
-            <SvgIcon :name="isSidebarCollapsed ? 'expand' : 'collapsed'" class="icon" size="16" />
+            <SvgIcon :name="isSidebarCollapsed ? 'expand' : 'collapsed'" class="icon" size="30" />
         </div>
         <el-col :span="isSidebarCollapsed ? 24 : 19">
             <ChatComponent />
@@ -70,30 +69,36 @@ const toggleSidebar = () => {
     flex-direction: column;
     height: 100vh;
     background-color: $gray-800;
+
     &-footer {
         flex: 0 0 auto;
         padding: 10px;
         border-top: 1px solid $gray-700;
         background-color: red;
-        box-shadow: --el-box-shadow-light; /* 添加朝上的阴影 */
+        box-shadow: --el-box-shadow-light;
+        /* 添加朝上的阴影 */
     }
 }
 
 .expand-sidebar-btn {
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    left: 0;
+    transform: translateY(-50%) scale(0.5);
     z-index: 10;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 18px;
-    height: 50px;
-    background-color: $gray-500;
-    color: #fff;
-    border-radius: 0 10px 10px 0;
+    width: 30px;
+    height: 119px;
+    background: $gray-500;
+    /* 与 SVG 相同的背景色 */
+    clip-path: path('M0 0C3 14 13.9783 19.4318 17.6537 21.1119C22.5542 23.3519 26.4477 27.6485 28.4776 33.0565C30 37.1124 30 42.2543 30 52.538L30 66.462C30 76.7457 30 81.8876 28.4776 85.9435C26.4477 91.3515 22.5542 95.6481 17.6537 97.8881C13.9783 99.5682 3 105 0 119L0 0Z');
+    //   transform: scale(0.6, 0.42); /* 缩放比例基于目标尺寸与原始尺寸的比例 */
+    transform-origin: top left;
 
+    /* 变换基点设置为左上角 */
     &:hover {
         background-color: $gray-600;
     }
