@@ -5,10 +5,15 @@
                 <MySubsection :items="items" v-model="activeIndex" />
                 <template v-if="activeIndex === 0">
                     <HistoryChatSidebar @update:collapse="handleSidebarCollapse" />
+                    <div class="left-menu-footer">底部内容</div>
                 </template>
                 <template v-else-if="activeIndex === 1">
                     <div>分段器2的内容</div>
                 </template>
+                <template v-else-if="activeIndex === 2">
+                    <div>分段器2的内容</div>
+                </template>
+                
             </div>
         </el-col>
         <div :class="{ 'expand-sidebar-btn': true, 'is-collapsed': isSidebarCollapsed }" @click="toggleSidebar">
@@ -27,8 +32,9 @@ import { MySubsection } from '@/components/subsection';
 
 // 定义子组件需要的items数组
 const items = ref([
-    { label: '分段器1', slotName: 'slot1' },
-    { label: '分段器2', slotName: 'slot2' },
+    { label: '历史会话', slotName: 'slot1' },
+    { label: '内容创作', slotName: 'slot2' },
+    { label: '知识库啊', slotName: 'slot3' },
     // 根据需要添加更多分段器
 ]);
 
@@ -60,8 +66,17 @@ const toggleSidebar = () => {
 }
 
 .left-menu {
+    display: flex;
+    flex-direction: column;
     height: 100vh;
     background-color: $gray-800;
+    &-footer {
+        flex: 0 0 auto;
+        padding: 10px;
+        border-top: 1px solid $gray-700;
+        background-color: red;
+        box-shadow: --el-box-shadow-light; /* 添加朝上的阴影 */
+    }
 }
 
 .expand-sidebar-btn {

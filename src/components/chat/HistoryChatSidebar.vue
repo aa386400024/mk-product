@@ -155,8 +155,7 @@ onMounted(fetchChats);
 .chat-sidebar {
     display: flex;
     flex-direction: column;
-    // height: 100vh;
-    max-height: 500px;
+    flex: 1;
     background-color: $gray-800;
     position: relative;
     transition: width 0.3s ease;
@@ -205,15 +204,6 @@ onMounted(fetchChats);
             }
         }
 
-    }
-
-
-    .el-scrollbar {
-        height: 500px;
-        // flex: 1;
-        /* 占据剩余空间 */
-        overflow-y: auto;
-        /* 如果需要滚动 */
     }
 
     // 侧边栏样式
