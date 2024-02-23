@@ -8,7 +8,7 @@
   // 定义接收的属性
   const props = defineProps({
     name: {
-      type: String,
+      type: String, 
       required: true,
     },
     size: {

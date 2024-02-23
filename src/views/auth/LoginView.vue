@@ -3,6 +3,7 @@
         <div class="swiper-container">
             <MySwiper :slides="slidesData" />
         </div>
+        <button @click="isLoginCardVisible = true" class="login-button">登录</button>
         <el-card class="login-card">
             <h1 class="title">人工智能策略交易平台</h1>
 
@@ -59,6 +60,8 @@ const checked = ref(false);
 
 // 使用useUserStore钩子函数，获取用户store对象
 const userStore = useUserStore();
+
+const isLoginCardVisible = ref(false);
 
 // 获取验证码
 const handleGetVerifyCod = () => {

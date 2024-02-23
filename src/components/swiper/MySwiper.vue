@@ -1,13 +1,16 @@
 <template>
-    <swiper :modules="modules" class="mySwiper" :navigation="navigationEnabled" :pagination="paginationEnabled" @slideChange="onSlideChange">
+    <swiper :modules="modules" class="mySwiper" :navigation="navigationEnabled" :pagination="paginationEnabled"
+        @slideChange="onSlideChange">
         <swiper-slide v-for="(slide, index) in slides" :key="index">
             <template v-if="slide.type === 'image'">
                 <img :src="slide.src" :alt="slide.alt" />
             </template>
             <template v-else-if="slide.type === 'video'">
-                <video ref="videoElements" :src="slide.src" autoplay muted playsinline @loadedmetadata="() => setupVideo(index)"></video>
+                <video ref="videoElements" :src="slide.src" autoplay muted playsinline
+                    @loadedmetadata="() => setupVideo()"></video>
                 <button class="play-button" v-if="showControls" @click="togglePlay(index)">
-                    {{ videoStates[index] ? '暂停' : '播放' }}
+                    <SvgIcon class="icon-spacing" :name="videoStates[index] ? 'pause' : 'play'" size="16" /> {{ videoStates[index] ? '暂停' : '播放'
+                    }}
                 </button>
                 <slot name="controls"></slot>
             </template>
@@ -48,16 +51,16 @@ const setupVideo = () => {
     for (const key in videoStates) {
         delete videoStates[key];
     }
-    
+
     // 为当前的视频设置状态
     videoElements.value.forEach((video, index) => {
         if (props.slides[index].type === 'video') {
             // 默认假设视频是播放的，因为有autoplay
             videoStates[index] = true;
-            
+
             video.addEventListener('play', () => videoStates[index] = true);
             video.addEventListener('pause', () => videoStates[index] = false);
-            
+
             // 如果视频因策略无法自动播放，可能需要手动触发播放或设置状态
             video.play().catch(error => {
                 console.error("Auto-play was prevented: ", error);
@@ -68,31 +71,31 @@ const setupVideo = () => {
 };
 
 const onSlideChange = (swiper: any) => {
-  nextTick(() => {
-    const activeIndex = swiper.activeIndex; // 获取当前活跃的Swiper Slide索引
-    const video = videoElements.value[activeIndex];
-    
-    if (video && props.slides[activeIndex].type === 'video') {
-      // 只更新当前活跃Slide中的视频状态
-      alert(videoStates[activeIndex])
-      videoStates[activeIndex] = !video.paused;
-    }
-  });
+    nextTick(() => {
+        const activeIndex = swiper.activeIndex; // 获取当前活跃的Swiper Slide索引
+        const video = videoElements.value[activeIndex];
+
+        if (video && props.slides[activeIndex].type === 'video') {
+            // 只更新当前活跃Slide中的视频状态
+            alert(videoStates[activeIndex])
+            videoStates[activeIndex] = !video.paused;
+        }
+    });
 };
 
 
 const togglePlay = (index: number) => {
-  const swiperSlide = document.querySelectorAll('.swiper-slide')[index];
-  const video = swiperSlide ? swiperSlide.querySelector('video') : null;
-  if (!video) return;
+    const swiperSlide = document.querySelectorAll('.swiper-slide')[index];
+    const video = swiperSlide ? swiperSlide.querySelector('video') : null;
+    if (!video) return;
 
-  if (video.paused || video.ended) {
-    video.play();
-    videoStates[index] = true; // 标记为播放
-  } else {
-    video.pause();
-    videoStates[index] = false; // 标记为暂停
-  }
+    if (video.paused || video.ended) {
+        video.play();
+        videoStates[index] = true; // 标记为播放
+    } else {
+        video.pause();
+        videoStates[index] = false; // 标记为暂停
+    }
 };
 
 onMounted(() => {
@@ -116,7 +119,9 @@ watch(() => props.slides, (newSlides) => {
 }
 
 .swiper-slide {
-    position: relative; /* 使得 .play-button 可以相对于它定位 */
+    position: relative;
+
+    /* 使得 .play-button 可以相对于它定位 */
     img,
     video {
         width: 100%;
@@ -125,24 +130,35 @@ watch(() => props.slides, (newSlides) => {
 }
 
 .play-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 72px;
     height: 34px;
     line-height: 0;
     position: absolute;
-    bottom: 30px; /* 或者其他希望按钮出现的位置 */
-    right: 40px; /* 根据需要调整 */
+    bottom: 30px;
+    /* 或者其他希望按钮出现的位置 */
+    right: 40px;
+    /* 根据需要调整 */
     color: #fff;
     border: 1px solid #fff;
-    padding: 10px; /* 按钮内边距 */
-    cursor: pointer; /* 鼠标悬停时显示手型指针 */
+    padding: 10px;
+    /* 按钮内边距 */
+    cursor: pointer;
+    /* 鼠标悬停时显示手型指针 */
     border-radius: 5px;
     transition: background-color 0.3s;
     background: transparent;
+
     &:hover {
         background-color: rgba(255, 255, 255, 0.3);
     }
-}
 
+    .icon-spacing {
+        margin-right: 4px; /* 或者根据需要调整间距大小 */
+    }
+}
 </style>
 
   
