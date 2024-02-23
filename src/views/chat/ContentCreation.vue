@@ -18,7 +18,7 @@ import { ref } from 'vue';
 import { MyCollapse } from '@/components/collapse';
 
 const collapseItems = ref([
-    { title: "Item 1", name: "1", icon: '' },
+    { title: "Item 1", name: "1", icon: 'home' },
     { title: "Item 2", name: "2", icon: '' },
     // 定义更多项...
 ]);
