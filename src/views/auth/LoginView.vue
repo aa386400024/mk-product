@@ -3,8 +3,8 @@
         <div class="swiper-container">
             <MySwiper :slides="slidesData" />
         </div>
-        <button @click="isLoginCardVisible = true" class="login-button">登录</button>
-        <el-card class="login-card">
+        <div  @click="isLoginCardVisible = true" class="login-button">登录</div>
+        <el-card class="login-card" v-if="isLoginCardVisible">
             <h1 class="title">人工智能策略交易平台</h1>
 
             <el-form size="large" label-width="65px">
@@ -96,15 +96,41 @@ const handleLogin = () => {
     display: flex;
     justify-content: center; // 水平居中
     align-items: center; // 垂直居中
+    .login-button {
+        z-index: 10;
+        position: absolute;
+        top: 20px;
+        right: 40px;
+        font-size: 18px;
+        color: $color-theme;
+        font-weight: bold;
+        cursor: pointer;
+    }
 }
 
 .login-card {
     position: absolute;
     right: 40px;
-    min-width: 420px;
+    width: 410px;
     border-radius: 10px;
-    padding: 15px;
+    padding: 10px;
     box-shadow: var(--el-box-shadow-light);
+    background-color: rgba(255, 255, 255, 0.8);
+
+    :deep(.el-input__wrapper) {
+        background-color: rgba(255, 255, 255, 0);
+        border-bottom: 1px solid $gray-500;
+        box-shadow: none;
+        border-radius: 0;
+    }
+
+    :deep(.el-input__inner)::placeholder {
+        color: rgba(99, 99, 99, 0.7);
+    }
+
+    :deep(.el-form-item__label) {
+        color: $gray-900;
+    }
 
     .title {
         text-align: center;
