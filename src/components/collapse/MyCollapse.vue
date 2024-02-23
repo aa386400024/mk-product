@@ -14,16 +14,23 @@
 </template>
   
 <script lang="ts" setup>
-import { ref } from 'vue';
+import { ref, watchEffect } from 'vue';
 
 const props = defineProps<{
     items: Array<{
         title: string;
         name: string;
-        icon: string; // 这里假设icon是一个字符串，指向对应的图标组件
+        icon: string;
     }>;
 }>();
 
-const activeName = ref('1');
+const activeName = ref(null);
+
+// 使用watchEffect来响应items数组的变化
+watchEffect(() => {
+    // 当items数组有内容时，设置activeName为第一个元素的name属性
+    if (props.items.length > 0) {
+        activeName.value = `item-${props.items[0].name}`;
+    }
+});
 </script>
-  
