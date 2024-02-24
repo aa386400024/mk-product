@@ -21,9 +21,6 @@ export const constantRoutes: RouteRecordRaw[] = [
         component: MainLayout, // 使用主布局
         children: [
             { path: '', name: 'home', component: HomeView },
-            { path: 'chat', name: 'chat', component: ChatView },
-            { path: 'knowledge-base', name: 'knowledgeBase', component: KnowledgeBase },
-            { path: 'about', name: 'about', component: AboutView }
         ]
     },
     {

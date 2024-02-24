@@ -3,7 +3,7 @@ import { usePermissionStore } from '@/stores/permission-store' // 导入权限 s
 import router from '@/router'
 
 // 白名单路由，无需登录即可访问
-const whiteList = ['/auth/login']
+const whiteList = ['/auth/login', '/']
 // 定义子应用的路由前缀
 const subAppRoutes = ['/app1', '/app2']; // 假设您有两个子应用
 
