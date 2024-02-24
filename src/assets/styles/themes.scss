@@ -1,1 +1,16 @@
-// 如果您的应用支持多种主题（如深色模式和浅色模式），可以在这里定义不同主题的样式变量。
+// themes.scss
+
+@use 'variables.scss' as *;
+.el-collapse {
+    --el-collapse-header-bg-color: rgba(255, 255, 255, 0.1) !important;
+    --el-collapse-header-text-color: #fff !important;
+    --el-collapse-border-color: #6c757d !important;
+    --el-collapse-content-bg-color: rgba(255, 255, 255, 0.15) !important;
+    // 在这里添加更多你想自定义的变量
+}
+
+.el-select {
+    --el-fill-color-blank: rgba(255, 255, 255, 0.15) !important;
+    --el-input-text-color: #ced4da !important;
+    --el-border-color: rgba(255, 255, 255, 0.15) !important;
+}

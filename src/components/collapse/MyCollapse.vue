@@ -47,4 +47,10 @@ watchEffect(() => {
         margin-right: 6px;
     }
 }
+
+:deep(.el-collapse) {
+    border-radius: 6px;
+    overflow: hidden;
+    border: 1px solid $gray-600;
+}
 </style>

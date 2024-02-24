@@ -33,7 +33,7 @@ import ContantCreation from './ContentCreation.vue';
 // 定义子组件需要的items数组
 const items = ref([
     { label: '历史会话', slotName: 'slot1' },
-    { label: '内容创作', slotName: 'slot2' },
+    { label: '内容运营', slotName: 'slot2' },
     { label: '知识库啊', slotName: 'slot3' },
     // 根据需要添加更多分段器
 ]);

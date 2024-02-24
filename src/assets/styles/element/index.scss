@@ -1,6 +1,9 @@
 // styles/element/index.scss
 @use '../variables' as *;
-@forward 'element-plus/theme-chalk/src/common/var.scss' with ($colors: ('primary': ('base': $color-theme, // 这里把主题色改为绿色
-        ),
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'primary': (
+      'base': $color-theme, // 主题色
     ),
+  ),
 );
