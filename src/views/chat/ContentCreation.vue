@@ -80,6 +80,9 @@ const selectOptions = ref([
     .my-select {
         margin-bottom: 10px;
     }
+    :deep(.el-collapse-item__content) {
+        margin: 10px;
+    }
 }
 </style>
   
