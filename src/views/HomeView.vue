@@ -2,11 +2,25 @@
 	<!-- <div class="swiper-view">
 		<MySwiper :slides="slidesData" :navigationEnabled="true" :paginationEnabled="true" />
 	</div> -->
-	<div class="main-content" v-if="tabsData.length > 0">
+	<!-- v-if="tabsData.length > 0" -->
+	<div class="main-content" >
 		<div class="filter-section">
 			<MySelect v-model="selectedColumn" :options="columnOptions" placeholder="选择列" />
-			<el-input v-model="filterValue" placeholder="筛选值" />
+			<el-input v-model="filterValue" v-if="selectedColumn!=='expiration_time'" placeholder="请输入筛选值" />
+			<div v-else>
+				<el-date-picker
+					v-model="startTime"
+					type="datetime"
+					placeholder="请选择到期时间"
+				/>
+				<el-date-picker
+					v-model="endTime"
+					type="datetime"
+					placeholder="请选择结束时间"
+				/>
+			</div>
 			<el-button @click="applyFilter" type="primary">筛选</el-button>
+			<el-button @click="resetTabData">重置</el-button>
 			<el-button @click="exportToExcel" type="success">导出Excel</el-button>
 			<!-- <el-upload 
 				ref="upload" 
@@ -79,6 +93,9 @@ const tabsData = ref<TabData[]>([]);
 const enableEdit = ref<boolean>(true)
 const enableDelete = ref<boolean>(true)
 
+const startTime = ref('')
+const endTime = ref('')
+
 const slidesData = ref([
     // { type: 'video', src: '/videos/winter.mp4' },
     { type: 'image', src: '/images/home/banner01.jpg', alt: 'banner' },
@@ -113,14 +130,26 @@ const currentTabData = computed(() => {
 // 切换标签页
 const tabChange = async (name: TabPaneName) => {
     console.log(name);
+	selectedColumn.value = '';
+	currentPageSize.value = 20;
     // 当用户切换标签页时，获取新激活标签页的数据
     await getAllTypeDataAPI(name as string);
 };
 
+// 重置标签页数据
+const resetTabData = async () => {
+    try {
+        // 确保使用 await 等待异步操作完成
+        await getAllTypeDataAPI(activeName.value);
+    } catch (error) {
+        console.error('重置失败：', error);
+    }
+};
+
 // 筛选逻辑
 const applyFilter = async () => {
-    if (!selectedColumn.value || !filterValue.value) {
-        console.warn('请选择一个列和输入一个筛选值');
+    if (!selectedColumn.value) {
+        console.warn('请选择一个列');
         return;
     }
     try {
@@ -300,7 +329,12 @@ const getAllTypeDataAPI = async (
 		
 		// 当 column 和 value 都被提供时，添加它们到 params 对象
 		if (column && value) {
-			params[column] = value;
+			if(column == 'expiration_time') {
+				params['startTime'] = startTime.value
+				params['endTime'] = endTime.value
+			}else {
+				params[column] = value;
+			}
 		}
 		
 		// 假设 GetAllTypeData 函数可以接受一个对象作为参数，

@@ -1,6 +1,6 @@
 <template>
     <div class="footer">
-        © 2024 Your Company. All Rights Reserved.
+        版权所有 南京北路智控科技股份有限公司
         <!-- 你可以在这里添加更多内容 -->
     </div>
 </template>

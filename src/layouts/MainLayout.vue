@@ -6,7 +6,8 @@
         <el-main>
             <router-view></router-view>
         </el-main>
-        <!-- <Footer /> -->
+        <el-footer><Footer /></el-footer>
+        
     </el-container>
 </template>
 
@@ -28,5 +29,6 @@ import { Navbar, Footer } from '@/components/layout';
     padding: 0;
     background: #fff;
 }
+
 </style>
   
