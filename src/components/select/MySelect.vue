@@ -1,19 +1,31 @@
 <template>
-    <el-select v-model="selectedValue" :placeholder="placeholder" :size="size"
+    <el-select v-model="selectedValue" :filterable="filterable" :placeholder="placeholder" :size="size"
         @change="handleChange">
-        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
+        <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value">
+            <div style="display: flex; align-items: center;">
+                <SvgIcon v-if="showIcons && item.icon" :name="item.icon" class="option-icon" size="15" />
+                <span>{{ item.label }}</span>
+            </div>
+        </el-option>
     </el-select>
 </template>
   
 <script setup lang="ts">
 import { watch, ref, onMounted } from 'vue'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
     modelValue: string;
-    options: Array<{ value: string; label: string }>;
+    options: Array<{ value: string; label: string; icon?: string }>;
     size?: 'large' | 'small';
     placeholder?: string;
-}>()
+    filterable?: boolean;
+    showIcons?: boolean;
+}>(), {
+    size: 'large',
+    placeholder: '',
+    filterable: false,
+    showIcons: false,
+})
 
 const emit = defineEmits(['update:modelValue'])
 
@@ -43,6 +55,9 @@ const handleChange = (value: string) => {
 </script>
   
 <style scoped lang="scss">
-/* 可以在这里添加一些特定样式 */
+.option-icon {
+    margin-right: 6px;
+    display: flex;
+}
 </style>
   

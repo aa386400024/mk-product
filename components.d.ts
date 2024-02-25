@@ -46,6 +46,7 @@ declare module 'vue' {
     MySelect: typeof import('./src/components/select/MySelect.vue')['default']
     MySubsection: typeof import('./src/components/subsection/MySubsection.vue')['default']
     MySwiper: typeof import('./src/components/swiper/MySwiper.vue')['default']
+    MyTable: typeof import('./src/components/table/MyTable.vue')['default']
     Navbar: typeof import('./src/components/layout/Navbar.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

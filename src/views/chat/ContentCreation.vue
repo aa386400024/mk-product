@@ -4,8 +4,9 @@
             <MySelect
                 v-model="selectedOption"
                 :options="selectOptions"
-                placeholder="请选择"
-                
+                :filterable="true"
+                :showIcons="true"
+                placeholder="请选择运营场景"
             />
         </div>
         <MyCollapse :items="collapseItems">
@@ -66,9 +67,9 @@ const collapseItems = ref([
 ]);
 
 const selectOptions = ref([
-  { value: 'Option1', label: '文章写作' },
-  { value: 'Option2', label: '营销推广' },
-  { value: 'Option3', label: '小红书' },
+  { value: 'Option1', label: '文章写作', icon: 'home' },
+  { value: 'Option2', label: '营销推广', icon: 'home' },
+  { value: 'Option3', label: '小红书', icon: 'home' },
   // 更多选项...
 ])
 </script>
