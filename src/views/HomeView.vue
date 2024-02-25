@@ -11,11 +11,15 @@
 				<el-date-picker
 					v-model="startTime"
 					type="datetime"
+					format="YYYY-MM-DD HH:mm:ss"
+					value-format="YYYY-MM-DD HH:mm:ss"
 					placeholder="请选择到期时间"
 				/>
 				<el-date-picker
 					v-model="endTime"
 					type="datetime"
+					format="YYYY-MM-DD HH:mm:ss"
+					value-format="YYYY-MM-DD HH:mm:ss"
 					placeholder="请选择结束时间"
 				/>
 			</div>
