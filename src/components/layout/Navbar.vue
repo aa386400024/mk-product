@@ -1,14 +1,7 @@
 <template>
     <div class="header">
-        <!-- <img src="@/assets/images/logo.svg" alt="Logo" class="logo" /> -->
-        <div class="title">应用</div>
-        <div class="nav-items">
-            <!-- 直接显示用户名 -->
-            <span v-if="userStore.userinfo">{{ userStore.userinfo.username }}</span>
-            <span v-if="userStore.userinfo" class="divider">|</span>
-            <span @click="logout" class="logout">退 出</span>
-            <!-- <el-button type="warning" text @click="logout">退出</el-button> -->
-        </div>
+        <img src="@/assets/images/logo.png" alt="Logo" class="logo" />
+        <!-- <div class="title">系统名称</div> -->
     </div>
 </template>
 
@@ -31,9 +24,14 @@ function logout() {
 </script>
 
 <style scoped lang="scss">
-
 .title {
     font-size: $spacing-md;
+}
+.header {
+    img {
+        margin-left: 20px;
+        height: 80%;
+    }
 }
 
 .nav-items {
@@ -45,9 +43,11 @@ function logout() {
     .divider {
         margin: 0 5px; // 可以根据需要调整边距
     }
+
     .logout {
         color: #FFA500;
         cursor: pointer;
         font-weight: bold;
     }
-}</style>
+}
+</style>

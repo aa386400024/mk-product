@@ -25,7 +25,8 @@
     justify-content: space-between;
     color: $color-text-white;
     padding: 0 20px;
-    border-bottom: 1px solid $border-color-dark;
+    box-shadow: var(--el-box-shadow-light);
+    // border-bottom: 1px solid $border-color-dark;
 }
 
 // 主内容区域样式
