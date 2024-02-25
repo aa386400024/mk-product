@@ -10,7 +10,7 @@ interface Config {
 }
 
 function startLoading(config: Config | undefined) {
-    if (config !== undefined && config.url !== undefined && !whiteList.includes(config.url)) {
+    if (config !== undefined && config.url !== undefined && whiteList.includes(config.url)) {
         return;
     }
     if (requestCount === 0) {

@@ -1,7 +1,7 @@
 <template>
-	<div class="swiper-view">
+	<!-- <div class="swiper-view">
 		<MySwiper :slides="slidesData" :navigationEnabled="true" :paginationEnabled="true" />
-	</div>
+	</div> -->
 	<div class="main-content" v-if="tabsData.length > 0">
 		<div class="filter-section">
 			<MySelect v-model="selectedColumn" :options="columnOptions" placeholder="选择列" />
@@ -436,6 +436,7 @@ onMounted(async () => {
 	margin-top: 50px;
 }
 .main-content {
+	margin-top: 60px;
 	padding: 20px;
 	position: relative;
 
