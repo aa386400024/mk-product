@@ -20,7 +20,7 @@
                     </template>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" :width="actionColumnWidth" v-if="enableEdit || enableDelete">
+            <el-table-column label="操作" fixed="right" :align="align" :width="actionColumnWidth" v-if="enableEdit || enableDelete">
                 <template #default="{ row, $index }">
                     <el-button v-if="!row.editing && enableEdit" type="primary" size="small"
                         @click="startEdit(row)">编辑</el-button>

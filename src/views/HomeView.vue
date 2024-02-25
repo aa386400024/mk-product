@@ -328,12 +328,14 @@ const getAllTypeDataAPI = async (
 		};
 		
 		// 当 column 和 value 都被提供时，添加它们到 params 对象
-		if (column && value) {
+		if (column) {
 			if(column == 'expiration_time') {
 				params['startTime'] = startTime.value
 				params['endTime'] = endTime.value
 			}else {
-				params[column] = value;
+				if(value) {
+					params[column] = value;
+				}
 			}
 		}
 		
