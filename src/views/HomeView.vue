@@ -394,7 +394,6 @@ const handleCurrentChange = (newPage: number): void => {
 			// flex-grow: 1;
 		}
 	}
-
 }
 </style>
   
