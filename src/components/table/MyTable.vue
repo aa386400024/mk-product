@@ -49,15 +49,15 @@ interface TableDataItemGeneric<T> {
 const props = withDefaults(defineProps<{
     tableData: TableDataItemGeneric<any>[];
     columns: { prop: string; label: string; width?: number; minWidth?: number; tooltip?: boolean; maxTextLength?: number; tooltipTheme?: string; }[];
-    totalRows: number;
-    showPagination: boolean;
-    enableEdit: boolean;
-    enableDelete: boolean;
-    showIndex: boolean;
-    showSelection: boolean;
-    actionColumnWidth: string;
-    paginationLayout: string;
-    paginationPageSizes: number[];
+    totalRows?: number;
+    showPagination?: boolean;
+    enableEdit?: boolean;
+    enableDelete?: boolean;
+    showIndex?: boolean;
+    showSelection?: boolean;
+    actionColumnWidth?: string;
+    paginationLayout?: string;
+    paginationPageSizes?: number[];
 }>(), {
     tableData: () => [],
     columns: () => [],
