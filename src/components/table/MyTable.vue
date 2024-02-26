@@ -1,9 +1,13 @@
 <template>
     <el-config-provider :locale="zhCn">
-        <el-table :data="tableData" stripe border style="width: 100%" :header-cell-style="{ background: '#666', color: '#fff' }">
-            <el-table-column type="selection" width="55" v-if="showSelection"></el-table-column>
-            <el-table-column type="index" width="55" label="序号" v-if="showIndex"></el-table-column>
-            <el-table-column v-for="column in columns" :key="column.prop" :prop="column.prop" :label="column.label"
+        <el-table :data="tableData" stripe border style="width: 100%" :height="height" :max-height="maxHeight" :header-cell-style="{ background: '#666', color: '#fff' }">
+            <el-table-column type="selection" width="55" align="center" v-if="showSelection"></el-table-column>
+            <el-table-column type="index" width="55" align="center" label="序号" v-if="showIndex">
+                <template #default="{ $index }">
+                    {{ computeRowIndex($index) }}
+                </template>
+            </el-table-column>
+            <el-table-column v-for="column in columns" :key="column.prop" :align="align" :prop="column.prop" :label="column.label"
                 :width="column.width" :min-width="column.minWidth">
                 <template #default="{ row }">
                     <el-input v-if="row.editing && enableEdit" v-model="row[column.prop]" size="small"></el-input>
@@ -16,7 +20,7 @@
                     </template>
                 </template>
             </el-table-column>
-            <el-table-column label="操作" fixed="right" :width="actionColumnWidth" v-if="enableEdit || enableDelete">
+            <el-table-column label="操作" fixed="right" :align="align" :width="actionColumnWidth" v-if="enableEdit || enableDelete">
                 <template #default="{ row, $index }">
                     <el-button v-if="!row.editing && enableEdit" type="primary" size="small"
                         @click="startEdit(row)">编辑</el-button>
@@ -24,7 +28,7 @@
                         @click="saveEdit(row)">保存</el-button>
                     <el-button v-if="row.editing && enableEdit" type="info" size="small"
                         @click="cancelEdit(row, $index)">取消</el-button>
-                    <el-button v-if="enableDelete" type="danger" size="small" @click="deleteRow($index)">删除</el-button>
+                    <el-button v-if="enableDelete" type="danger" size="small" @click="deleteRow(row, $index)">删除</el-button>
                 </template>
             </el-table-column>
         </el-table>
@@ -58,6 +62,9 @@ const props = withDefaults(defineProps<{
     actionColumnWidth?: string;
     paginationLayout?: string;
     paginationPageSizes?: number[];
+    height?: number | string;
+    maxHeight?: number | string;
+    align?: string;
 }>(), {
     tableData: () => [],
     columns: () => [],
@@ -70,12 +77,21 @@ const props = withDefaults(defineProps<{
     actionColumnWidth: '220px',
     paginationLayout: 'total, sizes, prev, pager, next, jumper',
     paginationPageSizes: () => [10, 20, 30, 40],
+    height: '500px',
+    maxHeight: '500px',
+    align: 'center'
 })
 
 const currentPage = ref(1)
-const pageSize = ref(10)
+// 获取paginationPageSizes数组的第一个值作为pageSize的初始值
+const pageSize = ref(props.paginationPageSizes[0]);
 
-const emit = defineEmits(['deleteRow', 'update:pageSize', 'update:currentPage'])
+const emit = defineEmits(['saveEdit', 'deleteRow', 'update:pageSize', 'update:currentPage'])
+
+const computeRowIndex = ($index: number) => {
+    return (currentPage.value - 1) * pageSize.value + $index + 1;
+};
+
 
 const startEdit = (row: Record<string, any>) => {
     row.editing = true
@@ -83,10 +99,7 @@ const startEdit = (row: Record<string, any>) => {
 
 const saveEdit = (row: Record<string, any>) => {
     row.editing = false
-    ElMessage({
-        message: '保存成功',
-        type: 'success',
-    })
+    emit('saveEdit', row);
 }
 
 const cancelEdit = (row: Record<string, any>, index: number) => {
@@ -94,8 +107,8 @@ const cancelEdit = (row: Record<string, any>, index: number) => {
     row.editing = false
 }
 
-const deleteRow = (index: number) => {
-    emit('deleteRow', index);
+const deleteRow = (row: Record<string, any>, index: number) => {
+    emit('deleteRow', row, index);
 }
 
 const handleSizeChange = (newSize: number) => {

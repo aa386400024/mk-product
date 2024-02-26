@@ -1,11 +1,11 @@
 <template>
-    <swiper :modules="modules" class="mySwiper" :navigation="navigationEnabled" :pagination="paginationEnabled" @slideChange="onSlideChange">
+    <swiper :modules="modules" class="mySwiper" :loop="loop" :autoplay="autoplay" :navigation="navigationEnabled" :pagination="paginationEnabled" @slideChange="onSlideChange">
         <swiper-slide v-for="(slide, index) in slides" :key="index">
             <template v-if="slide.type === 'image'">
                 <img :src="slide.src" :alt="slide.alt" />
             </template>
             <template v-else-if="slide.type === 'video'">
-                <video ref="videoElements" :src="slide.src" autoplay muted playsinline @loadedmetadata="() => setupVideo(index)"></video>
+                <video ref="videoElements" :src="slide.src" autoplay muted playsinline @loadedmetadata="() => setupVideo()"></video>
                 <button class="play-button" v-if="showControls" @click="togglePlay(index)">
                     {{ videoStates[index] ? '暂停' : '播放' }}
                 </button>
@@ -21,20 +21,24 @@ import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Navigation, Pagination } from 'swiper/modules';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
 
 const props = withDefaults(defineProps<{
     slides: Array<{ type: string; src: string; alt?: string }>;
     navigationEnabled?: boolean;
     paginationEnabled?: boolean;
     showControls?: boolean; // 控制播放/暂停按钮是否显示
+    loop?: boolean;
+    autoplay?: Object | boolean;
 }>(), {
     navigationEnabled: false,
     paginationEnabled: false,
     showControls: false, // 默认值为true
+    loop: true,
+    autoplay: () => ({ delay: 5000 })
 });
 
-const modules = [Navigation, Pagination];
+const modules = [Navigation, Pagination, Autoplay];
 
 // 明确指定 videoElements 的类型为 HTMLVideoElement[]
 const videoElements: Ref<HTMLVideoElement[]> = ref([]);
