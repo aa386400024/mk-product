@@ -16,7 +16,8 @@
 </template>
   
 <script setup lang="ts">
-import { ref, Ref, watch, reactive, onMounted, nextTick } from 'vue';
+import { ref, watch, reactive, onMounted, nextTick } from 'vue';
+import type { Ref } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/navigation';

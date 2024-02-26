@@ -38,7 +38,7 @@
   const svgContainer = ref();
   
   // 动态导入 SVG 并更新 SVG 容器内容的函数
-  const loadSvg = async (iconName) => {
+  const loadSvg = async (iconName: string) => {
     try {
       const { default: svgContent } = await import(`../../assets/icons/${iconName}.svg?raw`);
       if (svgContainer.value) {
