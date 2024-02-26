@@ -2,6 +2,7 @@ import { fileURLToPath, URL } from 'node:url';
 
 import { defineConfig } from 'vite';
 import vue from '@vitejs/plugin-vue';
+import compression from 'vite-plugin-compression';
 import vueJsx from '@vitejs/plugin-vue-jsx';
 import svgLoader from 'vite-svg-loader';
 import AutoImport from 'unplugin-auto-import/vite'
@@ -14,6 +15,7 @@ export default defineConfig({
     plugins: [
         vue(),
         vueJsx(),
+        compression(),
         AutoImport({
             resolvers: [ElementPlusResolver()],
         }),
@@ -65,6 +67,6 @@ export default defineConfig({
             }
         },
         // 可以在这里添加其他 build 相关的配置
-        // chunkSizeWarningLimit: 1000, // 调整警告的代码块大小限制（可选）
+        chunkSizeWarningLimit: 600, // 调整警告的代码块大小限制（可选）
     }
 })

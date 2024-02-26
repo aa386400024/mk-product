@@ -2,18 +2,19 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 // 主布局和视图
-import MainLayout from '../layouts/MainLayout.vue'; // 主布局组件
-import HomeView from '../views/HomeView.vue';
-import AboutView from '../views/AboutView.vue';
+const MainLayout = () => import('../layouts/MainLayout.vue'); // 主布局组件
+const HomeView = () => import('../views/HomeView.vue');
+const AboutView = () => import('../views/AboutView.vue');
 
 // 身份验证布局和视图
-import AuthLayout from '../views/auth/AuthLayout.vue'
-import LoginView from '../views/auth/LoginView.vue'
-import RegisterView from '../views/auth/RegisterView.vue'
-import ForgotPasswordView from '../views/auth/ForgotPasswordView.vue'
+const AuthLayout = () => import('../views/auth/AuthLayout.vue');
+const LoginView = () => import('../views/auth/LoginView.vue');
+const RegisterView = () => import('../views/auth/RegisterView.vue');
+const ForgotPasswordView = () => import('../views/auth/ForgotPasswordView.vue');
 
-import ChatView from '../views/chat/ChatView.vue';
-import KnowledgeBase from '../views/knowledge-base/index.vue';
+const ChatView = () => import('../views/chat/ChatView.vue');
+const KnowledgeBase = () => import('../views/knowledge-base/index.vue');
+
 
 export const constantRoutes: RouteRecordRaw[] = [
     {
