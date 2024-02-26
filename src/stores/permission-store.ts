@@ -68,9 +68,9 @@ export const usePermissionStore = defineStore({
         },
         async generateRoutes(roles: string[]) {
             try {
-                // const { data: asyncRoutes } = await fetchRouterList({});
-                const asyncRoutes = [
-                ];
+                const { data: asyncRoutes } = await fetchRouterList({});
+                // const asyncRoutes = [
+                // ];
                 
                 const accessedRoutes = filterAsyncRoutes(asyncRoutes, roles);
                 this.setRoutes(accessedRoutes);
