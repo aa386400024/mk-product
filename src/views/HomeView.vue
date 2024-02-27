@@ -47,6 +47,7 @@
 					:tableData="tab.tableData" 
 					:columns="tab.columns" 
 					:totalRows="tab.total"
+					:excludeInputOnNewRow="['id']"
 					showPagination
 					enableAdd
 					enableEdit
@@ -97,7 +98,39 @@ interface TabData {
 }
 
 
-const tabsData = ref<TabData[]>([]);
+const tabsData = ref<TabData[]>([
+	{
+		data_type: '1',
+		label: '标签页1',
+		total: 2, // 假设有2行数据
+		tableData: [
+			{ id: 1, name: '项目A', status: '进行中', description: '项目A的描述信息' },
+			{ id: 2, name: '项目B', status: '已完成', description: '项目B的描述信息' }
+		],
+		columns: [
+			{ prop: 'id', label: 'ID', minWidth: 100 },
+			{ prop: 'name', label: '名称', minWidth: 150 },
+			{ prop: 'status', label: '状态', minWidth: 100 },
+			{ prop: 'description', label: '描述', minWidth: 200 }
+		]
+	},
+	{
+		data_type: '2',
+		label: '标签页2',
+		total: 3, // 假设有3行数据
+		tableData: [
+			{ id: 3, name: '项目C', status: '进行中', description: '项目C的描述信息' },
+			{ id: 4, name: '项目D', status: '已暂停', description: '项目D的描述信息' },
+			{ id: 5, name: '项目E', status: '已完成', description: '项目E的描述信息' }
+		],
+		columns: [
+			{ prop: 'id', label: 'ID', minWidth: 100 },
+			{ prop: 'name', label: '名称', minWidth: 150 },
+			{ prop: 'status', label: '状态', minWidth: 100 },
+			{ prop: 'description', label: '描述', minWidth: 200 }
+		]
+	}
+]);
 
 const startTime = ref('')
 const endTime = ref('')
@@ -108,16 +141,14 @@ const currentPageSize = ref<number>(20)
 
 // 将表格列配置转换为el-select的options格式
 const columnOptions = computed(() => {
-	// 找到当前激活的Tab
-	const currentTab = tabsData.value.find(tab => tab.data_type === activeName.value);
-	if (!currentTab) {
-		return [];
-	}
-	// 根据当前Tab的列配置生成筛选选项
-	return currentTab.columns.map(column => ({
-		value: column.prop, // 列的prop作为value
-		label: column.label // 列的label作为显示的文本
-	}));
+    const currentTab = tabsData.value.find(tab => tab.data_type === activeName.value);
+    if (!currentTab || !Array.isArray(currentTab.columns)) {
+        return [];
+    }
+    return currentTab.columns.map(column => ({
+        value: column.prop,
+        label: column.label
+    }));
 });
 
 // 切换标签页
@@ -439,7 +470,7 @@ const updateRowAPI = async (row: any) => {
 	// 调用API更新行
 	// 返回更新后的数据或确认更新
 	// eslint-disable-next-line @typescript-eslint/no-unused-vars
-	const { editing, ...dataWithoutEditing } = row;
+	const { editing, isNew, ...dataWithoutEditing } = row;
 	try {
 		const response = await UpdateAllTypeData({
 			data_type: activeName.value,

@@ -10,7 +10,9 @@
             <el-table-column v-for="column in columns" :key="column.prop" :align="align" :prop="column.prop" :label="column.label"
                 :width="column.width" :min-width="column.minWidth">
                 <template #default="{ row }">
-                    <el-input v-if="row.editing && enableEdit" v-model="row[column.prop]" size="small"></el-input>
+                    <el-input v-if="row.editing && enableEdit && (!row.isNew || !props.excludeInputOnNewRow.includes(column.prop))" 
+                        v-model="row[column.prop]" size="small">
+                    </el-input>
                     <!-- 根据列配置决定是否使用Tooltip -->
                     <template v-else>
                         <el-tooltip v-if="column.tooltip && row[column.prop].length > (column.maxTextLength || Infinity)" :effect="column.tooltipTheme" :content="row[column.prop]" placement="top">
@@ -34,7 +36,7 @@
         </el-table>
         <div class="tool-view">
             <div class="custom-right">
-                <el-button class="add-btn" plain v-if="enableAdd" @click="addNewRow" style="margin-top: 20px;">新增行</el-button>
+                <el-button class="add-btn" type="primary" plain v-if="enableAdd" @click="addNewRow" style="margin-top: 20px;">新增行</el-button>
                 <el-pagination v-if="showPagination" @size-change="handleSizeChange" @current-change="handleCurrentChange"
                     :current-page="currentPage" :page-sizes="paginationPageSizes" :page-size="pageSize"
                     :layout="paginationLayout" :total="totalRows">
@@ -72,6 +74,7 @@ const props = withDefaults(defineProps<{
     maxHeight?: number | string;
     align?: string;
     enableAdd?: boolean;
+    excludeInputOnNewRow: string[];
 }>(), {
     tableData: () => [],
     columns: () => [],
@@ -84,10 +87,11 @@ const props = withDefaults(defineProps<{
     actionColumnWidth: '220px',
     paginationLayout: 'total, sizes, prev, pager, next, jumper',
     paginationPageSizes: () => [10, 20, 30, 40],
-    height: '500px',
-    maxHeight: '500px',
+    height: '400px',
+    maxHeight: '400px',
     align: 'center',
-    enableAdd: false
+    enableAdd: false,
+    excludeInputOnNewRow: () => []
 })
 
 const tableRef: Ref<any> = ref(null);
