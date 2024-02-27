@@ -87,8 +87,8 @@ const props = withDefaults(defineProps<{
     actionColumnWidth: '220px',
     paginationLayout: 'total, sizes, prev, pager, next, jumper',
     paginationPageSizes: () => [10, 20, 30, 40],
-    height: '400px',
-    maxHeight: '400px',
+    height: '450px',
+    maxHeight: '450px',
     align: 'center',
     enableAdd: false,
     excludeInputOnNewRow: () => []

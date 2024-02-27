@@ -98,39 +98,7 @@ interface TabData {
 }
 
 
-const tabsData = ref<TabData[]>([
-	{
-		data_type: '1',
-		label: '标签页1',
-		total: 2, // 假设有2行数据
-		tableData: [
-			{ id: 1, name: '项目A', status: '进行中', description: '项目A的描述信息' },
-			{ id: 2, name: '项目B', status: '已完成', description: '项目B的描述信息' }
-		],
-		columns: [
-			{ prop: 'id', label: 'ID', minWidth: 100 },
-			{ prop: 'name', label: '名称', minWidth: 150 },
-			{ prop: 'status', label: '状态', minWidth: 100 },
-			{ prop: 'description', label: '描述', minWidth: 200 }
-		]
-	},
-	{
-		data_type: '2',
-		label: '标签页2',
-		total: 3, // 假设有3行数据
-		tableData: [
-			{ id: 3, name: '项目C', status: '进行中', description: '项目C的描述信息' },
-			{ id: 4, name: '项目D', status: '已暂停', description: '项目D的描述信息' },
-			{ id: 5, name: '项目E', status: '已完成', description: '项目E的描述信息' }
-		],
-		columns: [
-			{ prop: 'id', label: 'ID', minWidth: 100 },
-			{ prop: 'name', label: '名称', minWidth: 150 },
-			{ prop: 'status', label: '状态', minWidth: 100 },
-			{ prop: 'description', label: '描述', minWidth: 200 }
-		]
-	}
-]);
+const tabsData = ref<TabData[]>([]);
 
 const startTime = ref('')
 const endTime = ref('')
