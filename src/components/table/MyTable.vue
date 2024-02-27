@@ -36,7 +36,7 @@
         </el-table>
         <div class="tool-view">
             <div class="custom-right">
-                <el-button class="add-btn" type="primary" plain v-if="enableAdd" @click="addNewRow" style="margin-top: 20px;">新增行</el-button>
+                <el-button class="add-btn" type="primary" v-if="enableAdd" @click="addNewRow" style="margin-top: 20px;">新增行</el-button>
                 <el-pagination v-if="showPagination" @size-change="handleSizeChange" @current-change="handleCurrentChange"
                     :current-page="currentPage" :page-sizes="paginationPageSizes" :page-size="pageSize"
                     :layout="paginationLayout" :total="totalRows">

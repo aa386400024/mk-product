@@ -22,7 +22,7 @@
 					value-format="YYYY-MM-DD HH:mm:ss"
 					placeholder="请选择结束时间"
 				/>
-				<el-button @click="applyLast15Days">近15天</el-button>
+				<el-button @click="applyLast7Days">近7天</el-button>
 				<el-button @click="applyLast30Days">近30天</el-button>
 			</div>
 			<el-button @click="applyFilter" type="primary">筛选</el-button>
@@ -154,11 +154,10 @@ const applyFilter = async () => {
     }
 };
 
-// 计算并应用过去15天的筛选
-// 应用从今天到未来15天的数据筛选
-const applyLast15Days = async () => {
+// 应用从今天到未来7天的数据筛选
+const applyLast7Days = async () => {
   const today = new Date();
-  const next15Days = addDays(today, 15);
+  const next15Days = addDays(today, 7);
 
   // 使用date-fns的format函数格式化日期
   const formatDateTime = (date: Date) => format(date, 'yyyy-MM-dd HH:mm:ss');
