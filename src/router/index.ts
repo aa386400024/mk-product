@@ -2,9 +2,12 @@ import { createRouter, createWebHistory } from 'vue-router'
 import type { RouteRecordRaw } from 'vue-router'
 
 // 主布局和视图
-const MainLayout = () => import('../layouts/MainLayout.vue'); // 主布局组件
-const HomeView = () => import('../views/HomeView.vue');
+// const MainLayout = () => import('../layouts/MainLayout.vue'); // 主布局组件
+// const HomeView = () => import('../views/HomeView.vue');
 const AboutView = () => import('../views/AboutView.vue');
+import MainLayout from "../layouts/MainLayout.vue";
+import HomeView from "../views/HomeView.vue";
+
 
 // 身份验证布局和视图
 const AuthLayout = () => import('../views/auth/AuthLayout.vue');
@@ -12,7 +15,8 @@ const LoginView = () => import('../views/auth/LoginView.vue');
 const RegisterView = () => import('../views/auth/RegisterView.vue');
 const ForgotPasswordView = () => import('../views/auth/ForgotPasswordView.vue');
 
-const ChatView = () => import('../views/chat/ChatView.vue');
+// const ChatView = () => import('../views/chat/ChatView.vue');
+import ChatView from "../views/chat/ChatView.vue";
 const KnowledgeBase = () => import('../views/knowledge-base/index.vue');
 
 
