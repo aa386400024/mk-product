@@ -22,6 +22,8 @@
 					value-format="YYYY-MM-DD HH:mm:ss"
 					placeholder="请选择结束时间"
 				/>
+				<el-button @click="applyLast15Days">近15天</el-button>
+				<el-button @click="applyLast30Days">近30天</el-button>
 			</div>
 			<el-button @click="applyFilter" type="primary">筛选</el-button>
 			<el-button @click="resetTabData">重置</el-button>
@@ -66,6 +68,7 @@ import type { TabPaneName, UploadInstance, UploadProps, UploadRawFile } from 'el
 import { MyTable } from "@/components/table";
 import { MySelect } from "@/components/select";
 import { GetAllTypeData, DelAllTypeData, DataImport, UpdateAllTypeData } from '@/api/ruanjian';
+import { addDays, format } from 'date-fns';
 
 const activeName = ref(1)
 
@@ -133,9 +136,11 @@ const currentTabData = computed(() => {
 
 // 切换标签页
 const tabChange = async (name: TabPaneName) => {
-    console.log(name);
-	selectedColumn.value = '';
-	currentPageSize.value = 20;
+    selectedColumn.value = '';
+    filterValue.value = ''; // 重置筛选值
+    startTime.value = ''; // 重置开始时间
+    endTime.value = ''; // 重置结束时间
+    currentPageSize.value = 20; // 已有的重置操作
     // 当用户切换标签页时，获取新激活标签页的数据
     await getAllTypeDataAPI(name as string);
 };
@@ -163,6 +168,39 @@ const applyFilter = async () => {
         console.error('筛选失败：', error);
     }
 };
+
+// 计算并应用过去15天的筛选
+// 应用从今天到未来15天的数据筛选
+const applyLast15Days = async () => {
+  const today = new Date();
+  const next15Days = addDays(today, 15);
+
+  // 使用date-fns的format函数格式化日期
+  const formatDateTime = (date: Date) => format(date, 'yyyy-MM-dd HH:mm:ss');
+
+  startTime.value = formatDateTime(today);
+  endTime.value = formatDateTime(next15Days);
+
+  // 应用筛选并获取数据
+  await getAllTypeDataAPI(activeName.value, 'expiration_time', '', 1, currentPageSize.value);
+};
+
+// 应用从今天到未来30天的数据筛选
+const applyLast30Days = async () => {
+  const today = new Date();
+  const next30Days = addDays(today, 30);
+
+  // 使用date-fns的format函数格式化日期
+  const formatDateTime = (date: Date) => format(date, 'yyyy-MM-dd HH:mm:ss');
+
+  startTime.value = formatDateTime(today);
+  endTime.value = formatDateTime(next30Days);
+
+  // 应用筛选并获取数据
+  await getAllTypeDataAPI(activeName.value, 'expiration_time', '', 1, currentPageSize.value);
+};
+
+
 
 const upload = ref<UploadInstance>()
 
@@ -443,25 +481,25 @@ const handleSaveEdit = async (row: any) => {
 
 // 处理分页大小变化事件
 const handleSizeChange = async (newSize: number) => {
-    // 假设我们保持当前的页码，但使用新的分页大小重新获取数据
     try {
-		currentPageSize.value = newSize;
-        await getAllTypeDataAPI(activeName.value, '', '', 1, newSize); // 假设getTabsDataAPI已经被更新以接收分页参数
+        currentPageSize.value = newSize;
+        // 传递当前的筛选条件
+        await getAllTypeDataAPI(activeName.value, selectedColumn.value, filterValue.value, 1, newSize);
     } catch (error) {
         console.error('获取数据失败：', error);
     }
 };
-
 
 // 处理当前页码变化事件
 const handleCurrentChange = async (newPage: number) => {
-    // 使用新的页码重新获取数据，这里假设分页大小保持不变
     try {
-        await getAllTypeDataAPI(activeName.value, '', '', newPage, currentPageSize.value); // 同上，假设getTabsDataAPI可以接受分页参数
+        // 传递当前的筛选条件
+        await getAllTypeDataAPI(activeName.value, selectedColumn.value, filterValue.value, newPage, currentPageSize.value);
     } catch (error) {
         console.error('获取数据失败：', error);
     }
 };
+
 
 
 onMounted(async () => {
