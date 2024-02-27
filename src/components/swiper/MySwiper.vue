@@ -5,7 +5,7 @@
                 <img :src="slide.src" :alt="slide.alt" />
             </template>
             <template v-else-if="slide.type === 'video'">
-                <video ref="videoElements" :src="slide.src" autoplay muted playsinline @loadedmetadata="() => setupVideo(index)"></video>
+                <video ref="videoElements" :src="slide.src" autoplay muted playsinline @loadedmetadata="() => setupVideo()"></video>
                 <button class="play-button" v-if="showControls" @click="togglePlay(index)">
                     {{ videoStates[index] ? '暂停' : '播放' }}
                 </button>
@@ -16,7 +16,8 @@
 </template>
   
 <script setup lang="ts">
-import { ref, Ref, watch, reactive, onMounted, nextTick } from 'vue';
+import { ref, watch, reactive, onMounted, nextTick } from 'vue';
+import type { Ref } from 'vue';
 import { Swiper, SwiperSlide } from 'swiper/vue';
 import 'swiper/css';
 import 'swiper/css/navigation';
