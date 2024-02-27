@@ -97,54 +97,10 @@ interface TabData {
 }
 
 
-const tabsData = ref<TabData[]>([
-	{
-		data_type: 1,
-		label: '标签页1',
-		total: 2, // 假设有2行数据
-		tableData: [
-			{ id: 1, name: '项目1', description: '描述1', editing: false },
-			{ id: 2, name: '项目2', description: '描述2', editing: false },
-			{ id: 2, name: '项目2', description: '描述2', editing: false },
-			{ id: 2, name: '项目2', description: '描述2', editing: false },
-			{ id: 2, name: '项目2', description: '描述2', editing: false },
-			{ id: 2, name: '项目2', description: '描述2', editing: false },
-			{ id: 2, name: '项目2', description: '描述2', editing: false },
-			{ id: 2, name: '项目2', description: '描述2', editing: false },
-			{ id: 2, name: '项目2', description: '描述2', editing: false },
-			{ id: 2, name: '项目2', description: '描述2', editing: false },
-		],
-		columns: [
-			{ prop: 'name', label: '项目名称', width: 120, minWidth: 100 },
-			{ prop: 'description', label: '项目描述', minWidth: 100 },
-		]
-	},
-	{
-		data_type: 2,
-		label: '标签页2',
-		total: 3, // 假设有3行数据
-		tableData: [
-			{ id: 1, name: '任务1', description: '任务描述1', editing: false },
-			{ id: 2, name: '任务2', description: '任务描述2', editing: false },
-			{ id: 3, name: '任务3', description: '任务描述3', editing: false }
-		],
-		columns: [
-			{ prop: 'name', label: '任务名称', width: 120, minWidth: 100 },
-			{ prop: 'description', label: '任务描述', minWidth: 100 },
-		]
-	}
-]);
+const tabsData = ref<TabData[]>([]);
 
 const startTime = ref('')
 const endTime = ref('')
-
-const slidesData = ref([
-    // { type: 'video', src: '/videos/winter.mp4' },
-    { type: 'image', src: '/images/home/banner01.jpg', alt: 'banner' },
-	{ type: 'image', src: '/images/home/banner02.jpg', alt: 'banner' },
-	{ type: 'image', src: '/images/home/banner03.jpg', alt: 'banner' },
-    // 可以根据需要添加更多的滑块数据
-]);
 
 const selectedColumn = ref('')
 const filterValue = ref('')
@@ -162,11 +118,6 @@ const columnOptions = computed(() => {
 		value: column.prop, // 列的prop作为value
 		label: column.label // 列的label作为显示的文本
 	}));
-});
-
-
-const currentTabData = computed(() => {
-	return tabsData.value.find(tab => tab.data_type === activeName.value);
 });
 
 // 切换标签页
