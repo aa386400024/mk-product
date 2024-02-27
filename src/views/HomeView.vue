@@ -47,12 +47,14 @@
 					:tableData="tab.tableData" 
 					:columns="tab.columns" 
 					:totalRows="tab.total"
-					:showPagination="true" 
-					:enableEdit="enableEdit" 
-					:enableDelete="enableDelete"
+					showPagination
+					enableAdd
+					enableEdit
+					enableDelete
 					:paginationPageSizes="[20, 50, 80, 100]"
 					@saveEdit="handleSaveEdit"
 					@deleteRow="handleDeleteRow"
+					@addRow="handleAddNewRow"
 					@update:pageSize="handleSizeChange"
 					@update:currentPage="handleCurrentChange" 
 				/>
@@ -95,10 +97,43 @@ interface TabData {
 }
 
 
-const tabsData = ref<TabData[]>([]);
-
-const enableEdit = ref<boolean>(true)
-const enableDelete = ref<boolean>(true)
+const tabsData = ref<TabData[]>([
+	{
+		data_type: 1,
+		label: '标签页1',
+		total: 2, // 假设有2行数据
+		tableData: [
+			{ id: 1, name: '项目1', description: '描述1', editing: false },
+			{ id: 2, name: '项目2', description: '描述2', editing: false },
+			{ id: 2, name: '项目2', description: '描述2', editing: false },
+			{ id: 2, name: '项目2', description: '描述2', editing: false },
+			{ id: 2, name: '项目2', description: '描述2', editing: false },
+			{ id: 2, name: '项目2', description: '描述2', editing: false },
+			{ id: 2, name: '项目2', description: '描述2', editing: false },
+			{ id: 2, name: '项目2', description: '描述2', editing: false },
+			{ id: 2, name: '项目2', description: '描述2', editing: false },
+			{ id: 2, name: '项目2', description: '描述2', editing: false },
+		],
+		columns: [
+			{ prop: 'name', label: '项目名称', width: 120, minWidth: 100 },
+			{ prop: 'description', label: '项目描述', minWidth: 100 },
+		]
+	},
+	{
+		data_type: 2,
+		label: '标签页2',
+		total: 3, // 假设有3行数据
+		tableData: [
+			{ id: 1, name: '任务1', description: '任务描述1', editing: false },
+			{ id: 2, name: '任务2', description: '任务描述2', editing: false },
+			{ id: 3, name: '任务3', description: '任务描述3', editing: false }
+		],
+		columns: [
+			{ prop: 'name', label: '任务名称', width: 120, minWidth: 100 },
+			{ prop: 'description', label: '任务描述', minWidth: 100 },
+		]
+	}
+]);
 
 const startTime = ref('')
 const endTime = ref('')
@@ -424,24 +459,27 @@ const deleteRowAPI = async (row: any) => {
 }
 
 // 修改handleDeleteRow函数
-const handleDeleteRow = async (row: any) => {
-    try {
-        // 等待异步删除操作完成
-		try {
-        // 显示确认对话框
-        await ElMessageBox.confirm('确定删除当前行数据吗?', '警告', {
-				confirmButtonText: '确认',
-				cancelButtonText: '取消',
-				type: 'warning',
-			});
-			await deleteRowAPI(row);
-		} catch (error) {
-			// 如果用户取消，捕获异常并停止执行
-			ElMessage.info('已取消删除');
+const handleDeleteRow = async (row: any, index:number) => {
+    // 等待异步删除操作完成
+	if(row.isNew) {
+		const activeTab = tabsData.value.find(tab => tab.data_type === activeName.value);
+		if (activeTab) {
+			activeTab.tableData.splice(index, 1);
 		}
-    } catch (error) {
-        console.error('删除数据失败：', error);
-    }
+		return;
+	}
+	try {
+		// 显示确认对话框
+		await ElMessageBox.confirm('确定删除当前行数据吗?', '警告', {
+			confirmButtonText: '确认',
+			cancelButtonText: '取消',
+			type: 'warning',
+		});
+		await deleteRowAPI(row);
+	} catch (error) {
+		// 如果用户取消，捕获异常并停止执行
+		ElMessage.info('已取消删除');
+	}
 };
 
 
@@ -479,6 +517,23 @@ const handleSaveEdit = async (row: any) => {
     }
 };
 
+const handleAddNewRow = () => {
+    // 直接使用activeName来定位当前激活的标签页
+    const activeTab = tabsData.value.find(tab => tab.data_type === activeName.value);
+	console.log(activeTab, 'activeTab');
+    if (activeTab) {
+        const newRow = {
+            // 新行的属性，例如id, name等，根据你的表格结构来
+            editing: true, // 假设新行默认是可编辑的
+			isNew: true,
+        };
+        activeTab.tableData.push(newRow);
+    } else {
+        console.error('无法找到激活的标签页');
+    }
+};
+
+
 // 处理分页大小变化事件
 const handleSizeChange = async (newSize: number) => {
     try {
@@ -499,8 +554,6 @@ const handleCurrentChange = async (newPage: number) => {
         console.error('获取数据失败：', error);
     }
 };
-
-
 
 onMounted(async () => {
     // 调用 getAllTypeDataAPI 获取第一个标签页的数据，使用默认分页设置
