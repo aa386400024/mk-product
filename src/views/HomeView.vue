@@ -106,6 +106,7 @@ const endTime = ref('')
 const selectedColumn = ref('')
 const filterValue = ref('')
 const currentPageSize = ref<number>(20)
+const currentPage = ref<number>(1)
 
 // 将表格列配置转换为el-select的options格式
 const columnOptions = computed(() => {
@@ -126,6 +127,7 @@ const tabChange = async (name: TabPaneName) => {
     startTime.value = ''; // 重置开始时间
     endTime.value = ''; // 重置结束时间
     currentPageSize.value = 20; // 已有的重置操作
+	currentPage.value = 1;
     // 当用户切换标签页时，获取新激活标签页的数据
     await getAllTypeDataAPI(name as string);
 };
@@ -134,7 +136,7 @@ const tabChange = async (name: TabPaneName) => {
 const resetTabData = async () => {
     try {
         // 确保使用 await 等待异步操作完成
-        await getAllTypeDataAPI(activeName.value);
+        await tabChange(activeName.value);
     } catch (error) {
         console.error('重置失败：', error);
     }
@@ -497,6 +499,7 @@ const handleSizeChange = async (newSize: number) => {
 // 处理当前页码变化事件
 const handleCurrentChange = async (newPage: number) => {
     try {
+		currentPage.value = newPage
         // 传递当前的筛选条件
         await getAllTypeDataAPI(activeName.value, selectedColumn.value, filterValue.value, newPage, currentPageSize.value);
     } catch (error) {

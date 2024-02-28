@@ -8,6 +8,7 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     ChatComponent: typeof import('./src/components/chat/ChatComponent.vue')['default']
+    copy: typeof import('./src/components/micro-frontend/MicroAppContainer copy.vue')['default']
     ElButton: typeof import('element-plus/es')['ElButton']
     ElCard: typeof import('element-plus/es')['ElCard']
     ElCol: typeof import('element-plus/es')['ElCol']

@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <img src="@/assets/images/logo.png" alt="Logo" class="logo" />
-        <!-- <div class="title">系统名称</div> -->
+        <div class="title">欢迎使用</div>
     </div>
 </template>
 
@@ -26,8 +26,12 @@ function logout() {
 <style scoped lang="scss">
 .title {
     font-size: $spacing-md;
+    color: $gray-800;
 }
 .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     img {
         margin-left: 20px;
         height: 80%;
