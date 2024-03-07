@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
+    "@springdragon/chatui": "^0.1.0",
     "axios": "^1.6.5",
-    "chatui-vue3": "^0.1.0",
     "date-fns": "^3.3.1",
     "element-plus": "^2.5.2",
     "markdown-it": "^14.0.0",
