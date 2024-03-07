@@ -110,7 +110,7 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="途径点个数" prop="waypoint_count">
-                    <el-input-number v-model="tracksForm.waypoint_count" :min="1" :max="10"></el-input-number>
+                    <el-input-number v-model="tracksForm.waypoint_count" :min="1"></el-input-number>
                 </el-form-item>
             </el-form>
         </el-card>
