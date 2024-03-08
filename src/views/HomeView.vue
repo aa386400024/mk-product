@@ -6,7 +6,7 @@
 					<img src="@/assets/images/home\ai-banner.png" alt="Coal Mine Banner" class="banner">
 					<div style="padding: 14px">
 						<span>应用</span>
-						
+						<button>按钮文本</button>
 						<CuButton label="按钮文本" size="small"></CuButton>
 					</div>
 				</el-card>
@@ -56,7 +56,8 @@
 // 在这里导入需要的脚本或组件
 
 import { useRouter } from 'vue-router';
-import { CuButton } from '@springdragon/chatui'
+import { CuButton } from '@springdragon/chat-ui'
+import '/node_modules/@springdragon/chat-ui/dist/style.css';
 
 const router = useRouter();
 
