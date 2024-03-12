@@ -9,8 +9,8 @@ dependencies:
     specifier: ^2.3.1
     version: 2.3.1(vue@3.4.15)
   '@springdragon/chat-ui':
-    specifier: ^0.0.2
-    version: 0.0.2(vue@3.4.15)
+    specifier: ^0.0.7
+    version: 0.0.7(vue@3.4.15)
   axios:
     specifier: ^1.6.5
     version: 1.6.5
@@ -983,8 +983,8 @@ packages:
   /@socket.io/component-emitter@3.1.0:
     resolution: {integrity: sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==}
 
-  /@springdragon/chat-ui@0.0.2(vue@3.4.15):
-    resolution: {integrity: sha512-NDQ5rAIkCtVVELMA/9x77smj61+DUvb774c2EHhwLCYYZWFP4EWr7sNnT0WuCBXKE77ysP+TxmmoBtXdtyCrJw==}
+  /@springdragon/chat-ui@0.0.7(vue@3.4.15):
+    resolution: {integrity: sha512-NJxgHjbZ5xaTfrtR0/AyQ8Jo2K31NebOjlHd8XDOBWqMRpV8sTiA184An//vzPvhjXMb97I/nDopL022H5LoWA==}
     peerDependencies:
       vue: ^3.4.15
     dependencies:

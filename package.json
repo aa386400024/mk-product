@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@element-plus/icons-vue": "^2.3.1",
-    "@springdragon/chat-ui": "^0.0.2",
+    "@springdragon/chat-ui": "^0.0.7",
     "axios": "^1.6.5",
     "date-fns": "^3.3.1",
     "element-plus": "^2.5.2",
