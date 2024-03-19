@@ -1,21 +1,19 @@
 <template>
-    <div>
-        <el-dropdown ref="dropdownRef" v-for="item in navItems" :key="item.label" @command="handleCommand"
-            :hide-on-click="!hasMultipleChildren(item)" class="nav-item"
-            :class="{ 'active': activeItem === item.label }" :show-timeout="0" :hide-timeout="0" :trigger="trigger">
-            <span class="el-dropdown-link" @click="() => handleClick(item)">
-                {{ item.label }}
-                <i v-if="hasMultipleChildren(item)" class="el-icon-arrow-down el-icon--right"></i>
-            </span>
-            <template v-if="hasMultipleChildren(item)" #dropdown>
-                <el-dropdown-menu>
-                    <el-dropdown-item v-for="child in item.children" :key="child.label" :command="child">
-                        {{ child.label }}
-                    </el-dropdown-item>
-                </el-dropdown-menu>
-            </template>
-        </el-dropdown>
-    </div>
+    <el-dropdown ref="dropdownRef" v-for="item in navItems" :key="item.label" @command="handleCommand"
+        :hide-on-click="!hasMultipleChildren(item)" class="nav-item" :class="{ 'active': activeItem === item.label }"
+        :show-timeout="0" :hide-timeout="0" :trigger="trigger" :popper-class="['my-custom-dropdown-class', hasMultipleChildren(item) ? '' : 'hide-arrow']">
+        <span class="el-dropdown-link" @click="handleClick(item)">
+            {{ item.label }}
+            <!-- <i v-if="hasMultipleChildren(item)" class="el-icon-arrow-down el-icon--right"></i> -->
+        </span>
+        <template v-if="hasMultipleChildren(item)" #dropdown>
+            <el-dropdown-menu>
+                <el-dropdown-item v-for="child in item.children" :key="child.label" :command="child">
+                    {{ child.label }}
+                </el-dropdown-item>
+            </el-dropdown-menu>
+        </template>
+    </el-dropdown>
 </template>
 
 <script setup lang="ts">
@@ -51,7 +49,6 @@ const hasMultipleChildren = (item: NavItem) => item.children && item.children.le
 const handleCommand = (child: NavItemChild): void => {
     // 发出导航事件，并更新激活的导航项
     emit('navigate', child.route);
-    activeItem.value = child.label;
     // 关闭下拉菜单
     closeDropdown()
 };
@@ -63,6 +60,7 @@ const handleCommand = (child: NavItemChild): void => {
  * @returns {void}
  */
 const handleClick = (item: NavItem): void => {
+    activeItem.value = item.label;
     // 当导航项有子项且子项数量为1时，处理其唯一子项
     if (item.children && item.children.length === 1) {
         handleCommand(item.children[0]);
@@ -84,13 +82,43 @@ const closeDropdown = () => {
 };
 </script>
 
+<style>
+.my-custom-dropdown-class {
+    margin-top: 20px;
+}
+
+.my-custom-dropdown-class.hide-arrow .el-popper__arrow {
+    display: none !important;
+}
+</style>
+
 <style lang="scss" scoped>
 .nav-item {
     margin-right: 20px;
     cursor: pointer;
-}
+    font-size: 16px;
 
-.nav-item.active {
-    border-bottom: 2px solid #409eff;
+    &:last-child {
+        margin-right: 0;
+    }
+
+    &.active {
+        color: $color-theme;
+    }
+
+    &.active::after {
+        content: "";
+        position: absolute;
+        bottom: -15px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 20px;
+        height: 3px;
+        background-color: $color-theme;
+    }
+
+    &:hover {
+        color: $color-theme;
+    }
 }
 </style>

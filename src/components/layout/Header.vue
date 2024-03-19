@@ -1,7 +1,7 @@
 <template>
     <div class="header">
         <div class="title">应用</div>
-        <div class="nav">
+        <div class="navbar">
             <Navbar :navItems="navItems" @navigate="handleNavigate" />
         </div>
     </div>
@@ -24,6 +24,13 @@ const navItems: Ref<NavItem[]> = ref([
             { label: '产品2', route: '/product2' }
         ],
     },
+    {
+        label: '产品2',
+        children: [
+            { label: '产品1', route: '/product1' },
+            { label: '产品2', route: '/product2' }
+        ],
+    },
 ]);
 
 const router = useRouter();
@@ -34,13 +41,20 @@ const handleNavigate = (route: string) => {
 </script>
 
 <style scoped lang="scss">
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+    margin: auto 40px;
+}
 .title {
     font-size: $spacing-md;
 }
 
-.nav {
+.navbar {
     display: flex;
+    justify-content: flex-end;
     align-items: center;
-    gap: 10px;
 }
 </style>
