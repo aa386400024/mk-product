@@ -112,7 +112,7 @@ const closeDropdown = () => {
         bottom: -15px;
         left: 50%;
         transform: translateX(-50%);
-        width: 20px;
+        width: 30px;
         height: 3px;
         background-color: $color-theme;
     }
