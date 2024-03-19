@@ -84,7 +84,7 @@ const closeDropdown = () => {
 };
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .nav-item {
     margin-right: 20px;
     cursor: pointer;
