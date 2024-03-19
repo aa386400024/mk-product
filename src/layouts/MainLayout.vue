@@ -1,9 +1,8 @@
 <template>
     <el-container class="outer-container">
-        <!-- 使用封装的动态菜单组件 -->
-        <el-aside>
-            <sidebar :menu-items="menuItems" />
-        </el-aside>
+        <el-header>
+            <Header />
+        </el-header>
 
         <el-container>
             <el-main>
@@ -16,8 +15,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterView } from 'vue-router';
-import { Sidebar } from '@/components/layout';
-
+import { Header } from '@/components/layout';
 
 const menuItems = ref([
     {
@@ -62,6 +60,9 @@ const menuItems = ref([
     align-items: center;
     width: 72px;
     height: 100%;
+}
+:deep(.el-header) {
+    --el-header-padding: 0 !important;
 }
 </style>
   
